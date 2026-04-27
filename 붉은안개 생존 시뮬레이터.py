@@ -83,10 +83,13 @@ if st.button("⏳ 시뮬레이션 시작"):
 
         # 시간 흐름 루프 시작
         for hour in range(1, target_hours + 1):
+            # [수정점] 매 시간의 기록을 시작할 때, '시간'을 가장 먼저 헤더로 작성합니다.
+            hour_log = f"**🕒 [{hour}시간 경과]**\n"
             
             # [이오리 기믹] 차원 도약으로 해당 시간 무조건 패스
             if "보라눈물 이오리" in selected_guards and hour % 4 == 0:
-                battle_logs += f"🔮 **[{hour}시간 경과]** 보라눈물 이오리가 차원을 열어 당신을 숨겼습니다. (전투 없이 안전하게 통과)\n\n"
+                hour_log += "> 🔮 보라눈물 이오리가 차원을 열어 당신을 숨겼습니다. (전투 없이 안전하게 통과)\n\n"
+                battle_logs += hour_log
                 log_container.markdown(battle_logs)
                 time.sleep(0.3)
                 continue
@@ -120,26 +123,26 @@ if st.button("⏳ 시뮬레이션 시작"):
                 
                 if finger_cycle == 1: # 엄지
                     current_team_power += 15
-                    battle_logs += "🧥 **[엄지의 규율]** 발렌치나의 무용으로 방어 점수가 15 상승합니다.\n"
+                    hour_log += "> 🧥 **[엄지의 가호]** 엄지의 규칙적인 사격진이 형성되어 방어 점수가 15 상승합니다.\n"
                 elif finger_cycle == 2: # 검지
                     if random.random() < 0.15: 
                         effective_kali_attack = 0
-                        battle_logs += "📜 **[검지의 지령]** 헤르메스의 변덕으로 공격을 무효화했습니다!\n"
+                        hour_log += "> 📜 **[검지의 지령]** 지령에 적힌 완벽한 회피 경로를 따라 공격을 무효화했습니다!\n"
                 elif finger_cycle == 3: # 중지
                     if effective_kali_attack > current_team_power:
                         damage_diff = effective_kali_attack - current_team_power
                         counter_reflect = int(damage_diff * 0.25)
                         effective_kali_attack -= counter_reflect
-                        battle_logs += f"⛓️ **[중지의 반격]** 마티아스가 받은 피해의 25%({counter_reflect})를 역으로 상쇄했습니다.\n"
+                        hour_log += f"> ⛓️ **[중지의 반격]** 중지가 형제들이 받은 피해의 25%({counter_reflect})를 역으로 상쇄했습니다.\n"
                 elif finger_cycle == 4: # 약지
                     effective_kali_attack -= 15
                     if effective_kali_attack < 0: effective_kali_attack = 0
-                    battle_logs += "🎨 **[약지의 예술]** 칼리스토가 공격 궤적을 예술적으로 읽어내 위력을 15 감소시켰습니다.\n"
+                    hour_log += "> 🎨 **[약지의 예술]** 약지가 칼리의 공격 궤적을 캔버스에 덧칠해 위력을 15 감소시켰습니다.\n"
                 elif finger_cycle == 0: # 소지
                     kali_perm_debuff += 5
                     effective_kali_attack -= 5
                     if effective_kali_attack < 0: effective_kali_attack = 0
-                    battle_logs += "🤫 **[소지의 인]** 시오미 요루가 천살성도로 칼리에게 상처를 남깁니다. 위력이 영구적으로 5 감소합니다.\n"
+                    hour_log += "> 🤫 **[소지의 금기]** 칼리가 소지의 금기를 어겼습니다. 위력이 영구적으로 5 감소합니다.\n"
 
             # [최종 방어 판정]
             time.sleep(0.3)
@@ -147,30 +150,32 @@ if st.button("⏳ 시뮬레이션 시작"):
                 # 일반 방어 성공
                 if "바퀴 황제" in selected_guards: persistent_power_bonus += 5
                 if "핏빛 밤 엘레나" in selected_guards: persistent_power_bonus += 2
-                battle_logs += f"🕒 **[{hour}시간 경과]** 방어 성공! (칼리의 위력: {effective_kali_attack} / 호위 방어선: {int(current_team_power)})\n\n"
+                hour_log += f"> 🛡️ **방어 성공!** (칼리의 위력: {effective_kali_attack} / 호위 방어선: {int(current_team_power)})\n\n"
             else:
                 # 방어선 붕괴 시 특수 생존 기믹 순차적 발동
                 if "푸른잔향 아르갈리아" in selected_guards and (effective_kali_attack - current_team_power) <= 5:
                     persistent_power_bonus += 10
-                    battle_logs += f"🎸 **[{hour}시간 경과]** 아르갈리아의 공명! 치명적인 참격의 진동을 무력화하고 영구적인 흐름을 가져옵니다.\n\n"
+                    hour_log += f"> 🎸 **아르갈리아의 공명!** 치명적인 참격의 진동을 무력화하고 영구적인 흐름을 가져옵니다.\n\n"
                 elif blood_gauge >= 50:
                     blood_gauge -= 50
-                    battle_logs += f"🩸 **[{hour}시간 경과]** 경혈식 발동. 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
+                    hour_log += f"> 🩸 **경혈식 발동.** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
                 elif baral_w_serum > 0:
                     baral_w_serum -= 1
-                    battle_logs += f"💉 **[{hour}시간 경과]** 처형자 바랄이 혈청 W를 투입해 공간을 격리했습니다. (남은 회피: {baral_w_serum})\n\n"
+                    hour_log += f"> 💉 **처형자 바랄 개입.** 혈청 W를 투입해 공간을 격리했습니다. (남은 회피: {baral_w_serum})\n\n"
                 elif "옥기린 가치우" in selected_guards and not gachiu_shield_used:
                     gachiu_shield_used = True
-                    battle_logs += f"🛡️ **[{hour}시간 경과]** 가치우가 당신을 밀쳐내고 붉은안개의 맹공을 홀로 받아냈습니다!\n\n"
+                    hour_log += f"> 🛡️ **가치우의 희생.** 가치우가 당신을 밀쳐내고 붉은안개의 맹공을 홀로 받아냈습니다!\n\n"
                 elif has_t_badge:
                     has_t_badge = False
-                    battle_logs += f"⚠️ **[{hour}시간 경과]** 방어선 붕괴! T사 수사관 배지를 사용해 시간을 멈추고 도망칩니다.\n\n"
+                    hour_log += f"> ⚠️ **방어선 붕괴!** T사 수사관 배지를 사용해 시간을 멈추고 도망칩니다.\n\n"
                 elif revives_left > 0:
                     revives_left -= 1
-                    if is_angelica_alive and random.random() < 0.5: is_angelica_alive = False # 안젤리카 무작위 사망
-                    battle_logs += f"💊 **[{hour}시간 경과]** 치명상 발생! K사 앰플의 효과로 육체가 즉시 수복됩니다. (남은 앰플: {revives_left})\n\n"
+                    if is_angelica_alive and random.random() < 0.5: is_angelica_alive = False
+                    hour_log += f"> 💊 **치명상 발생!** K사 앰플의 효과로 육체가 즉시 수복됩니다. (남은 앰플: {revives_left})\n\n"
                 else:
-                    battle_logs += f"💀 **[{hour}시간 경과]** 모든 방어 수단이 소진되었습니다. 붉은안개의 대검이 당신을 갈랐습니다.\n\n"
+                    hour_log += f"> 💀 **방어 수단 소진.** 붉은안개의 대검이 당신을 갈랐습니다.\n\n"
+                    battle_logs += hour_log
+                    log_container.markdown(battle_logs)
                     survival_status = False
                     break
             
@@ -178,8 +183,10 @@ if st.button("⏳ 시뮬레이션 시작"):
             if "어느 싱클레어" in selected_guards and hour == 4:
                 team_power_base -= guards_db["어느 싱클레어"]["power"]
                 kali_perm_debuff += 5
-                battle_logs += "🍂 **[알을 깨고 나온 자]** 힘을 다한 싱클레어가 물러나며, 전장에 시야를 가리는 연기 장막을 영구적으로 남깁니다.\n\n"
+                hour_log += "> 🍂 **[알을 깨고 나온 자]** 힘을 다한 싱클레어가 물러나며, 연기 장막을 영구적으로 남깁니다.\n\n"
             
+            # 완성된 이번 시간의 로그를 전체 로그에 추가
+            battle_logs += hour_log
             log_container.markdown(battle_logs)
 
         # 결과 출력
