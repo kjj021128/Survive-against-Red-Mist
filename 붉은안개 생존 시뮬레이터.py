@@ -187,7 +187,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += "> 🤫 **[천살성도 발도]** 시오미 요루가 천살성도로 칼리를 상처입힙니다. 위력이 영구적으로 5 감소합니다.\n\n"
 
             # [최종 방어 판정]
-            if "푸른잔향 아르갈리아" in selected_guards and abs(effective_kali_attack - current_team_power) <= 5:
+            if "푸른잔향 아르갈리아" in selected_guards and abs(effective_kali_attack - current_team_power) <= 7:
                 persistent_power_bonus += 10
                 hour_log += "> 🎸 **[아르갈리아의 공명]** 칼리의 궤적과 아슬아슬하게 합을 맞추며 영구적인 흐름을 가져옵니다! (영구 방어선 +10)\n\n"
                 
