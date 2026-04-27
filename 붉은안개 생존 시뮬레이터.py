@@ -98,16 +98,21 @@ if st.button("⏳ 시뮬레이션 시작"):
             
             if "옥기린 가치우" in selected_guards: 
                 current_team_power *= 1.2
-                hour_log += "> 🐉 **[천강성의 오망]** 옥기린 가치우의 결속 버프로 아군 전체의 방어 점수가 1.2배 증폭됩니다!\n\n"
+                # [수정점] 상시 유지 버프는 1시간째에 한 번만 출력되도록 제한
+                if hour == 1:
+                    hour_log += "> 🐉 **[천강성의 오망]** 옥기린의 가르침으로, 아군 전체의 방어 점수가 1.2배 증폭됩니다!\n\n"
                 
             if "어느 싱클레어" in selected_guards and hour <= 4: 
                 current_team_power += guards_db["어느 싱클레어"]["power"]
-                hour_log += "> 🌿 **[아브락사스의 전차]** 싱클레어가 초반의 맹렬한 기세로 방어선을 2배로 굳힙니다!\n\n"
+                # [수정점] 4시간 동안 유지되는 초반 버프 역시 1시간째에 한 번만 선언
+                if hour == 1:
+                    hour_log += "> 🌿 **[아브락사스의 전차]** 싱클레어가 전차와도 같은 맹렬한 기세로 전열을 굳힙니다!\n\n"
                 
             if is_angelica_alive: 
                 angelica_buff = random.randint(5, 45)
                 current_team_power += angelica_buff
-                hour_log += f"> 🧤 **[차원장갑]** 검은침묵 안젤리카가 무작위 공방 무기를 전개합니다. (방어 점수 +{angelica_buff})\n\n"
+                # 안젤리카의 버프는 매시간 수치가 바뀌는 '동적' 스킬이므로 그대로 둡니다.
+                hour_log += f"> 🧤 **[차원장갑]** 검은침묵 안젤리카가 무작위 공방 무기를 전개합니다. (추가 방어 점수 +{angelica_buff})\n\n"
 
             # [칼리 기본 공격력 결정]
             if hour <= 12:
@@ -144,7 +149,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 if is_angelica_alive:
                     hour_log += "> ⬛ **[Furioso]** 롤랑이 9개의 공방 무기를 난무하여 칼리의 흐름을 완전히 끊어냅니다! (위력 -50)\n\n"
                 else:
-                    hour_log += "> ⬛ **[광란의 Furioso]** 롤랑이 안젤리카를 잃은 분노로 미친 듯이 무기를 휘두릅니다! (위력 -50)\n\n"
+                    hour_log += "> ⬛ **[Furioso]** 롤랑이 안젤리카를 잃은 분노로 미친 듯이 무기를 휘두릅니다! (위력 -50)\n\n"
             
             if "R사 제 4무리 대장들" in selected_guards:
                 hour_log += "> 🎯 **[처분 표식]** 니콜라이의 지휘로 칼리의 위력 최댓값이 억제되고 있습니다.\n"
