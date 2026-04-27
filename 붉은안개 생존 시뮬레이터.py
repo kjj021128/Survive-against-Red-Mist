@@ -190,7 +190,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             time.sleep(0.3)
             if current_team_power >= effective_kali_attack:
                 if "바퀴 황제" in selected_guards: 
-                    persistent_power_bonus += 5
+                    persistent_power_bonus += 4
                     hour_log += "> 🪳 **[황제의 피]** 바퀴 황제가 칼리의 참격을 버텨내며 외골격을 단단하게 진화시킵니다. (영구 방어선 +4)\n\n"
                 if "핏빛 밤 엘레나" in selected_guards: 
                     persistent_power_bonus += 2
