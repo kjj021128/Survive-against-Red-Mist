@@ -5,8 +5,6 @@ import time
 # --- [1] 도시의 전력 및 장비 데이터베이스 구축 ---
 BUDGET = 1300
 
-# 호위 목록 (이름: [가격, 전투/지연력 수치])
-# 수치는 설정상 무력, 생존력, 지연전 적합도를 종합한 척도입니다.
 guards_db = {
     "천퇴성 뇌횡": {"cost": 300, "power": 30},
     "어느 싱클레어": {"cost": 400, "power": 45}, 
@@ -27,7 +25,6 @@ guards_db = {
     "장로 돈키호테": {"cost": 900, "power": 130}
 }
 
-# 장비 목록 (이름: [가격, 효과 설명])
 items_db = {
     "K사 앰플 3개": {"cost": 200, "desc": "사망에 이르는 피해를 입을 시, 3회 부활합니다."},
     "T사 수사관 배지": {"cost": 250, "desc": "치명적인 위기 순간, 단 1회 시간을 정지시켜 회피합니다."},
@@ -37,26 +34,19 @@ items_db = {
 
 st.set_page_config(page_title="Project Moon: 생존 시뮬레이터", layout="wide")
 st.title("🩸 붉은안개 생존 시뮬레이터")
-st.markdown("전성기 시절의 붉은안개 칼리로부터 살아남기 위해 전력을 구성하십시오.")
+st.markdown("특수 능력이 완전히 개방되었습니다. 전성기 시절의 붉은안개로부터 살아남으십시오.")
 
 # --- [2] 사용자 UI 및 고용 시스템 ---
 col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("🛡️ 호위 고용")
-    selected_guards = []
-    for name, data in guards_db.items():
-        if st.checkbox(f"{name} (비용: {data['cost']} 광기)"):
-            selected_guards.append(name)
+    selected_guards = [name for name in guards_db if st.checkbox(f"{name} (비용: {guards_db[name]['cost']})")]
 
 with col2:
     st.subheader("🧰 특이점 장비 구매")
-    selected_items = []
-    for name, data in items_db.items():
-        if st.checkbox(f"{name} (비용: {data['cost']} 광기) - {data['desc']}"):
-            selected_items.append(name)
+    selected_items = [name for name in items_db if st.checkbox(f"{name} (비용: {items_db[name]['cost']}) - {items_db[name]['desc']}")]
 
-# 예산 계산
 total_cost = sum([guards_db[g]["cost"] for g in selected_guards]) + sum([items_db[i]["cost"] for i in selected_items])
 st.write("---")
 st.markdown(f"### 💰 현재 소모 광기: **{total_cost}** / {BUDGET}")
@@ -64,57 +54,137 @@ st.markdown(f"### 💰 현재 소모 광기: **{total_cost}** / {BUDGET}")
 # --- [3] 시뮬레이션 논리 및 실행 ---
 if st.button("⏳ 시뮬레이션 시작"):
     if total_cost > BUDGET:
-        st.error("경고: 소지한 광기(1300)를 초과했습니다. 조합을 수정하십시오.")
-    elif len(selected_guards) == 0 and len(selected_items) == 0:
+        st.error("경고: 소지한 광기를 초과했습니다. 조합을 수정하십시오.")
+    elif not selected_guards and not selected_items:
         st.error("아무런 대비 없이 붉은안개를 맞이할 수는 없습니다.")
     else:
         st.write("---")
         st.subheader("⚔️ 생존 기록 로그")
         
-        # 장비 효과 초기화
+        # 기본 장비 변수
         target_hours = 12 if "M사 월광석" in selected_items else 24
         revives_left = 3 if "K사 앰플 3개" in selected_items else 0
-        has_t_badge = True if "T사 수사관 배지" in selected_items else False
+        has_t_badge = "T사 수사관 배지" in selected_items
         aggro_multiplier = 0.7 if "인식 저해 가면" in selected_items else 1.0
         
-        # 호위 전력 합산
-        team_power = sum([guards_db[g]["power"] for g in selected_guards])
+        # 특수 능력 상태 추적 변수
+        team_power_base = sum([guards_db[g]["power"] for g in selected_guards])
+        persistent_power_bonus = 0 # 바퀴 황제, 엘레나 등의 누적 스탯 
+        kali_perm_debuff = 0
         
-        survival_status = True
-        log_container = st.empty()
+        blood_gauge = (100 if "제2권속 산초" in selected_guards else 0) + (300 if "장로 돈키호테" in selected_guards else 0)
+        baral_w_serum = 2 if "처형자 바랄" in selected_guards else 0
+        gachiu_shield_used = False
+        is_angelica_alive = "검은침묵 안젤리카" in selected_guards
+        
         battle_logs = ""
+        log_container = st.empty()
+        survival_status = True
 
-        # 시간 흐름에 따른 전투 루프
+        # 시간 흐름 루프 시작
         for hour in range(1, target_hours + 1):
-            # 시간이 지날수록 칼리의 E.G.O 발현 및 분노로 인해 기본 공격력이 상승함
-            kali_base_attack = 40 + (hour * 6)
-            kali_roll = random.randint(kali_base_attack - 15, kali_base_attack + 35)
             
-            # 인식 저해 가면 효과 적용 (나를 향한 공격 위력 감소)
-            effective_kali_attack = int(kali_roll * aggro_multiplier)
+            # [이오리 기믹] 차원 도약으로 해당 시간 무조건 패스
+            if "보라눈물 이오리" in selected_guards and hour % 4 == 0:
+                battle_logs += f"🔮 **[{hour}시간 경과]** 보라눈물 이오리가 차원을 열어 당신을 숨겼습니다. (전투 없이 안전하게 통과)\n\n"
+                log_container.markdown(battle_logs)
+                time.sleep(0.3)
+                continue
+
+            # [호위 전력 계산]
+            current_team_power = team_power_base + persistent_power_bonus
+            if "옥기린 가치우" in selected_guards: current_team_power *= 1.2
+            if "어느 싱클레어" in selected_guards and hour <= 4: current_team_power += guards_db["어느 싱클레어"]["power"]
+            if is_angelica_alive: current_team_power += random.randint(5, 45)
+
+            # [칼리 기본 공격력 결정]
+            kali_max_roll = 15 if "R사 제 4무리 대장들" in selected_guards else 35
+            kali_roll = random.randint(40 + (hour * 6) - 15, 40 + (hour * 6) + kali_max_roll)
             
-            time.sleep(0.3) # 로그 연출을 위한 딜레이
+            # [디버프 적용 계산]
+            burn_debuff = (2 if "천퇴성 뇌횡" in selected_guards else 0) + (3 if "E.G.O 발현 샤오" in selected_guards else 0) + (3 if "붉은시선 베르길리우스" in selected_guards else 0)
+            temp_debuff = (burn_debuff * (hour // 2)) + kali_perm_debuff
             
-            if team_power >= effective_kali_attack:
-                battle_logs += f"🕒 **[{hour}시간 경과]** 호위들이 붉은안개의 맹공을 막아냈습니다. (칼리의 위력: {effective_kali_attack} / 호위 방어선: {team_power})\n\n"
+            if "노란작살 베스파" in selected_guards and hour % 3 == 0: temp_debuff += 30
+            
+            furioso_cycle = 4 if not is_angelica_alive and "검은침묵 롤랑 (광란)" in selected_guards else 6
+            if "검은침묵 롤랑 (광란)" in selected_guards and hour % furioso_cycle == 0: temp_debuff += 50
+            
+            # [칼리 최종 공격력 산출]
+            effective_kali_attack = int((kali_roll - temp_debuff) * aggro_multiplier)
+            if effective_kali_attack < 0: effective_kali_attack = 0
+
+            # [거미집 아비들 전원 기믹 - 손가락의 오규]
+            if "거미집 아비들 전원" in selected_guards:
+                finger_cycle = hour % 5
+                
+                if finger_cycle == 1: # 엄지
+                    current_team_power += 15
+                    battle_logs += "🧥 **[엄지의 규율]** 발렌치나의 무용으로 방어 점수가 15 상승합니다.\n"
+                elif finger_cycle == 2: # 검지
+                    if random.random() < 0.15: 
+                        effective_kali_attack = 0
+                        battle_logs += "📜 **[검지의 지령]** 헤르메스의 변덕으로 공격을 무효화했습니다!\n"
+                elif finger_cycle == 3: # 중지
+                    if effective_kali_attack > current_team_power:
+                        damage_diff = effective_kali_attack - current_team_power
+                        counter_reflect = int(damage_diff * 0.25)
+                        effective_kali_attack -= counter_reflect
+                        battle_logs += f"⛓️ **[중지의 반격]** 마티아스가 받은 피해의 25%({counter_reflect})를 역으로 상쇄했습니다.\n"
+                elif finger_cycle == 4: # 약지
+                    effective_kali_attack -= 15
+                    if effective_kali_attack < 0: effective_kali_attack = 0
+                    battle_logs += "🎨 **[약지의 예술]** 칼리스토가 공격 궤적을 예술적으로 읽어내 위력을 15 감소시켰습니다.\n"
+                elif finger_cycle == 0: # 소지
+                    kali_perm_debuff += 5
+                    effective_kali_attack -= 5
+                    if effective_kali_attack < 0: effective_kali_attack = 0
+                    battle_logs += "🤫 **[소지의 인]** 시오미 요루가 천살성도로 칼리에게 상처를 남깁니다. 위력이 영구적으로 5 감소합니다.\n"
+
+            # [최종 방어 판정]
+            time.sleep(0.3)
+            if current_team_power >= effective_kali_attack:
+                # 일반 방어 성공
+                if "바퀴 황제" in selected_guards: persistent_power_bonus += 5
+                if "핏빛 밤 엘레나" in selected_guards: persistent_power_bonus += 2
+                battle_logs += f"🕒 **[{hour}시간 경과]** 방어 성공! (칼리의 위력: {effective_kali_attack} / 호위 방어선: {int(current_team_power)})\n\n"
             else:
-                # 방어선이 뚫렸을 때 장비 효과 발동 판정
-                if has_t_badge:
-                    battle_logs += f"⚠️ **[{hour}시간 경과]** 방어선 붕괴! 붉은안개의 대검이 목을 노리지만, **[T사 수사관 배지]**로 시간을 멈추고 회피했습니다! (배지 파괴됨)\n\n"
+                # 방어선 붕괴 시 특수 생존 기믹 순차적 발동
+                if "푸른잔향 아르갈리아" in selected_guards and (effective_kali_attack - current_team_power) <= 5:
+                    persistent_power_bonus += 10
+                    battle_logs += f"🎸 **[{hour}시간 경과]** 아르갈리아의 공명! 치명적인 참격의 진동을 무력화하고 영구적인 흐름을 가져옵니다.\n\n"
+                elif blood_gauge >= 50:
+                    blood_gauge -= 50
+                    battle_logs += f"🩸 **[{hour}시간 경과]** 경혈식 발동. 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
+                elif baral_w_serum > 0:
+                    baral_w_serum -= 1
+                    battle_logs += f"💉 **[{hour}시간 경과]** 처형자 바랄이 혈청 W를 투입해 공간을 격리했습니다. (남은 회피: {baral_w_serum})\n\n"
+                elif "옥기린 가치우" in selected_guards and not gachiu_shield_used:
+                    gachiu_shield_used = True
+                    battle_logs += f"🛡️ **[{hour}시간 경과]** 가치우가 당신을 밀쳐내고 붉은안개의 맹공을 홀로 받아냈습니다!\n\n"
+                elif has_t_badge:
                     has_t_badge = False
+                    battle_logs += f"⚠️ **[{hour}시간 경과]** 방어선 붕괴! T사 수사관 배지를 사용해 시간을 멈추고 도망칩니다.\n\n"
                 elif revives_left > 0:
                     revives_left -= 1
-                    battle_logs += f"🩸 **[{hour}시간 경과]** 치명상 발생! 그러나 **[K사 앰플]**의 효과로 육체가 즉시 수복되었습니다. (남은 앰플: {revives_left}개)\n\n"
+                    if is_angelica_alive and random.random() < 0.5: is_angelica_alive = False # 안젤리카 무작위 사망
+                    battle_logs += f"💊 **[{hour}시간 경과]** 치명상 발생! K사 앰플의 효과로 육체가 즉시 수복됩니다. (남은 앰플: {revives_left})\n\n"
                 else:
-                    battle_logs += f"💀 **[{hour}시간 경과]** 모든 방어 수단이 소진되었습니다. 붉은안개의 대검에 의해 사망했습니다.\n\n"
+                    battle_logs += f"💀 **[{hour}시간 경과]** 모든 방어 수단이 소진되었습니다. 붉은안개의 대검이 당신을 갈랐습니다.\n\n"
                     survival_status = False
                     break
             
+            # [시간 경과 후처리 기믹]
+            if "어느 싱클레어" in selected_guards and hour == 4:
+                team_power_base -= guards_db["어느 싱클레어"]["power"]
+                kali_perm_debuff += 5
+                battle_logs += "🍂 **[알을 깨고 나온 자]** 힘을 다한 싱클레어가 물러나며, 전장에 시야를 가리는 연기 장막을 영구적으로 남깁니다.\n\n"
+            
             log_container.markdown(battle_logs)
 
-        # 최종 결과 출력
+        # 결과 출력
         st.write("---")
         if survival_status:
-            st.success(f"🎉 **미션 성공!** {target_hours}시간 동안 붉은안개로부터 무사히 살아남았습니다. 그녀의 착란이 멎었습니다.")
+            st.success(f"🎉 **미션 성공!** {target_hours}시간 동안 붉은안개로부터 살아남았습니다. 착란이 완전히 멎었습니다.")
         else:
-            st.error("💀 **미션 실패.** 당신의 기록은 여기서 끊어졌습니다.")
+            st.error("💀 **미션 실패.** 호위들은 전멸했고, 당신의 기록은 여기서 끊어졌습니다.")
