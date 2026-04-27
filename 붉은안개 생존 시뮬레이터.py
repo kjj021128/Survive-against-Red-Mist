@@ -203,7 +203,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += f"> 🎸 **아르갈리아의 공명!** 치명적인 참격의 진동을 무력화하고 영구적인 흐름을 가져옵니다.\n\n"
                 elif blood_gauge >= 50:
                     blood_gauge -= 50
-                    hour_log += f"> 🩸 **경혈식 발동!** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
+                    hour_log += f"> 🔴 **경혈식 발동!** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
                 elif baral_w_serum > 0:
                     baral_w_serum -= 1
                     hour_log += f"> 💉 **처형자 바랄 개입!** 혈청 W를 투입해 공간을 격리했습니다. (남은 회피: {baral_w_serum})\n\n"
