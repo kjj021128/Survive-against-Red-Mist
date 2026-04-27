@@ -123,26 +123,26 @@ if st.button("⏳ 시뮬레이션 시작"):
                 
                 if finger_cycle == 1: # 엄지
                     current_team_power += 15
-                    hour_log += "> 🧥 **[엄지의 가호]** 엄지의 규칙적인 사격진이 형성되어 방어 점수가 15 상승합니다.\n"
+                    hour_log += "> 🧥 **[엄지의 가호]** 발렌치나의 기개로 방어 점수가 15 상승합니다.\n"
                 elif finger_cycle == 2: # 검지
                     if random.random() < 0.15: 
                         effective_kali_attack = 0
-                        hour_log += "> 📜 **[검지의 지령]** 지령에 적힌 완벽한 회피 경로를 따라 공격을 무효화했습니다!\n"
+                        hour_log += "> 📜 **[검지의 지령]** 헤르메스의 변덕으로 공격을 무효화했습니다!\n"
                 elif finger_cycle == 3: # 중지
                     if effective_kali_attack > current_team_power:
                         damage_diff = effective_kali_attack - current_team_power
                         counter_reflect = int(damage_diff * 0.25)
                         effective_kali_attack -= counter_reflect
-                        hour_log += f"> ⛓️ **[중지의 반격]** 중지가 형제들이 받은 피해의 25%({counter_reflect})를 역으로 상쇄했습니다.\n"
+                        hour_log += f"> ⛓️ **[중지의 반격]** 마티아스가 받은 피해의 25%({counter_reflect})를 역으로 상쇄했습니다.\n"
                 elif finger_cycle == 4: # 약지
                     effective_kali_attack -= 15
                     if effective_kali_attack < 0: effective_kali_attack = 0
-                    hour_log += "> 🎨 **[약지의 예술]** 약지가 칼리의 공격 궤적을 캔버스에 덧칠해 위력을 15 감소시켰습니다.\n"
+                    hour_log += "> 🎨 **[약지의 예술]** 칼리스토가 참격의 궤적을 예술적으로 읽어내 위력을 15 감소시켰습니다.\n"
                 elif finger_cycle == 0: # 소지
                     kali_perm_debuff += 5
                     effective_kali_attack -= 5
                     if effective_kali_attack < 0: effective_kali_attack = 0
-                    hour_log += "> 🤫 **[소지의 금기]** 칼리가 소지의 금기를 어겼습니다. 위력이 영구적으로 5 감소합니다.\n"
+                    hour_log += "> 🤫 **[천살성도 발도]** 시오미 요루가 천살성도를 뽑아들어 칼리를 상처입힙니다. 위력이 영구적으로 5 감소합니다.\n"
 
             # [최종 방어 판정]
             time.sleep(0.3)
