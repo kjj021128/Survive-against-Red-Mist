@@ -33,7 +33,7 @@ items_db = {
 }
 
 st.set_page_config(page_title="Project Moon: 생존 시뮬레이터", layout="wide")
-st.title("🩸 붉은안개 생존 시뮬레이터")
+st.title("🔴 붉은안개 생존 시뮬레이터")
 st.markdown("특수 능력이 완전히 개방되었습니다. 전성기 시절의 붉은안개로부터 살아남으십시오.")
 
 # --- [2] 사용자 UI 및 고용 시스템 ---
@@ -133,11 +133,11 @@ if st.button("⏳ 시뮬레이션 시작"):
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
                 
                 if hour == 13:
-                    hour_log += "> 🩸 **[E.G.O 발현]** *\"이것이... 내 껍데기다.\"* 칼리의 모습이 붉은 흉갑에 휩싸이며 위력이 폭증합니다!\n\n"
+                    hour_log += "> 🔴 **[E.G.O 발현]** *\"이것이... 내 껍데기다.\"* 칼리의 모습이 붉은 흉갑에 휩싸이며 위력이 폭증합니다!\n\n"
                 
                 # [신규 기믹] 20시간째 강제 즉사기 (가치우, T사 배지 등 1회성 생존기 강제 소모)
                 if hour == 20:
-                    kali_roll = 350
+                    kali_roll = 200
                     hour_log += "> ⚠️ **[대절단-가로]** *\"갈라져라!\"* 붉은안개가 거대한 궤적을 그리며 모든 것을 양단하는 참격을 날립니다!\n\n"
 
             # [디버프 적용 계산]
