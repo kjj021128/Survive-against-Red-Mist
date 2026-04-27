@@ -34,7 +34,7 @@ items_db = {
 
 st.set_page_config(page_title="Project Moon: 생존 시뮬레이터", layout="wide")
 st.title("🔴 붉은안개 생존 시뮬레이터")
-st.markdown("특수 능력이 완전히 개방되었습니다. 전성기 시절의 붉은안개로부터 살아남으십시오.")
+st.markdown("전성기 시절의 붉은안개로부터 살아남으십시오.")
 
 # --- [2] 사용자 UI 및 고용 시스템 ---
 col1, col2 = st.columns(2)
@@ -126,7 +126,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 kali_base = 88 + ((hour - 12) * 18) 
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
                 if hour == 13:
-                    hour_log += "> 🔴 **[E.G.O 발현]** *\"이것이... 내 껍데기다.\"* 칼리가 붉은 흉갑에 휩싸이며 위력이 폭증합니다!\n\n"
+                    hour_log += "> 🔴 **[E.G.O 발현]** *\"이것이... 내 껍데기다.\"* 칼리가 붉은 갑주로 스스로를 감싸며 위력이 폭증합니다!\n\n"
                 if hour == 20:
                     kali_roll = 200
                     hour_log += "> ⚠️ **[대절단 - 가로]** *\"갈라져라!\"* 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
@@ -187,6 +187,14 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += "> 🤫 **[천살성도 발도]** 시오미 요루가 천살성도로 칼리를 상처입힙니다. 위력이 영구적으로 5 감소합니다.\n\n"
 
             # [최종 방어 판정]
+            if "푸른잔향 아르갈리아" in selected_guards and abs(effective_kali_attack - current_team_power) <= 5:
+                persistent_power_bonus += 10
+                hour_log += "> 🎸 **[아르갈리아의 공명]** 칼리의 궤적과 아슬아슬하게 합을 맞추며 영구적인 흐름을 가져옵니다! (영구 방어선 +10)\n\n"
+                
+                # 만약 방어선이 뚫릴 뻔했다면, 강제로 방어 점수를 끌어올려 세이브
+                if current_team_power < effective_kali_attack:
+                    current_team_power = effective_kali_attack
+            
             time.sleep(0.3)
             if current_team_power >= effective_kali_attack:
                 if "바퀴 황제" in selected_guards: 
@@ -198,27 +206,24 @@ if st.button("⏳ 시뮬레이션 시작"):
                 
                 hour_log += f"> 🛡️ **방어 성공!** (칼리의 위력: {effective_kali_attack} / 호위 방어선: {int(current_team_power)})\n\n"
             else:
-                if "푸른잔향 아르갈리아" in selected_guards and (effective_kali_attack - current_team_power) <= 5:
-                    persistent_power_bonus += 10
-                    hour_log += f"> 🎸 **아르갈리아의 공명!** 치명적인 참격의 진동을 무력화하고 영구적인 흐름을 가져옵니다.\n\n"
-                elif blood_gauge >= 50:
+                if blood_gauge >= 50:
                     blood_gauge -= 50
-                    hour_log += f"> 🩸 **경혈식 발동!** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
+                    hour_log += f"> 🩸 **[경혈식 발동]** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
                 elif baral_w_serum > 0:
                     baral_w_serum -= 1
-                    hour_log += f"> 💉 **처형자 바랄 개입!** 혈청 W를 투입해 공간을 격리했습니다. (남은 회피: {baral_w_serum})\n\n"
+                    hour_log += f"> 💉 **[처형자의 기지]** 혈청 W를 투입해 공간을 격리했습니다. (남은 회피: {baral_w_serum})\n\n"
                 elif "옥기린 가치우" in selected_guards and not gachiu_shield_used:
                     gachiu_shield_used = True
-                    hour_log += f"> 🍂 **가치우의 인협!** 가치우가 당신을 밀쳐내고 붉은안개의 맹공을 홀로 받아냈습니다!\n\n"
+                    hour_log += f"> 🍂 **[가치우의 인협]** 가치우가 당신을 밀쳐내고 붉은안개의 맹공을 홀로 받아냈습니다!\n\n"
                 elif has_t_badge:
                     has_t_badge = False
-                    hour_log += f"> ⚠️ **방어선 붕괴!** T사 수사관 배지를 사용해 시간을 멈추고 도망칩니다.\n\n"
+                    hour_log += f"> ⚠️ **[방어선 붕괴]** T사 수사관 배지를 사용해 시간을 멈추고 도망칩니다.\n\n"
                 elif revives_left > 0:
                     revives_left -= 1
                     if is_angelica_alive and random.random() < 0.5: is_angelica_alive = False
-                    hour_log += f"> 💊 **치명상 발생!** K사 앰플의 효과로 육체가 즉시 수복됩니다. (남은 앰플: {revives_left})\n\n"
+                    hour_log += f"> 💊 **[치명상 발생]** K사 앰플의 효과로 육체가 즉시 수복됩니다. (남은 앰플: {revives_left})\n\n"
                 else:
-                    hour_log += f"> 💀 **방어 수단 소진...** 붉은안개의 대검이 당신을 갈랐습니다.\n\n"
+                    hour_log += f"> 💀 **[방어 수단 소진]** 붉은안개의 대검이 당신을 갈랐습니다.\n\n"
                     battle_logs += hour_log
                     log_container.markdown(battle_logs)
                     survival_status = False
