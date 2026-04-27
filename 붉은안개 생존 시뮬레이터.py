@@ -113,9 +113,25 @@ if st.button("⏳ 시뮬레이션 시작"):
             furioso_cycle = 4 if not is_angelica_alive and "검은침묵 롤랑 (광란)" in selected_guards else 6
             if "검은침묵 롤랑 (광란)" in selected_guards and hour % furioso_cycle == 0: temp_debuff += 50
             
-            # [칼리 최종 공격력 산출]
-            effective_kali_attack = int((kali_roll - temp_debuff) * aggro_multiplier)
-            if effective_kali_attack < 0: effective_kali_attack = 0
+            # [칼리 기본 공격력 결정: E.G.O 발현 기믹 도입]
+            if hour <= 12:
+                # [1페이즈] 1~12시간: 붉은안개의 탐색전 (안정적인 위력, 낮은 고점)
+                kali_max_roll = 10 if "R사 제 4무리 대장들" in selected_guards else 20
+                kali_base = 40 + (hour * 4) # 시간당 위력 +4씩 완만하게 상승
+                kali_roll = random.randint(kali_base - 10, kali_base + kali_max_roll)
+                
+                if hour == 1:
+                    hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 대검을 가볍게 쥐고 천천히 접근합니다.\n"
+                    
+            else:
+                # [2페이즈] 13~24시간: E.G.O 발현 (위력의 기하급수적 폭증)
+                kali_max_roll = 15 if "R사 제 4무리 대장들" in selected_guards else 40
+                # 12시간 기준치(88)에서 시작하여, 시간당 위력이 +12씩 폭등
+                kali_base = 88 + ((hour - 12) * 12) 
+                kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
+                
+                if hour == 13:
+                    hour_log += "> 🩸 **[E.G.O 발현]** *\"이것이... 내 껍데기다.\"* 칼리의 모습이 붉은 흉갑에 휩싸이며 위력이 폭증합니다!\n"
 
             # [거미집 아비들 전원 기믹 - 손가락의 오규]
             if "거미집 아비들 전원" in selected_guards:
