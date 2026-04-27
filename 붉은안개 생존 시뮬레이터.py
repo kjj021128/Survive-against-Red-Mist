@@ -191,7 +191,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             if current_team_power >= effective_kali_attack:
                 if "바퀴 황제" in selected_guards: 
                     persistent_power_bonus += 5
-                    hour_log += "> 🪳 **[무한 적응]** 바퀴 황제가 칼리의 참격을 버텨내며 외골격을 단단하게 진화시킵니다. (영구 방어선 +5)\n\n"
+                    hour_log += "> 🪳 **[황제의 피]** 바퀴 황제가 칼리의 참격을 버텨내며 외골격을 단단하게 진화시킵니다. (영구 방어선 +4)\n\n"
                 if "핏빛 밤 엘레나" in selected_guards: 
                     persistent_power_bonus += 2
                     hour_log += "> 🧛‍♀️ **[퍼져나가는 혈액]** 핏빛 밤 엘레나가 흩뿌려진 피를 흡수하여 방어선을 복구합니다. (영구 방어선 +2)\n\n"
