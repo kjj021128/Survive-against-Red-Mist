@@ -27,7 +27,7 @@ guards_db = {
 
 items_db = {
     "K사 앰플 3개": {"cost": 200, "desc": "사망에 이르는 피해를 입을 시, 3회 부활합니다."},
-    "T사 수사관 배지": {"cost": 250, "desc": "치명적인 위기 순간, 단 1회 시간을 정지시켜 회피합니다."},
+    "T사 수사관 배지": {"cost": 250, "desc": "치명적인 위기의 순간, 단 1회 시간을 정지시켜 회피합니다."},
     "인식 저해 가면": {"cost": 275, "desc": "칼리의 공격이 당신을 향할 확률과 위력을 30% 감소시킵니다."},
     "M사 월광석": {"cost": 425, "desc": "칼리의 정신 착란을 완화하여, 버텨야 할 시간을 18시간으로 단축합니다."}
 }
@@ -83,12 +83,11 @@ if st.button("⏳ 시뮬레이션 시작"):
 
         # 시간 흐름 루프 시작
         for hour in range(1, target_hours + 1):
-            # [수정점] 매 시간의 기록을 시작할 때, '시간'을 가장 먼저 헤더로 작성합니다.
             hour_log = f"**🕒 [{hour}시간 경과]**\n"
             
-            # [이오리 기믹] 차원 도약으로 해당 시간 무조건 패스
+            # [이오리 기믹] 차원 도약
             if "보라눈물 이오리" in selected_guards and hour % 4 == 0:
-                hour_log += "> 🔮 보라눈물 이오리가 차원을 열어 당신을 숨겼습니다. (전투 없이 안전하게 통과)\n\n"
+                hour_log += "> 🔮 **[차원을 걷는 자]** 보라눈물 이오리가 뱀처럼 차원을 열어 당신을 숨겼습니다. (전투 패스)\n\n"
                 battle_logs += hour_log
                 log_container.markdown(battle_logs)
                 time.sleep(0.3)
@@ -96,113 +95,116 @@ if st.button("⏳ 시뮬레이션 시작"):
 
             # [호위 전력 계산]
             current_team_power = team_power_base + persistent_power_bonus
-            if "옥기린 가치우" in selected_guards: current_team_power *= 1.2
-            if "어느 싱클레어" in selected_guards and hour <= 4: current_team_power += guards_db["어느 싱클레어"]["power"]
-            if is_angelica_alive: current_team_power += random.randint(5, 45)
+            
+            if "옥기린 가치우" in selected_guards: 
+                current_team_power *= 1.2
+                hour_log += "> 🐉 **[천강성의 오망]** 옥기린 가치우의 결속 버프로 아군 전체의 방어 점수가 1.2배 증폭됩니다!\n\n"
+                
+            if "어느 싱클레어" in selected_guards and hour <= 4: 
+                current_team_power += guards_db["어느 싱클레어"]["power"]
+                hour_log += "> 🌿 **[아브락사스의 전차]** 싱클레어가 초반의 맹렬한 기세로 방어선을 2배로 굳힙니다!\n\n"
+                
+            if is_angelica_alive: 
+                angelica_buff = random.randint(5, 45)
+                current_team_power += angelica_buff
+                hour_log += f"> 🧤 **[차원장갑]** 검은침묵 안젤리카가 무작위 공방 무기를 전개합니다. (방어 점수 +{angelica_buff})\n\n"
 
             # [칼리 기본 공격력 결정]
-            kali_max_roll = 15 if "R사 제 4무리 대장들" in selected_guards else 35
-            kali_roll = random.randint(40 + (hour * 6) - 15, 40 + (hour * 6) + kali_max_roll)
-            
-            # [디버프 적용 계산]
-            burn_debuff = (2 if "천퇴성 뇌횡" in selected_guards else 0) + (3 if "E.G.O 발현 샤오" in selected_guards else 0) + (3 if "붉은시선 베르길리우스" in selected_guards else 0)
-            temp_debuff = (burn_debuff * (hour // 2)) + kali_perm_debuff
-            
-            if "노란작살 베스파" in selected_guards and hour % 3 == 0: temp_debuff += 30
-            
-            furioso_cycle = 4 if not is_angelica_alive and "검은침묵 롤랑 (광란)" in selected_guards else 6
-            if "검은침묵 롤랑 (광란)" in selected_guards and hour % furioso_cycle == 0: temp_debuff += 50
-            
-           # [칼리 기본 공격력 결정: E.G.O 발현 기믹 도입]
             if hour <= 12:
-                # [1페이즈] 1~12시간: 붉은안개의 탐색전
                 kali_max_roll = 10 if "R사 제 4무리 대장들" in selected_guards else 20
                 kali_base = 40 + (hour * 4) 
                 kali_roll = random.randint(kali_base - 10, kali_base + kali_max_roll)
-                
                 if hour == 1:
-                    # [수정] \n을 \n\n으로 변경하여 완벽한 줄바꿈 보장
                     hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 대검을 가볍게 쥐고 천천히 접근합니다.\n\n"
-                    
             else:
-                # [2페이즈] 13~24시간: E.G.O 발현 (위력 스케일링 폭주)
                 kali_max_roll = 15 if "R사 제 4무리 대장들" in selected_guards else 40
-                
-                # [수정] 기존 +12씩 오르던 공격력을 +18로 대폭 상향! 후반 공격력 250~300 돌파.
                 kali_base = 88 + ((hour - 12) * 18) 
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
-                
                 if hour == 13:
-                    hour_log += "> 🔴 **[E.G.O 발현]** *\"이것이... 내 껍데기다.\"* 칼리의 모습이 붉은 흉갑에 휩싸이며 위력이 폭증합니다!\n\n"
-                
-                # [신규 기믹] 20시간째 강제 즉사기 (가치우, T사 배지 등 1회성 생존기 강제 소모)
+                    hour_log += "> 🩸 **[E.G.O 발현]** *\"이것이... 내 껍데기다.\"* 칼리가 붉은 흉갑에 휩싸이며 위력이 폭증합니다!\n\n"
                 if hour == 20:
-                    kali_roll = 250
-                    hour_log += "> ⚠️ **[대절단-가로]** *\"갈라져라!\"* 붉은안개가 거대한 궤적을 그리며 모든 것을 양단하는 참격을 날립니다!\n\n"
+                    kali_roll = 200
+                    hour_log += "> ⚠️ **[대절단 - 가로]** *\"갈라져라!\"* 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
 
-            # [디버프 적용 계산]
+            # [디버프 적용 계산 (화상, 베스파, 롤랑 등)]
             burn_debuff = (2 if "천퇴성 뇌횡" in selected_guards else 0) + (3 if "E.G.O 발현 샤오" in selected_guards else 0) + (3 if "붉은시선 베르길리우스" in selected_guards else 0)
-            temp_debuff = (burn_debuff * (hour // 2)) + kali_perm_debuff
+            current_burn_penalty = burn_debuff * (hour // 2)
+            temp_debuff = current_burn_penalty + kali_perm_debuff
             
-            if "노란작살 베스파" in selected_guards and hour % 3 == 0: temp_debuff += 30
+            if current_burn_penalty > 0:
+                hour_log += f"> 🔥 **[화상 누적]** 타오르는 불꽃이 칼리의 육체를 갉아먹어 위력을 {current_burn_penalty}만큼 깎아냅니다.\n\n"
+            
+            if "노란작살 베스파" in selected_guards and hour % 3 == 0: 
+                temp_debuff += 30
+                hour_log += "> 🐝 **[궁니르 공명]** 노란작살 베스파가 맹렬한 찌르기로 칼리의 템포를 늦춥니다! (위력 -30)\n\n"
             
             furioso_cycle = 4 if not is_angelica_alive and "검은침묵 롤랑 (광란)" in selected_guards else 6
-            if "검은침묵 롤랑 (광란)" in selected_guards and hour % furioso_cycle == 0: temp_debuff += 50
+            if "검은침묵 롤랑 (광란)" in selected_guards and hour % furioso_cycle == 0: 
+                temp_debuff += 50
+                if is_angelica_alive:
+                    hour_log += "> ⬛ **[Furioso]** 롤랑이 9개의 공방 무기를 난무하여 칼리의 흐름을 완전히 끊어냅니다! (위력 -50)\n\n"
+                else:
+                    hour_log += "> ⬛ **[광란의 Furioso]** 롤랑이 안젤리카를 잃은 분노로 미친 듯이 무기를 휘두릅니다! (위력 -50)\n\n"
             
-            # [칼리 최종 공격력 산출] - 여기가 삭제되었던 부분입니다!
+            if "R사 제 4무리 대장들" in selected_guards:
+                hour_log += "> 🎯 **[처분 표식]** 니콜라이의 지휘로 칼리의 위력 최댓값이 억제되고 있습니다.\n"
+
+            # [칼리 최종 공격력 산출]
             effective_kali_attack = int((kali_roll - temp_debuff) * aggro_multiplier)
             if effective_kali_attack < 0: effective_kali_attack = 0
-            # [거미집 아비들 전원 기믹 - 손가락의 오규]
+
+            # [거미집 아비들 전원 기믹]
             if "거미집 아비들 전원" in selected_guards:
                 finger_cycle = hour % 5
-                
-                if finger_cycle == 1: # 엄지
+                if finger_cycle == 1: 
                     current_team_power += 15
-                    hour_log += "> 🧥 **[엄지의 가호]** 발렌치나의 기개로 방어 점수가 15 상승합니다.\n\n"
-                elif finger_cycle == 2: # 검지
+                    hour_log += "> 🧥 **[엄지의 규율]** 발렌치나가 기세를 발산해 방어 점수가 15 상승합니다.\n\n"
+                elif finger_cycle == 2: 
                     if random.random() < 0.15: 
                         effective_kali_attack = 0
-                        hour_log += "> 📜 **[검지의 지령]** 헤르메스의 변덕으로 공격을 무효화했습니다!\n\n"
-                elif finger_cycle == 3: # 중지
+                        hour_log += "> 📜 **[검지의 지령]** 헤르메스의 의지로 공격을 흘려보냈습니다!\n\n"
+                elif finger_cycle == 3: 
                     if effective_kali_attack > current_team_power:
                         damage_diff = effective_kali_attack - current_team_power
                         counter_reflect = int(damage_diff * 0.25)
                         effective_kali_attack -= counter_reflect
                         hour_log += f"> ⛓️ **[중지의 반격]** 마티아스가 받은 피해의 25%({counter_reflect})를 역으로 상쇄했습니다.\n\n"
                     else:
-                        # 방어선이 충분히 탄탄해서 피해를 받지 않았을 때 출력할 텍스트
-                        hour_log += "> ⛓️ **[중지의 대기]** 마티아스가 반격을 준비했으나, 칼리의 맹공이 닿지 않아 무산되었습니다.\n\n"
-                elif finger_cycle == 4: # 약지
+                        hour_log += "> ⛓️ **[중지의 대기]** 마티아스가 반격을 준비했으나, 칼리의 참격이 닿지 않았습니다.\n\n"
+                elif finger_cycle == 4: 
                     effective_kali_attack -= 15
                     if effective_kali_attack < 0: effective_kali_attack = 0
-                    hour_log += "> 🎨 **[약지의 예술]** 칼리스토가 참격의 궤적을 예술적으로 읽어내 위력을 15 감소시켰습니다.\n\n"
-                elif finger_cycle == 0: # 소지
+                    hour_log += "> 🎨 **[약지의 예술]** 칼리스토의 예술적인 조형물로 위력을 15 감소시켰습니다.\n\n"
+                elif finger_cycle == 0: 
                     kali_perm_debuff += 5
                     effective_kali_attack -= 5
                     if effective_kali_attack < 0: effective_kali_attack = 0
-                    hour_log += "> 🤫 **[천살성도 발도]** 시오미 요루가 천살성도를 뽑아들어 칼리를 상처입힙니다. 위력이 영구적으로 5 감소합니다.\n\n"
+                    hour_log += "> 🤫 **[천살성도 발도]** 시오미 요루가 천살성도로 칼리를 상처입힙니다. 위력이 영구적으로 5 감소합니다.\n\n"
 
             # [최종 방어 판정]
             time.sleep(0.3)
             if current_team_power >= effective_kali_attack:
-                # 일반 방어 성공
-                if "바퀴 황제" in selected_guards: persistent_power_bonus += 5
-                if "핏빛 밤 엘레나" in selected_guards: persistent_power_bonus += 2
+                if "바퀴 황제" in selected_guards: 
+                    persistent_power_bonus += 5
+                    hour_log += "> 🪳 **[무한 적응]** 바퀴 황제가 칼리의 참격을 버텨내며 외골격을 단단하게 진화시킵니다. (영구 방어선 +5)\n\n"
+                if "핏빛 밤 엘레나" in selected_guards: 
+                    persistent_power_bonus += 2
+                    hour_log += "> 🧛‍♀️ **[퍼져나가는 혈액]** 핏빛 밤 엘레나가 흩뿌려진 피를 흡수하여 방어선을 복구합니다. (영구 방어선 +2)\n\n"
+                
                 hour_log += f"> 🛡️ **방어 성공!** (칼리의 위력: {effective_kali_attack} / 호위 방어선: {int(current_team_power)})\n\n"
             else:
-                # 방어선 붕괴 시 특수 생존 기믹 순차적 발동
                 if "푸른잔향 아르갈리아" in selected_guards and (effective_kali_attack - current_team_power) <= 5:
                     persistent_power_bonus += 10
                     hour_log += f"> 🎸 **아르갈리아의 공명!** 치명적인 참격의 진동을 무력화하고 영구적인 흐름을 가져옵니다.\n\n"
                 elif blood_gauge >= 50:
                     blood_gauge -= 50
-                    hour_log += f"> 🩸 **경혈식 발동.** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
+                    hour_log += f"> 🩸 **경혈식 발동!** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
                 elif baral_w_serum > 0:
                     baral_w_serum -= 1
-                    hour_log += f"> 💉 **처형자 바랄 개입.** 혈청 W를 투입해 공간을 격리했습니다. (남은 회피: {baral_w_serum})\n\n"
+                    hour_log += f"> 💉 **처형자 바랄 개입!** 혈청 W를 투입해 공간을 격리했습니다. (남은 회피: {baral_w_serum})\n\n"
                 elif "옥기린 가치우" in selected_guards and not gachiu_shield_used:
                     gachiu_shield_used = True
-                    hour_log += f"> 🍂 **가치우의 희생!** 가치우가 당신을 밀쳐내고 붉은안개의 맹공을 홀로 받아냈습니다!\n\n"
+                    hour_log += f"> 🍂 **가치우의 인협!** 가치우가 당신을 밀쳐내고 붉은안개의 맹공을 홀로 받아냈습니다!\n\n"
                 elif has_t_badge:
                     has_t_badge = False
                     hour_log += f"> ⚠️ **방어선 붕괴!** T사 수사관 배지를 사용해 시간을 멈추고 도망칩니다.\n\n"
@@ -211,7 +213,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     if is_angelica_alive and random.random() < 0.5: is_angelica_alive = False
                     hour_log += f"> 💊 **치명상 발생!** K사 앰플의 효과로 육체가 즉시 수복됩니다. (남은 앰플: {revives_left})\n\n"
                 else:
-                    hour_log += f"> 💀 **방어 수단 소진.** 붉은안개의 대검이 당신을 갈랐습니다.\n\n"
+                    hour_log += f"> 💀 **방어 수단 소진...** 붉은안개의 대검이 당신을 갈랐습니다.\n\n"
                     battle_logs += hour_log
                     log_container.markdown(battle_logs)
                     survival_status = False
@@ -223,7 +225,6 @@ if st.button("⏳ 시뮬레이션 시작"):
                 kali_perm_debuff += 5
                 hour_log += "> 🍂 **[알을 깨고 나온 자]** 힘을 다한 싱클레어가 물러나며, 연기 장막을 영구적으로 남깁니다.\n\n"
             
-            # 완성된 이번 시간의 로그를 전체 로그에 추가
             battle_logs += hour_log
             log_container.markdown(battle_logs)
 
