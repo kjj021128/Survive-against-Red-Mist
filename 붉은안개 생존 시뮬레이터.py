@@ -134,6 +134,9 @@ if st.button("⏳ 시뮬레이션 시작"):
                         counter_reflect = int(damage_diff * 0.25)
                         effective_kali_attack -= counter_reflect
                         hour_log += f"> ⛓️ **[중지의 반격]** 마티아스가 받은 피해의 25%({counter_reflect})를 역으로 상쇄했습니다.\n"
+                    else:
+                        # 방어선이 충분히 탄탄해서 피해를 받지 않았을 때 출력할 텍스트
+                        hour_log += "> ⛓️ **[중지의 대기]** 마티아스가 반격을 준비했으나, 칼리의 맹공이 닿지 않아 무산되었습니다.\n"
                 elif finger_cycle == 4: # 약지
                     effective_kali_attack -= 15
                     if effective_kali_attack < 0: effective_kali_attack = 0
