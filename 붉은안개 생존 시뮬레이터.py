@@ -115,22 +115,30 @@ if st.button("⏳ 시뮬레이션 시작"):
             
            # [칼리 기본 공격력 결정: E.G.O 발현 기믹 도입]
             if hour <= 12:
-                # [1페이즈] 1~12시간: 붉은안개의 탐색전 (안정적인 위력, 낮은 고점)
+                # [1페이즈] 1~12시간: 붉은안개의 탐색전
                 kali_max_roll = 10 if "R사 제 4무리 대장들" in selected_guards else 20
-                kali_base = 40 + (hour * 4) # 시간당 위력 +4씩 완만하게 상승
+                kali_base = 40 + (hour * 4) 
                 kali_roll = random.randint(kali_base - 10, kali_base + kali_max_roll)
                 
                 if hour == 1:
-                    hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 대검을 가볍게 쥐고 천천히 접근합니다.\n"
+                    # [수정] \n을 \n\n으로 변경하여 완벽한 줄바꿈 보장
+                    hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 대검을 가볍게 쥐고 천천히 접근합니다.\n\n"
                     
             else:
-                # [2페이즈] 13~24시간: E.G.O 발현 (위력의 기하급수적 폭증)
+                # [2페이즈] 13~24시간: E.G.O 발현 (위력 스케일링 폭주)
                 kali_max_roll = 15 if "R사 제 4무리 대장들" in selected_guards else 40
-                kali_base = 88 + ((hour - 12) * 12) 
+                
+                # [수정] 기존 +12씩 오르던 공격력을 +18로 대폭 상향! 후반 공격력 250~300 돌파.
+                kali_base = 88 + ((hour - 12) * 18) 
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
                 
                 if hour == 13:
-                    hour_log += "> 🩸 **[E.G.O 발현]** *\"이것이... 내 껍데기다.\"* 칼리의 모습이 붉은 흉갑에 휩싸이며 위력이 폭증합니다!\n"
+                    hour_log += "> 🩸 **[E.G.O 발현]** *\"이것이... 내 껍데기다.\"* 칼리의 모습이 붉은 흉갑에 휩싸이며 위력이 폭증합니다!\n\n"
+                
+                # [신규 기믹] 20시간째 강제 즉사기 (가치우, T사 배지 등 1회성 생존기 강제 소모)
+                if hour == 20:
+                    kali_roll = 350
+                    hour_log += "> ⚠️ **[대절단-가로]** *\"갈라져라!\"* 붉은안개가 거대한 궤적을 그리며 모든 것을 양단하는 참격을 날립니다!\n\n"
 
             # [디버프 적용 계산]
             burn_debuff = (2 if "천퇴성 뇌횡" in selected_guards else 0) + (3 if "E.G.O 발현 샤오" in selected_guards else 0) + (3 if "붉은시선 베르길리우스" in selected_guards else 0)
@@ -150,29 +158,29 @@ if st.button("⏳ 시뮬레이션 시작"):
                 
                 if finger_cycle == 1: # 엄지
                     current_team_power += 15
-                    hour_log += "> 🧥 **[엄지의 가호]** 발렌치나의 기개로 방어 점수가 15 상승합니다.\n"
+                    hour_log += "> 🧥 **[엄지의 가호]** 발렌치나의 기개로 방어 점수가 15 상승합니다.\n\n"
                 elif finger_cycle == 2: # 검지
                     if random.random() < 0.15: 
                         effective_kali_attack = 0
-                        hour_log += "> 📜 **[검지의 지령]** 헤르메스의 변덕으로 공격을 무효화했습니다!\n"
+                        hour_log += "> 📜 **[검지의 지령]** 헤르메스의 변덕으로 공격을 무효화했습니다!\n\n"
                 elif finger_cycle == 3: # 중지
                     if effective_kali_attack > current_team_power:
                         damage_diff = effective_kali_attack - current_team_power
                         counter_reflect = int(damage_diff * 0.25)
                         effective_kali_attack -= counter_reflect
-                        hour_log += f"> ⛓️ **[중지의 반격]** 마티아스가 받은 피해의 25%({counter_reflect})를 역으로 상쇄했습니다.\n"
+                        hour_log += f"> ⛓️ **[중지의 반격]** 마티아스가 받은 피해의 25%({counter_reflect})를 역으로 상쇄했습니다.\n\n"
                     else:
                         # 방어선이 충분히 탄탄해서 피해를 받지 않았을 때 출력할 텍스트
-                        hour_log += "> ⛓️ **[중지의 대기]** 마티아스가 반격을 준비했으나, 칼리의 맹공이 닿지 않아 무산되었습니다.\n"
+                        hour_log += "> ⛓️ **[중지의 대기]** 마티아스가 반격을 준비했으나, 칼리의 맹공이 닿지 않아 무산되었습니다.\n\n"
                 elif finger_cycle == 4: # 약지
                     effective_kali_attack -= 15
                     if effective_kali_attack < 0: effective_kali_attack = 0
-                    hour_log += "> 🎨 **[약지의 예술]** 칼리스토가 참격의 궤적을 예술적으로 읽어내 위력을 15 감소시켰습니다.\n"
+                    hour_log += "> 🎨 **[약지의 예술]** 칼리스토가 참격의 궤적을 예술적으로 읽어내 위력을 15 감소시켰습니다.\n\n"
                 elif finger_cycle == 0: # 소지
                     kali_perm_debuff += 5
                     effective_kali_attack -= 5
                     if effective_kali_attack < 0: effective_kali_attack = 0
-                    hour_log += "> 🤫 **[천살성도 발도]** 시오미 요루가 천살성도를 뽑아들어 칼리를 상처입힙니다. 위력이 영구적으로 5 감소합니다.\n"
+                    hour_log += "> 🤫 **[천살성도 발도]** 시오미 요루가 천살성도를 뽑아들어 칼리를 상처입힙니다. 위력이 영구적으로 5 감소합니다.\n\n"
 
             # [최종 방어 판정]
             time.sleep(0.3)
@@ -194,7 +202,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += f"> 💉 **처형자 바랄 개입.** 혈청 W를 투입해 공간을 격리했습니다. (남은 회피: {baral_w_serum})\n\n"
                 elif "옥기린 가치우" in selected_guards and not gachiu_shield_used:
                     gachiu_shield_used = True
-                    hour_log += f"> 🛡️ **가치우의 희생.** 가치우가 당신을 밀쳐내고 붉은안개의 맹공을 홀로 받아냈습니다!\n\n"
+                    hour_log += f"> 🍂 **가치우의 희생!** 가치우가 당신을 밀쳐내고 붉은안개의 맹공을 홀로 받아냈습니다!\n\n"
                 elif has_t_badge:
                     has_t_badge = False
                     hour_log += f"> ⚠️ **방어선 붕괴!** T사 수사관 배지를 사용해 시간을 멈추고 도망칩니다.\n\n"
