@@ -138,7 +138,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                             hour_log += "> 🔫 **[세치오나투라 디 엘레판테]** 발렌치나가 원망을 실은 칼날 두 자루를 무자비하게 휘두릅니다!\n\n"
                         elif guard == "중지 아비 마티아스":
                             current_team_power += 35
-                            hour_log += "> ⛓️ **[즉결처형[레바테인]]** 마티아스가 장부의 기록에 따라 피할 수 없는 징벌을 내립니다!\n\n"
+                            hour_log += "> ⛓️ **[즉결처형 - 레바테인]** 마티아스가 장부의 기록에 따라 피할 수 없는 징벌을 내립니다!\n\n"
                         elif guard == "노란작살 베스파":
                             current_team_power += 40
                             hour_log += "> 🐝 **[섬봉광검술 - 환도]** 베스파가 시야에서 사라진 순간, 사각을 파고드는 치명적인 찌르기가 작렬합니다!\n\n"
@@ -210,18 +210,18 @@ if st.button("⏳ 시뮬레이션 시작"):
             # [칼리 기본 공격력 결정]
             if hour <= 12:
                 kali_max_roll = 10 if "R사 제 4무리 대장들" in selected_guards else 20
-                kali_base = 50 + (hour * 4) 
+                kali_base = 50 + (hour * 5) 
                 kali_roll = random.randint(kali_base - 10, kali_base + kali_max_roll)
                 if hour == 1:
                     hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 대검을 가볍게 쥐고 천천히 접근합니다.\n\n"
             else:
                 kali_max_roll = 15 if "R사 제 4무리 대장들" in selected_guards else 40
-                kali_base = 90 + ((hour - 12) * 18) 
+                kali_base = 100 + ((hour - 12) * 18) 
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
                 if hour == 13:
                     hour_log += "> 🔴 **[E.G.O 발현]** *\"이것이...내 껍데기다.\"* 칼리가 붉은 갑주로 스스로를 감싸며 위력이 폭증합니다!\n\n"
                 if hour == 20:
-                    kali_roll = 200
+                    kali_roll = 225
                     hour_log += "> ⚠️ **[대절단 - 가로]** *\"갈라져라!\"* 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
 
             # [디버프 적용 계산 (화상, 베스파, 롤랑 등)]
