@@ -87,10 +87,12 @@ if len(detective_team) >= 2:
 if "엄지 아비 발렌치나" in selected_guards and "천퇴성 뇌횡" in selected_guards:
     synergy_messages.append("💡 **[시너지 발견: 엄지의 탄환보급]** 일제 사격 준비가 끝났습니다! (발렌치나도 매 턴 화상을 부여)")
 
-# 4. 🕸️ [거미집] 시너지
-spider_house = [g in selected_guards for g in ["엄지 아비 발렌치나", "검지 아비 뤼엔", "중지 아비 마티아스"]]
-if len(spider_house) >= 2:
-    synergy_messages.append("💡 **[시너지 발견: 거미집의 사냥법]** 거미집의 거미줄이 칼리를 옥죄어옵니다! (붉은안개의 초기 영구 위력 -50 감소)")
+# 4. 🕸️ [거미집] 시너지 판정 (2명 이상일 때)
+spider_members = ["엄지 아비 발렌치나", "검지 아비 뤼엔", "중지 아비 마티아스"]
+# 선택된 명단 중 거미집 멤버가 몇 명인지 숫자로 셉니다.
+spider_count = sum(1 for g in spider_members if g in selected_guards)
+if spider_count >= 2:
+    synergy_messages.append(f"💡 **[시너지 발견: 거미집의 사냥법]** {spider_count}인의 아비가 모여 거미줄을 칩니다! (붉은안개의 위력 -50)")
 
 # 5. 🌈 [특색] 시너지
 color_fixers = [g for g in selected_guards if g in ["푸른잔향 아르갈리아", "붉은시선 베르길리우스", "노란작살 베스파", "검은침묵 안젤리카", "롤랑", "보라눈물 이오리"]]
@@ -156,7 +158,9 @@ if st.button("⏳ 시뮬레이션 시작"):
             thumb_burn_bonus = 3
 
         # 4. 🕸️ [거미집] 시너지 (초기 영구 디버프)
-        if len(spider_house) >= 2:
+        spider_count = sum(1 for g in ["엄지 아비 발렌치나", "검지 아비 뤼엔", "중지 아비 마티아스"] if g in selected_guards)
+        
+        if spider_count >= 2:
             kali_perm_debuff += 50
 
         # 5. 🌈 [특색] 시너지 (영구 방어선 증가)
