@@ -473,7 +473,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             if current_team_power >= effective_kali_attack:
                 if "바퀴 황제" in selected_guards: 
                     # 13시간 이전에는 +4, E.G.O 발현 이후에는 +8로 성장폭 대폭 증가
-                    emp_bonus = 8 if hour >= 13 else 4
+                    emp_bonus = 6 if hour >= 13 else 4
                     persistent_power_bonus += emp_bonus
                     hour_log += f"> 🪳 **[황제의 피]** 바퀴 황제가 칼리의 참격을 버텨내며 외골격을 단단하게 진화시킵니다. (영구 방어선 +{emp_bonus})\n\n"
                 if "핏빛 밤 엘레나" in selected_guards: 
@@ -484,7 +484,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += "> ⚙️ :blue[**[시간 가속]**] T사 보조 태엽이 회전하며 시간이 가속됩니다! (턴 종료 효과 2배 적용)\n\n"
                     
                     if "바퀴 황제" in selected_guards: 
-                        emp_bonus = 8 if hour >= 13 else 4 # 여기서 다시 계산
+                        emp_bonus = 6 if hour >= 13 else 4 # 여기서 다시 계산
                         persistent_power_bonus += emp_bonus
                         hour_log += f"> 🪳 **[황제의 피 - 가속]** 황제의 외골격이 한 번 더 진화합니다! (영구 방어선 +{emp_bonus})\n\n"
                         
