@@ -238,7 +238,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         
                         elif guard == "엄지 아비 발렌치나":
                             current_team_power += 35
-                            hour_log += "> 🔫 :red[**[필살기: 세치오나투라 디 엘레판테]**] 발렌치나가 원망을 실은 칼날 두 자루를 무자비하게 휘두릅니다!\n\n"
+                            hour_log += "> 🤺 :red[**[필살기: 세치오나투라 디 엘레판테]**] 발렌치나가 원망을 실은 칼날 두 자루를 무자비하게 휘두릅니다!\n\n"
                         
                         elif guard == "중지 아비 마티아스":
                             current_team_power += 35
@@ -294,7 +294,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     # 💥 [대실패 발동 로직] 주사위가 1이 떴을 때! (f-string으로 우아하게 통합)
                     elif roll == 1:
                         current_team_power -= (base_power + 1) # 방금 더했던 위력을 다시 빼서 0으로 무효화
-                        hour_log += f"> 💫 **[흐트러짐]** {guard}의 합이 완전히 빗나가며 붉은안개에게 무방비하게 노출됩니다! (위력 무효화)\n\n"
+                        hour_log += f"> 🌀 **[빗나감]** {guard}의 공격이 완전히 빗나가며 붉은안개에게 무방비하게 노출됩니다! (위력 무효화)\n\n"
             
             if "옥기린 가치우" in selected_guards: 
                 current_team_power *= 1.2
@@ -316,7 +316,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             # [발렌치나 기믹 처리]
             if "엄지 아비 발렌치나" in selected_guards and hour % 3 == 0:
                 current_team_power += 30
-                hour_log += "> 🧥 **[팔레르모 검술]** 발렌치나가 예비 탄환을 쏟아부어 화력을 집중합니다! (이번 시간 방어선 +30)\n\n"
+                hour_log += "> 🤺 **[팔레르모 검술]** 발렌치나가 예비 탄환을 쏟아부어 화력을 집중합니다! (이번 시간 방어선 +30)\n\n"
                 
             if is_angelica_alive: 
                 angelica_buff = random.randint(5, 45)
@@ -338,7 +338,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 if hour == 13:
                     hour_log += "> 🔴 **[E.G.O 발현]** *\"이것이...내 껍데기다.\"* 칼리가 붉은 갑주로 스스로를 감싸며 위력이 폭증합니다!\n\n"
                     if any(g in selected_guards for g in shin_users):
-                        hour_log += "> 💫 **[신(心)의 공명]** 압도적인 공포 앞에서도 무투파 호위들은 꺾이지 않고 각자의 신(心)을 극한으로 끌어올립니다! (신 사용자 방어선 영구 +15)\n\n"
+                        hour_log += "> 💫 **[신(心)의 공명]** 압도적인 공포 앞에서도, 무언가를 강렬히 바라는 마음만은 꺾이지 않습니다! (신 사용자 방어선 영구 +15)\n\n"
                 if hour == 20:
                     kali_roll = 225
                     hour_log += "> ⚠️ :red[**[대절단 - 가로]**] 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
