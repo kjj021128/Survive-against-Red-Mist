@@ -287,9 +287,9 @@ if st.button("⏳ 시뮬레이션 시작"):
             else:
                 if "중지 아비 마티아스" in selected_guards and effective_kali_attack > current_team_power:
                     damage_diff = effective_kali_attack - current_team_power
-                    counter_reflect = int(damage_diff * 0.30) # 30% 반사
+                    counter_reflect = int(damage_diff * 0.2) # 30% 반사
                     effective_kali_attack -= counter_reflect
-                    hour_log += f"> ⛓️ **[앙갚음]** 마티아스가 받은 피해의 30%({counter_reflect})를 즉각 되돌려주어 충격을 완화했습니다!\n\n"
+                    hour_log += f"> ⛓️ **[앙갚음]** 마티아스가 받은 피해의 20%({counter_reflect})를 즉각 되돌려주어 충격을 완화했습니다!\n\n"
                 elif blood_gauge >= 50:
                     blood_gauge -= 50
                     hour_log += f"> 🩸 **[경혈식 발동]** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
