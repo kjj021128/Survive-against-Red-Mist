@@ -267,11 +267,10 @@ if st.button("⏳ 시뮬레이션 시작"):
                 current_team_power += ezra_buff
                 hour_log += f"> 🛠️ **[시제품 테스트]** 에즈라가 미완성 장비를 가동합니다! (추가 방어선 +{ezra_buff})\n\n"
 
-            if "엄지 아비 발렌치나" in selected_guards:
-                burn_stack += (2 + thumb_burn_bonus)
-                if hour % 3 == 0:
-                    current_team_power += 30
-                    hour_log += "> 🧥 **[팔레르모 검술]** 발렌치나가 예비 탄환을 쏟아부어 화력을 집중합니다! (이번 시간 방어선 +30)\n\n"
+            # [발렌치나 기믹 처리]
+            if "엄지 아비 발렌치나" in selected_guards and hour % 3 == 0:
+                current_team_power += 30
+                hour_log += "> 🧥 **[팔레르모 검술]** 발렌치나가 예비 탄환을 쏟아부어 화력을 집중합니다! (이번 시간 방어선 +30)\n\n"
                 
             if is_angelica_alive: 
                 angelica_buff = random.randint(5, 45)
