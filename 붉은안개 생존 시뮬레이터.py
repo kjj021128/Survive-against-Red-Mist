@@ -97,11 +97,11 @@ if spider_count >= 2:
 # 5. 🌈 [특색] 시너지
 color_fixers = [g for g in selected_guards if g in ["푸른잔향 아르갈리아", "붉은시선 베르길리우스", "노란작살 베스파", "검은침묵 안젤리카", "보라눈물 이오리"]]
 if len(color_fixers) >= 2:
-    synergy_messages.append("💡 **[시너지 발견: 컬러 팔레트]** 특색 해결사들이 모였습니다! (아군 진형의 영구 방어 점수 +30 상승)")
+    synergy_messages.append("💡 **[시너지 발견: 컬러 팔레트]** 특색 해결사들이 모였습니다! (아군 진형의 영구 방어선 +30)")
 
 # 6. 📜 [소지] 시너지
 if "옥기린 가치우" in selected_guards and "천퇴성 뇌횡" in selected_guards:
-    synergy_messages.append("💡 **[시너지 발견: 엇갈린 맹약]** 인협과 호걸의 기묘한 조화가 이루어집니다! (아군 진형의 영구 방어 점수 +15 상승)")
+    synergy_messages.append("💡 **[시너지 발견: 엇갈린 맹약]** 인협과 호걸의 기묘한 조화가 이루어집니다! (아군 진형의 영구 방어선 +15)")
 
 # 7. 👁️‍🗨️ [차원 유랑] 시너지
 if "처형자 바랄" in selected_guards and "보라눈물 이오리" in selected_guards:
@@ -119,7 +119,7 @@ if smoke_war_count >= 2:
 
 # 10. 🎭 [원본과 모조품] 시너지
 if "롤랑" in selected_guards and "검지 아비 뤼엔" in selected_guards:
-    synergy_messages.append("💡 **[시너지 발견: 진품과 모조품]** 뤼엔과 롤랑이 서로를 학습하며 필살기 발동 확률과 피해량이 폭증하고, 뤼엔의 공격이 반드시 명중합니다!")
+    synergy_messages.append("💡 **[시너지 발견: 진품과 모조품]** 뤼엔과 롤랑이 서로를 학습하며 필살기 발동 확률 및 피해량이 증가하고, 뤼엔의 공격이 반드시 명중합니다!")
 
 # 시너지 알림창 출력 (Streamlit의 초록색 성공 박스 활용)
 if synergy_messages:
@@ -393,7 +393,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += "> ⚠️ :red[**[대절단 - 가로]**] 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
             
             # [다수의 적을 상대할 때 칼리의 투지 상승 (1명당 위력 +8)]
-            crowd_bonus = len(selected_guards) * 8
+            crowd_bonus = len(selected_guards) * 10
             kali_roll += crowd_bonus
             
             # 플레이어에게 물량전의 페널티를 암시하는 텍스트 (1시간째에 1회 출력)
