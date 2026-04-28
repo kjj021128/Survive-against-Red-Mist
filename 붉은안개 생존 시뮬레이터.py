@@ -10,7 +10,7 @@ guards_db = {
     "LCD 에즈라": {"cost": 250, "power": 25, "dice": 10},
     "LCD 팀장 모제스": {"cost": 275, "power": 0, "dice": 10},
     "천퇴성 뇌횡": {"cost": 300, "power": 30, "dice": 15},
-    "어느 싱클레어": {"cost": 400, "power": 60, "dice": 8}, 
+    "어느 싱클레어": {"cost": 400, "power": 60, "dice": 10}, 
     "제2권속 산초": {"cost": 450, "power": 55, "dice": 15}, 
     "R사 제 4무리 대장들": {"cost": 500, "power": 60, "dice": 20},
     "E.G.O 발현 샤오": {"cost": 500, "power": 65, "dice": 20},
