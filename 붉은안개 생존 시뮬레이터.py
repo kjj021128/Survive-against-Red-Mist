@@ -66,7 +66,7 @@ with col1:
 with col2:
     st.subheader("🧰 특이점 장비 구매")
     # 아이템 선택 (selected_items 변수 생성)
-    selected_items = [name for name in items_db if st.checkbox(f"{name} (비용: {items_db[name]['cost']}) - {items_db[name]['desc']}")]
+    selected_items = [name for name in items_db if st.checkbox(f"{name} ({items_db[name]['cost']}) - {items_db[name]['desc']}")]
 
 st.write("---")
 
