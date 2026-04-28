@@ -21,7 +21,7 @@ guards_db = {
     "붉은시선 베르길리우스": {"cost": 550, "power": 75, "dice": 20},
     "옥기린 가치우": {"cost": 550, "power": 70, "dice": 20},
     "푸른잔향 아르갈리아": {"cost": 575, "power": 78, "dice": 25},
-    "검은침묵 롤랑 (광란)": {"cost": 600, "power": 85, "dice": 25},
+    "롤랑": {"cost": 600, "power": 85, "dice": 25},
     "검은침묵 안젤리카": {"cost": 600, "power": 82, "dice": 25},
     "보라눈물 이오리": {"cost": 625, "power": 90, "dice": 25},
     "처형자 바랄": {"cost": 650, "power": 95, "dice": 25},
@@ -210,19 +210,27 @@ if st.button("⏳ 시뮬레이션 시작"):
             # [칼리 기본 공격력 결정]
             if hour <= 12:
                 kali_max_roll = 10 if "R사 제 4무리 대장들" in selected_guards else 20
-                kali_base = 50 + (hour * 5) 
+                kali_base = 60 + (hour * 5) 
                 kali_roll = random.randint(kali_base - 10, kali_base + kali_max_roll)
                 if hour == 1:
                     hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 대검을 가볍게 쥐고 천천히 접근합니다.\n\n"
             else:
                 kali_max_roll = 15 if "R사 제 4무리 대장들" in selected_guards else 40
-                kali_base = 100 + ((hour - 12) * 18) 
+                kali_base = 110 + ((hour - 12) * 18) 
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
                 if hour == 13:
                     hour_log += "> 🔴 **[E.G.O 발현]** *\"이것이...내 껍데기다.\"* 칼리가 붉은 갑주로 스스로를 감싸며 위력이 폭증합니다!\n\n"
                 if hour == 20:
                     kali_roll = 225
                     hour_log += "> ⚠️ **[대절단 - 가로]** *\"갈라져라!\"* 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
+            
+            # [다수의 적을 상대할 때 칼리의 투지 상승 (1명당 위력 +8)]
+            crowd_bonus = len(selected_guards) * 8
+            kali_roll += crowd_bonus
+            
+            # 플레이어에게 물량전의 페널티를 암시하는 텍스트 (1시간째에 1회 출력)
+            if hour == 1 and len(selected_guards) >= 3:
+                hour_log += f"> 🔴 **[붉은안개의 투지]** *\"머릿수로 밀어붙일 셈인가?\"* 적이 많을수록 칼리의 참격이 더욱 거세집니다. (매 턴 위력 +{crowd_bonus})\n\n"
 
             # [디버프 적용 계산 (화상, 베스파, 롤랑 등)]
             burn_debuff = (2 if "천퇴성 뇌횡" in selected_guards else 0) + (3 if "E.G.O 발현 샤오" in selected_guards else 0) + (3 if "붉은시선 베르길리우스" in selected_guards else 0)
