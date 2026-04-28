@@ -85,7 +85,7 @@ if len(detective_team) >= 2:
 
 # 3. 🔫 [엄지] 시너지
 if "엄지 아비 발렌치나" in selected_guards and "천퇴성 뇌횡" in selected_guards:
-    synergy_messages.append("💡 **[시너지 발견: 엄지의 탄환보급]** 일제 사격 준비가 끝났습니다! (화상 부여량 +3)")
+    synergy_messages.append("💡 **[시너지 발견: 엄지의 탄환보급]** 일제 사격 준비가 끝났습니다! (턴당 화상 부여량 +3)")
 
 # 4. 🕸️ [거미집] 시너지 판정 (2명 이상일 때)
 spider_members = ["엄지 아비 발렌치나", "검지 아비 뤼엔", "중지 아비 마티아스"]
@@ -95,13 +95,13 @@ if spider_count >= 2:
     synergy_messages.append(f"💡 **[시너지 발견: 거미집의 사냥법]** {spider_count}인의 아비가 모여 거미줄을 칩니다! (붉은안개의 위력 -50)")
 
 # 5. 🌈 [특색] 시너지
-color_fixers = [g for g in selected_guards if g in ["푸른잔향 아르갈리아", "붉은시선 베르길리우스", "노란작살 베스파", "검은침묵 안젤리카", "롤랑", "보라눈물 이오리"]]
+color_fixers = [g for g in selected_guards if g in ["푸른잔향 아르갈리아", "붉은시선 베르길리우스", "노란작살 베스파", "검은침묵 안젤리카", "보라눈물 이오리"]]
 if len(color_fixers) >= 2:
-    synergy_messages.append("💡 **[시너지 발견: 컬러 파레트]** 특색 해결사들이 모였습니다! (아군 진형의 영구 방어 점수 +30 상승)")
+    synergy_messages.append("💡 **[시너지 발견: 컬러 팔레트]** 특색 해결사들이 모였습니다! (아군 진형의 영구 방어 점수 +30 상승)")
 
 # 6. 📜 [소지] 시너지
 if "옥기린 가치우" in selected_guards and "천퇴성 뇌횡" in selected_guards:
-    synergy_messages.append("💡 **[시너지 발견: 엇갈린 맹약]** 인협과 호걸의, 기묘한 조화가 이루어집니다! (아군 진형의 영구 방어 점수 +15 상승)")
+    synergy_messages.append("💡 **[시너지 발견: 엇갈린 맹약]** 인협과 호걸의 기묘한 조화가 이루어집니다! (아군 진형의 영구 방어 점수 +15 상승)")
 
 # 시너지 알림창 출력 (Streamlit의 초록색 성공 박스 활용)
 if synergy_messages:
@@ -474,7 +474,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             if "어느 싱클레어" in selected_guards and hour == 4:
                 team_power_base -= guards_db["어느 싱클레어"]["power"]
                 kali_perm_debuff += 5
-                hour_log += "> 🍂 **[알을 깨고 나온 자]** 힘을 다한 싱클레어가 물러나며, 연기 장막을 영구적으로 남깁니다.\n\n"
+                hour_log += "> 🍂 **[연기 거두기]** 싱클레어가 연기 장막을 영구적으로 남깁니다.\n\n"
 
             raw_gap = abs(effective_kali_attack - current_team_power)
             last_hour_gap = min(300, raw_gap) 
@@ -487,4 +487,4 @@ if st.button("⏳ 시뮬레이션 시작"):
         if survival_status:
             st.success(f"🎉 **미션 성공!** {target_hours}시간 동안 붉은안개로부터 살아남았습니다. 칼리가 정중한 사과를 남기고 빠르게 시야 너머로 사라집니다.")
         else:
-            st.error("💀 **미션 실패.** 호위들은 전멸했고, 당신의 기록은 여기서 끊어졌습니다.")
+            st.error("💀 **미션 실패!** 호위들은 전멸했고, 당신의 기록은 여기서 끊어졌습니다.")
