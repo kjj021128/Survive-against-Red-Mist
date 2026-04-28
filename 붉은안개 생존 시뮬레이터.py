@@ -393,7 +393,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += "> ⚠️ :red[**[대절단 - 가로]**] 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
             
             # [다수의 적을 상대할 때 칼리의 투지 상승 (1명당 위력 +8)]
-            crowd_bonus = len(selected_guards) * 12
+            crowd_bonus = len(selected_guards) * 11
             kali_roll += crowd_bonus
             
             # 플레이어에게 물량전의 페널티를 암시하는 텍스트 (1시간째에 1회 출력)
