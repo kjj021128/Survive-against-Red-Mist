@@ -35,7 +35,7 @@ items_db = {
     "K사 앰플 3개": {"cost": 200, "desc": "사망에 이르는 피해를 입을 시, 3회 부활합니다."},
     "T사 수사관 배지": {"cost": 250, "desc": "치명적인 위기의 순간, 붉은안개가 기세를 올리기 전으로 시간을 되감습니다."},
     "인식 저해 가면": {"cost": 275, "desc": "칼리의 공격이 당신을 향할 확률과 위력을 30% 감소시킵니다."},
-    "M사 월광석": {"cost": 425, "desc": "칼리의 정신 착란을 완화하여, 버텨야 할 시간을 18시간으로 단축합니다."}
+    "M사 월광석": {"cost": 425, "desc": "칼리의 이성을 되찾는 데 도움을 주어, 버텨야 할 시간을 18시간으로 단축합니다."}
 }
 
 st.set_page_config(page_title="붉은안개로부터 살아남기", layout="wide")
@@ -447,7 +447,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             if effective_kali_attack < 0: effective_kali_attack = 0
 
             # 모제스의 연기 디버프 (최종 위력 15% 감소)
-            if "LCD 팀장 모제스" in selected_guards:
+            if "LCD 팀장 모제스" in selected_guards and hour/2 == 0:
                 reduction = int(effective_kali_attack * 0.15)
                 effective_kali_attack -= reduction
                 hour_log += f"> 💨 **[곰방대의 연기]** 모제스가 연기를 뿜어 칼리의 공격 궤적을 흐트러뜨립니다. (위력 -15% : {reduction})\n\n"
