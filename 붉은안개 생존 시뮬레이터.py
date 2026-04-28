@@ -40,7 +40,7 @@ items_db = {
 
 st.set_page_config(page_title="붉은안개로부터 살아남기", layout="wide")
 st.title("붉은안개 생존 시뮬레이터")
-st.markdown("붉은안개 칼리가 당신을 연구소 테러범으로 착각하고 있습니다...")
+st.markdown("칼리가 당신을 연구소 테러범으로 착각하여, 미미크리를 뽑아듭니다...행운을 빌어요!")
 
 st.write("---")
 
