@@ -295,21 +295,21 @@ if st.button("⏳ 시뮬레이션 시작"):
                 
                 hour_log += f"> 🛡️ **방어 성공!** (칼리의 위력: {effective_kali_attack} / 호위 방어선: {int(current_team_power)})\n\n"
             else:
-                if "중지 아비 마티아스" in selected_guards and effective_kali_attack > current_team_power:
-                    if hour > last_myat_counter_hour + 1:
-                        damage_diff = effective_kali_attack - current_team_power
-                        counter_reflect = int(damage_diff * 0.15) # 15% 반사
-                        effective_kali_attack -= counter_reflect
-                        last_myat_counter_hour = hour
-                        hour_log += f"> ⛓️ **[되갚아주지!]** 마티아스가 받은 피해의 15%({counter_reflect})를 즉각 되돌려주어 충격을 완화했습니다!\n\n"
-                    else:
-                        hour_log += "> ⛓️ **[숨 고르기]** 마티아스가 직전의 무리한 반격으로 인해 체제를 정비하느라 나서지 못합니다.\n\n"
+                available_sacrifices = [g for g in selected_guards if g != "중지 아비 마티아스"] 
+                if "중지 아비 마티아스" in selected_guards and available_sacrifices:
+                    sacrifice = random.choice(available_sacrifices)
+                    selected_guards.remove(sacrifice) 
+                    sacrifice_power = guards_db[sacrifice]["power"]
+                    debuff_amount = int(sacrifice_power * 0.5)
+                    kali_perm_debuff += debuff_amount
+                    hour_log += f"> ⛓️ **[마티아스의 변덕]** 방어선이 무너지자, 마티아스가 충동적으로 곁에 있던 **{sacrifice}**를 붉은안개의 참격 앞으로 밀쳐냅니다!\n\n"
+                    hour_log += f"> 💀 **(희생양 즉사 / 붉은안개의 영구 위력 {debuff_amount} 감소 / 이번 턴 강제 생존)**\n\n"
                 elif blood_gauge >= 50:
                     blood_gauge -= 50
                     hour_log += f"> 🩸 **[경혈식 발동]** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
                 elif baral_w_serum > 0:
                     baral_w_serum -= 1
-                    hour_log += f"> 💉 **[처형자의 기지]** 혈청 W를 투입해 공간을 격리했습니다. (남은 회피: {baral_w_serum})\n\n"
+                    hour_log += f"> 💉 **[처형자의 기지]** 혈청 W를 투여해 공간을 격리했습니다. (남은 회피: {baral_w_serum})\n\n"
                 elif "옥기린 가치우" in selected_guards and not gachiu_shield_used:
                     gachiu_shield_used = True
                     hour_log += f"> 🍂 **[가치우의 인협]** 가치우가 당신을 밀쳐내고 붉은안개의 맹공을 홀로 받아냈습니다!\n\n"
