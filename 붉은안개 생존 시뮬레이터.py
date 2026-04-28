@@ -334,7 +334,10 @@ if st.button("⏳ 시뮬레이션 시작"):
                     elif roll == 1:
                         # 1. 어느 싱클레어 (기본 패시브)
                         if guard == "어느 싱클레어":
-                            hour_log += "> 🐣 **[흔들림 없는 자세]** 싱클레어의 맑은 일격은 결코 빗나가지 않습니다! (대실패 면역)\n\n"
+                            half_power = base_power // 2
+                            penalty = (base_power + 1) - half_power
+                            current_team_power -= penalty
+                            hour_log += f"> ⚠️ **[빗나간 일격]** 싱클레어의 타점이 어긋났지만, 공수부대의 노련함으로 방어선의 절반(기여도: {half_power})은 사수해냅니다!\n\n"
                         
                         # 2. 검지 아비 뤼엔 (롤랑 시너지 시 발동)
                         elif guard == "검지 아비 뤼엔" and "롤랑" in selected_guards:
