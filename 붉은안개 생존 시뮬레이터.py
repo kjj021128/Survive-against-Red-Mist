@@ -115,7 +115,7 @@ if "LCD 에즈라" in selected_guards and "검은침묵 안젤리카" in selecte
 smoke_war = ["어느 싱클레어", "엄지 아비 발렌치나", "바퀴 황제"]
 smoke_war_count = sum(1 for g in smoke_war if g in selected_guards)
 if smoke_war_count >= 2:
-    synergy_messages.append(f"💡 **[시너지 발견: 연기전쟁의 참상]** {smoke_war_count}인의 참전용사가 모여, 그 날의 끔찍한 기억을 되살립니다! (4턴마다 붉은안개의 위력 -10)")
+    synergy_messages.append(f"💡 **[시너지 발견: 연기전쟁의 참상]** {smoke_war_count}인의 참전용사가 모여, 그 날의 끔찍한 기억을 되살립니다! (6턴마다 붉은안개의 위력 -10)")
 
 # 10. 🎭 [원본과 모조품] 시너지
 if "롤랑" in selected_guards and "검지 아비 뤼엔" in selected_guards:
@@ -210,7 +210,7 @@ if st.button("⏳ 시뮬레이션 시작"):
         for hour in range(1, target_hours + 1):
             hour_log = f"#### **🕒 [{hour}시간 경과]**\n"
 
-            if is_smoke_war and hour % 4 == 0:
+            if is_smoke_war and hour % 6 == 0:
                 kali_perm_debuff += 10
                 hour_log += "> 🪖 :blue[**[시너지 발동: 질식하는 연기]**] 연기전쟁 참전용사들이 피워낸 짙은 연기가 붉은안개의 폐부를 찌릅니다! (칼리 영구 위력 -10)\n\n"
             
