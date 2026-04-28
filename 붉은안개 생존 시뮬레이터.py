@@ -48,11 +48,20 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("🛡️ 호위 고용")
-    selected_guards = [name for name in guards_db if st.checkbox(f"{name} (비용: {guards_db[name]['cost']})")]
-
-with col2:
-    st.subheader("🧰 특이점 장비 구매")
-    selected_items = [name for name in items_db if st.checkbox(f"{name} (비용: {items_db[name]['cost']}) - {items_db[name]['desc']}")]
+    # 리스트를 반으로 나누어 2열로 배치
+    g_names = list(guards_db.keys())
+    half = (len(g_names) + 1) // 2
+    g_col1, g_col2 = st.columns(2)
+    
+    selected_guards = []
+    with g_col1:
+        for name in g_names[:half]:
+            if st.checkbox(f"{name} ({guards_db[name]['cost']})", key=f"check_{name}"):
+                selected_guards.append(name)
+    with g_col2:
+        for name in g_names[half:]:
+            if st.checkbox(f"{name} ({guards_db[name]['cost']})", key=f"check_{name}"):
+                selected_guards.append(name)
 
 st.write("---")
 
