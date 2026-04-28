@@ -175,6 +175,10 @@ if st.button("⏳ 시뮬레이션 시작"):
                         elif guard == "장로 돈키호테":
                             current_team_power += 85
                             hour_log += "> 🎠 **[돈키호테류 경혈 오의 - 구]** 장로 돈키호테가 만든 피의 구가 폭발하며 전장을 뒤덮습니다!\n\n"
+                    # 💥 [대실패 발동 로직] 주사위가 1이 떴을 때! (f-string으로 우아하게 통합)
+                    elif roll == 1:
+                        current_team_power -= (base_power + 1) # 방금 더했던 위력을 다시 빼서 0으로 무효화
+                        hour_log += f"> 💥 **[흐트러짐]** {guard}의 합이 완전히 빗나가며 붉은안개에게 무방비하게 노출됩니다! (위력 무효화)\n\n"
             
             if "옥기린 가치우" in selected_guards: 
                 current_team_power *= 1.2
