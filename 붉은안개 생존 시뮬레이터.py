@@ -119,7 +119,7 @@ if smoke_war_count >= 2:
 
 # 10. 🎭 [원본과 모조품] 시너지
 if "롤랑" in selected_guards and "검지 아비 뤼엔" in selected_guards:
-    synergy_messages.append("💡 **[시너지 발견: 진품과 모조품]** 뤼엔이 롤랑의 움직임을 모방하며 필살기 발동 확률이 폭증하고, 뤼엔의 공격이 반드시 명중합니다!")
+    synergy_messages.append("💡 **[시너지 발견: 진품과 모조품]** 뤼엔과 롤랑이 서로를 학습하며 필살기 발동 확률과 피해량이 폭증하고, 뤼엔의 공격이 반드시 명중합니다!")
 
 # 시너지 알림창 출력 (Streamlit의 초록색 성공 박스 활용)
 if synergy_messages:
@@ -281,7 +281,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         
                         elif guard == "검지 아비 뤼엔":
                             if "롤랑" in selected_guards:
-                                current_team_power += 40
+                                current_team_power += 60
                                 hour_log += "> 📜 :red[**[필살기: Furioso - Replica]**] 뤼엔이 원본의 움직임에 완벽히 동기화하여 파괴적인 모방 난무를 펼칩니다!\n\n"
                             else:
                                 current_team_power += 40
@@ -301,7 +301,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         
                         elif guard == "롤랑":
                             if "검지 아비 뤼엔" in selected_guards:
-                                current_team_power += 50
+                                current_team_power += 75
                                 hour_log += "> ⬛ :red[**[필살기: Furioso]**] 롤랑이 모조품 앞에서 원본의 숨 쉴 틈 없는 난무를 보여줍니다!\n\n"
                             else:
                                 current_team_power += 50
