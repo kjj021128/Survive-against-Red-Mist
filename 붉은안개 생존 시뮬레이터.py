@@ -149,7 +149,7 @@ if st.button("⏳ 시뮬레이션 시작"):
         baral_w_serum = 2 if "처형자 바랄" in selected_guards else 0
         if "처형자 바랄" in selected_guards and "보라눈물 이오리" in selected_guards:
             baral_w_serum += 1
-            battle_logs += "> 🌀 **[시너지 발동: 차원 유랑]** 이오리의 공간 조작이 바랄의 혈청 W 실린더를 하나 더 복제해 냅니다. (혈청 W 최대 3회)\n\n"
+            battle_logs += "> 🌀 :blue[**[시너지 발동: 차원 유랑]**] 이오리의 공간 조작이 바랄의 혈청 W 실린더를 하나 더 복제해 냅니다. (혈청 W 최대 3회)\n\n"
         is_roland_berserk = False
         last_hour_gap = 0  # 직전 시간의 위력 격차 저장
         gachiu_shield_used = False
