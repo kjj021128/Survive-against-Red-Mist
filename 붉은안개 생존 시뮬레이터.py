@@ -54,8 +54,47 @@ with col2:
     st.subheader("🧰 특이점 장비 구매")
     selected_items = [name for name in items_db if st.checkbox(f"{name} (비용: {items_db[name]['cost']}) - {items_db[name]['desc']}")]
 
-total_cost = sum([guards_db[g]["cost"] for g in selected_guards]) + sum([items_db[i]["cost"] for i in selected_items])
 st.write("---")
+
+synergy_messages = []
+discount = 0
+
+# 1. ⬛ [검은침묵] 부부 시너지
+if "롤랑" in selected_guards and "검은침묵 안젤리카" in selected_guards:
+    synergy_messages.append("💡 **[시너지 발견: 검은침묵의 유산]** 부부가 전장에 함께 섭니다! (시작 시 K사 앰플과 T사 배지 무료 지급)")
+
+# 2. 🔎 [뒤틀림 탐정] 시너지
+detective_team = [g for g in selected_guards if g in ["LCD 팀장 모제스", "LCD 에즈라", "노란작살 베스파"]]
+if len(detective_team) >= 2:
+    discount = 200
+    synergy_messages.append(f"💡 **[시너지 발견: 에즈라의 흥정]** 살벌한 공방 장비 가격 후려치기가 시작됩니다! (고용 비용 200 광기 할인)")
+
+# 3. 🔫 [엄지] 시너지
+if "엄지 아비 발렌치나" in selected_guards and "천퇴성 뇌횡" in selected_guards:
+    synergy_messages.append("💡 **[시너지 발견: 엄지의 예]** 일제 사격 준비가 끝났습니다! (발렌치나도 매 턴 화상을 부여)")
+
+# 4. 🕸️ [거미집] 시너지
+if all(g in selected_guards for g in ["엄지 아비 발렌치나", "검지 아비 뤼엔", "중지 아비 마티아스"]):
+    synergy_messages.append("💡 **[시너지 발견: 거미집의 사냥법]** 거미집의 거미줄이 칼리를 옥죄어옵니다! (붉은안개의 초기 영구 위력 -50 감소)")
+
+# 5. 🌈 [특색] 시너지
+color_fixers = [g for g in selected_guards if g in ["푸른잔향 아르갈리아", "붉은시선 베르길리우스", "노란작살 베스파", "검은침묵 안젤리카", "롤랑"]]
+if len(color_fixers) >= 2:
+    synergy_messages.append("💡 **[시너지 발견: 컬러 파레트]** 특색 해결사들이 모였습니다! (아군 진형의 영구 방어 점수 +30 상승)")
+
+# 6. 📜 [소지] 시너지
+if "옥기린 가치우" in selected_guards and "천퇴성 뇌횡" in selected_guards:
+    synergy_messages.append("💡 **[시너지 발견: 엇갈린 맹약]** 인협과 호걸의, 기묘한 조화가 이루어집니다! (아군 진형의 영구 방어 점수 +15 상승)")
+
+# 시너지 알림창 출력 (Streamlit의 초록색 성공 박스 활용)
+if synergy_messages:
+    for msg in synergy_messages:
+        st.success(msg)
+
+# 최종 비용 산출 (할인 적용)
+total_cost = sum([guards_db[g]["cost"] for g in selected_guards]) + sum([items_db[i]["cost"] for i in selected_items])
+total_cost -= discount 
+
 st.markdown(f"### 💰 현재 소모 광기: **{total_cost}** / {BUDGET}")
 
 # --- [3] 시뮬레이션 논리 및 실행 ---
@@ -84,6 +123,34 @@ if st.button("⏳ 시뮬레이션 시작"):
         is_roland_berserk = False  
         gachiu_shield_used = False
         is_angelica_alive = "검은침묵 안젤리카" in selected_guards
+
+        # --- [시너지 전투 수치 적용 구역] ---
+        thumb_burn_bonus = 0 # 엄지 시너지 화상 보너스 초기화
+        
+        # 1. ⬛ [검은침묵] 부부 시너지 (생존기 추가)
+        if "롤랑" in selected_guards and "검은침묵 안젤리카" in selected_guards:
+            revives_left += 1  # K사 앰플 1회 분량 추가 (또는 3회로 하려면 += 3)
+            has_t_badge = True # T사 배지 강제 활성화
+
+        # 2. 🔎 [뒤틀림 탐정] 시너지
+        # (결제 화면에서 200광기 할인으로 이미 완벽히 처리되었으므로 전투 수치 변동은 없음!)
+
+        # 3. 🔫 [엄지] 시너지 (화상 보너스 활성화)
+        if "엄지 아비 발렌치나" in selected_guards and "천퇴성 뇌횡" in selected_guards:
+            thumb_burn_bonus = 3
+
+        # 4. 🕸️ [거미집] 시너지 (초기 영구 디버프)
+        if all(g in selected_guards for g in ["엄지 아비 발렌치나", "검지 아비 뤼엔", "중지 아비 마티아스"]):
+            kali_perm_debuff += 50
+
+        # 5. 🌈 [특색] 시너지 (영구 방어선 증가)
+        color_fixers = [g for g in selected_guards if g in ["푸른잔향 아르갈리아", "붉은시선 베르길리우스", "노란작살 베스파", "검은침묵 안젤리카", "롤랑"]]
+        if len(color_fixers) >= 2:
+            persistent_power_bonus += 30
+
+        # 6. 📜 [소지] 시너지 (영구 방어선 증가)
+        if "옥기린 가치우" in selected_guards and "천퇴성 뇌횡" in selected_guards:
+            persistent_power_bonus += 15
         
         battle_logs = ""
         log_container = st.empty()
@@ -238,7 +305,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 hour_log += f"> 🔴 **[붉은안개의 투지]** *\"머릿수로 밀어붙일 셈인가?\"* 적이 많을수록 칼리의 참격이 더욱 거세집니다. (매 턴 위력 +{crowd_bonus})\n\n"
 
             # [디버프 적용 계산 (화상, 베스파, 롤랑 등)]
-            burn_debuff = (2 if "천퇴성 뇌횡" in selected_guards else 0) + (3 if "E.G.O 발현 샤오" in selected_guards else 0) + (3 if "붉은시선 베르길리우스" in selected_guards else 0)
+            burn_debuff = (2 if "천퇴성 뇌횡" in selected_guards else 0) + (3 if "E.G.O 발현 샤오" in selected_guards else 0) + (3 if "붉은시선 베르길리우스" in selected_guards else 0) + (2 + thumb_burn_bonus if "엄지 아비 발렌치나" in selected_guards else 0)
             current_burn_penalty = burn_debuff * (hour // 2)
             temp_debuff = current_burn_penalty + kali_perm_debuff
             
