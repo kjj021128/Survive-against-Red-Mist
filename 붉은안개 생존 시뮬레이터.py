@@ -142,6 +142,8 @@ if st.button("⏳ 시뮬레이션 시작"):
         team_power_base = sum([guards_db[g]["power"] for g in selected_guards])
         persistent_power_bonus = 0 # 바퀴 황제, 엘레나 등의 누적 스탯 
         kali_perm_debuff = 0
+
+        battle_logs = ""
         
         blood_gauge = (100 if "제2권속 산초" in selected_guards else 0) + (250 if "장로 돈키호테" in selected_guards else 0)
         baral_w_serum = 2 if "처형자 바랄" in selected_guards else 0
@@ -183,7 +185,6 @@ if st.button("⏳ 시뮬레이션 시작"):
         if "옥기린 가치우" in selected_guards and "천퇴성 뇌횡" in selected_guards:
             persistent_power_bonus += 15
 
-        battle_logs = ""
         log_container = st.empty()
         survival_status = True
 
