@@ -5,24 +5,29 @@ import time
 # --- [1] 도시의 전력 및 장비 데이터베이스 구축 ---
 BUDGET = 1300
 
+# 호위 목록 (이름: [가격, 기본 수치, 주사위 최댓값])
 guards_db = {
-    "천퇴성 뇌횡": {"cost": 300, "power": 30},
-    "어느 싱클레어": {"cost": 400, "power": 45}, 
-    "제2권속 산초": {"cost": 450, "power": 55}, 
-    "R사 제 4무리 대장들": {"cost": 500, "power": 60},
-    "E.G.O 발현 샤오": {"cost": 500, "power": 65},
-    "노란작살 베스파": {"cost": 525, "power": 68},
-    "붉은시선 베르길리우스": {"cost": 550, "power": 75},
-    "옥기린 가치우": {"cost": 550, "power": 70},
-    "푸른잔향 아르갈리아": {"cost": 575, "power": 78},
-    "검은침묵 롤랑 (광란)": {"cost": 600, "power": 85},
-    "검은침묵 안젤리카": {"cost": 600, "power": 82},
-    "보라눈물 이오리": {"cost": 625, "power": 90},
-    "처형자 바랄": {"cost": 650, "power": 95},
-    "바퀴 황제": {"cost": 675, "power": 80}, 
-    "거미집 아비들 전원": {"cost": 800, "power": 110},
-    "핏빛 밤 엘레나": {"cost": 850, "power": 115},
-    "장로 돈키호테": {"cost": 900, "power": 130}
+    "LCD 에즈라": {"cost": 250, "power": 25, "dice": 10},
+    "LCD 팀장 모제스": {"cost": 275, "power": 0, "dice": 10},
+    "천퇴성 뇌횡": {"cost": 300, "power": 30, "dice": 15},
+    "어느 싱클레어": {"cost": 400, "power": 45, "dice": 15}, 
+    "제2권속 산초": {"cost": 450, "power": 55, "dice": 15}, 
+    "R사 제 4무리 대장들": {"cost": 500, "power": 60, "dice": 20},
+    "E.G.O 발현 샤오": {"cost": 500, "power": 65, "dice": 20},
+    "엄지 아비 발렌치나": {"cost": 500, "power": 65, "dice": 20},
+    "중지 아비 마티아스": {"cost": 500, "power": 66, "dice": 20},
+    "노란작살 베스파": {"cost": 525, "power": 68, "dice": 20},
+    "검지 아비 뤼엔": {"cost": 525, "power": 68, "dice": 20},
+    "붉은시선 베르길리우스": {"cost": 550, "power": 75, "dice": 20},
+    "옥기린 가치우": {"cost": 550, "power": 70, "dice": 20},
+    "푸른잔향 아르갈리아": {"cost": 575, "power": 78, "dice": 25},
+    "검은침묵 롤랑 (광란)": {"cost": 600, "power": 85, "dice": 25},
+    "검은침묵 안젤리카": {"cost": 600, "power": 82, "dice": 25},
+    "보라눈물 이오리": {"cost": 625, "power": 90, "dice": 25},
+    "처형자 바랄": {"cost": 650, "power": 95, "dice": 25},
+    "바퀴 황제": {"cost": 675, "power": 80, "dice": 30}, 
+    "핏빛 밤 엘레나": {"cost": 850, "power": 115, "dice": 30},
+    "장로 돈키호테": {"cost": 900, "power": 130, "dice": 30}
 }
 
 items_db = {
@@ -34,7 +39,7 @@ items_db = {
 
 st.set_page_config(page_title="Project Moon: 생존 시뮬레이터", layout="wide")
 st.title("🔴 붉은안개 생존 시뮬레이터")
-st.markdown("전성기 시절의 붉은안개로부터 살아남으십시오.")
+st.markdown("전성기 시절의 붉은안개 칼리가 당신을 살해하기 위해 찾아옵니다. 칼리는 당신을 카르멘을 포함한 영혼치료 연구소에 위해를 가한 사람이라고 굳게 믿고 있으며, 이에 따라 전력을 다해(필요하다면 그녀의 E.G.O까지도 발현하여) 당신을 공격합니다. 당신은 1300광기를 가지고 있으며, 광기를 지불해서 당신을 지켜줄 호위를 고용하거나, 장비를 구매해 생존율을 높일 수 있습니다. 칼리는 현재 모종의 특이점으로 인한 일시적 정신 착란에 빠진 상태이기에, 당신을 인지한 시점부터 24시간 동안 살아남는다면 정신 착란이 해제되어 당신을 더 이상 공격하지 않을 것입니다. 또는, 24시간 내에 그녀를 살해하거나 치명상을 입혀서 위협으로부터 자유로워질 수 있겠죠...")
 
 # --- [2] 사용자 UI 및 고용 시스템 ---
 col1, col2 = st.columns(2)
@@ -93,8 +98,83 @@ if st.button("⏳ 시뮬레이션 시작"):
                 time.sleep(0.3)
                 continue
 
-            # [호위 전력 계산]
-            current_team_power = team_power_base + persistent_power_bonus
+            # [호위 전력 및 주사위 난수 계산]
+            current_team_power = persistent_power_bonus # 영구 버프(바퀴 황제 등)부터 시작
+            
+            for guard in selected_guards:
+                base_power = guards_db[guard]["power"]
+                max_dice = guards_db[guard]["dice"]
+                
+                if max_dice > 0:
+                    # 1부터 최대 주사위 값 사이의 난수를 굴림
+                    roll = random.randint(1, max_dice)
+                    current_team_power += (base_power + roll)
+                    
+                    # 🎯 [필살기 발동 로직] 주사위가 최댓값이 떴을 때!
+                    if roll == max_dice:
+                        if guard == "LCD 에즈라":
+                            current_team_power += 15
+                            hour_log += "> 🛠️ **[유리아 공방 - 총공 모드, 마크 17!]** 에즈라가 온갖 무기를 한꺼번에 전개하여 화력을 쏟아붓습니다!\n\n"
+                        elif guard == "LCD 팀장 모제스":
+                            kali_perm_debuff += 10 # 위력 대신 칼리 영구 디버프 부여
+                            hour_log += "> 👁️ **[붉은 점]** 모제스가 연기 너머로 E.G.O의 가장 취약한 결절을 꿰뚫어 봅니다! (칼리 영구 위력 -10)\n\n"
+                        elif guard == "천퇴성 뇌횡":
+                            current_team_power += 20
+                            hour_log += "> 🐯 **[초절맹호살격난참]** 뇌횡이 맹호의 기세로 적의 숨통을 끊을 난격을 꽂아 넣습니다!\n\n"
+                        elif guard == "어느 싱클레어":
+                            current_team_power += 25
+                            hour_log += "> 🌿 **[취수낭랑 - 선]** 싱클레어의 맑은 일격이 붉은안개의 참격을 유려하게 흘려냅니다!\n\n"
+                        elif guard == "제2권속 산초":
+                            current_team_power += 30
+                            hour_log += "> 🩸 **[아류 산초 경혈식 - 라 샹그레]** 산초가 끓어오르는 피를 창끝에 모아 폭발시킵니다!\n\n"
+                        elif guard == "R사 제 4무리 대장들":
+                            current_team_power += 35
+                            hour_log += "> 🎯 **[처분]** 니콜라이의 완벽한 표식 위로 대장들의 치명적인 협공이 꽂힙니다!\n\n"
+                        elif guard == "E.G.O 발현 샤오":
+                            current_team_power += 35
+                            hour_log += "> 🐉 **[도철]** 샤오가 불타오르는 언월도를 휘두르며 거대한 화염의 용을 뿜어냅니다!\n\n"
+                        elif guard == "엄지 아비 발렌치나":
+                            current_team_power += 35
+                            hour_log += "> 🔫 **[세치오나투라 디 엘레판테]** 발렌치나가 원망을 실은 칼날 두 자루를 무자비하게 휘두릅니다!\n\n"
+                        elif guard == "중지 아비 마티아스":
+                            current_team_power += 35
+                            hour_log += "> ⛓️ **[즉결처형[레바테인]]** 마티아스가 장부의 기록에 따라 피할 수 없는 징벌을 내립니다!\n\n"
+                        elif guard == "노란작살 베스파":
+                            current_team_power += 40
+                            hour_log += "> 🐝 **[섬봉광검술 - 환도]** 베스파가 시야에서 사라진 순간, 사각을 파고드는 치명적인 찌르기가 작렬합니다!\n\n"
+                        elif guard == "검지 아비 뤼엔":
+                            current_team_power += 40
+                            hour_log += "> 📜 **[Furioso - Replica]** 뤼엔이 지령을 읽고 검은침묵의 난무를 기괴하게 모방해 냅니다!\n\n"
+                        elif guard == "붉은시선 베르길리우스":
+                            current_team_power += 45
+                            hour_log += "> 🩸 **[죽은 혈귀를 위한 장례]** 베르길리우스의 글라디우스가 피의 궤적을 그리며 주변을 압도합니다!\n\n"
+                        elif guard == "옥기린 가치우":
+                            current_team_power += 45
+                            hour_log += "> 🐉 **[천강성 - 격]** 가치우의 봉에 다섯 개의 망이 감기고, 파괴적인 힘을 뿜어냅니다!\n\n"
+                        elif guard == "푸른잔향 아르갈리아":
+                            current_team_power += 50
+                            hour_log += "> 🎸 **[최후의 선율]** 아르갈리아가 광소하며 치명적인 진동의 낫을 휘두릅니다!\n\n"
+                        elif guard == "롤랑":
+                            current_team_power += 50
+                            hour_log += "> ⬛ **[Furioso]** 롤랑이 9개의 공방 무기를 꺼내 들며 숨 쉴 틈 없는 난무를 펼칩니다!\n\n"
+                        elif guard == "검은침묵 안젤리카":
+                            current_team_power += 50
+                            hour_log += "> 🧤 **[백색 왈츠]** 안젤리카가 무도회를 거닐듯 우아하고도 파괴적인 공방 무기 연계를 선보입니다!\n\n"
+                        elif guard == "보라눈물 이오리":
+                            current_team_power += 50
+                            hour_log += "> 🔮 **[환영난무]** 보라눈물이 여러 차원의 자세를 동시에 전개하여 회피불능의 참격을 날립니다!\n\n"
+                        elif guard == "처형자 바랄":
+                            current_team_power += 55
+                            hour_log += "> 💉 **[혈청 R]** 바랄이 혈청 R을 투여하여 폭발적인 기세로 칼리에게 돌진합니다!\n\n"
+                        elif guard == "바퀴 황제":
+                            current_team_power += 60
+                            hour_log += "> 🪳 **[황제의 채찍과 주먹]** 진화를 거듭한 황제가 거대한 껍데기를 휘둘러 대지를 짓뭉갭니다!\n\n"
+                        elif guard == "핏빛 밤 엘레나":
+                            current_team_power += 70
+                            hour_log += "> 🧛‍♀️ **[핏빛 밤의 분노]** 엘레나가 굶주림을 개방하여 시야에 보이는 모든 것을 찢어발깁니다!\n\n"
+                        elif guard == "장로 돈키호테":
+                            current_team_power += 85
+                            hour_log += "> 🎠 **[돈키호테류 경혈 오의 - 구]** 장로 돈키호테가 만든 피의 구가 폭발하며 전장을 뒤덮습니다!\n\n"
             
             if "옥기린 가치우" in selected_guards: 
                 current_team_power *= 1.2
@@ -107,6 +187,15 @@ if st.button("⏳ 시뮬레이션 시작"):
                 # [수정점] 4시간 동안 유지되는 초반 버프 역시 1시간째에 한 번만 선언
                 if hour == 1:
                     hour_log += "> 🌿 **[아브락사스의 전차]** 싱클레어가 전차와도 같은 맹렬한 기세로 전열을 굳힙니다!\n\n"
+
+            if "LCD 에즈라" in selected_guards:
+                ezra_buff = random.randint(5, 25)
+                current_team_power += ezra_buff
+                hour_log += f"> 🛠️ **[시제품 테스트]** 에즈라가 미완성 장비를 가동합니다! (추가 방어선 +{ezra_buff})\n"
+
+            if "엄지 아비 발렌치나" in selected_guards and hour % 3 == 0:
+                current_team_power += 30
+                hour_log += "> 🧥 **[엄지의 규율]** 발렌치나가 예비 탄환을 쏟아부어 화력을 집중합니다! (이번 시간 방어선 +30)\n"
                 
             if is_angelica_alive: 
                 angelica_buff = random.randint(5, 45)
@@ -156,35 +245,21 @@ if st.button("⏳ 시뮬레이션 시작"):
 
             # [칼리 최종 공격력 산출]
             effective_kali_attack = int((kali_roll - temp_debuff) * aggro_multiplier)
+            if effective_kali_attack < 0: effective_kali_attack = 0effective_kali_attack = int((kali_roll - temp_debuff) * aggro_multiplier)
+
+            # 모제스의 연기 디버프 (최종 위력 15% 감소)
+            if "뒤틀림 탐정 모제스" in selected_guards:
+                reduction = int(effective_kali_attack * 0.15)
+                effective_kali_attack -= reduction
+                hour_log += f"> 💨 **[곰방대의 연기]** 모제스가 연기를 뿜어 칼리의 공격 궤적을 흐트러뜨립니다. (위력 -15% : {reduction})\n"
+
+            # 뤼엔의 지령 회피 (15% 확률로 위력 0)
+            if "검지 아비 뤼엔" in selected_guards and random.random() < 0.15:
+                effective_kali_attack = 0
+                hour_log += "> 📜 **[지령 수행]** 뤼엔이 지령에 적힌 불합리한 회피 경로를 완벽히 수행해 냈습니다! (위력 무효화)\n"
+
             if effective_kali_attack < 0: effective_kali_attack = 0
 
-            # [거미집 아비들 전원 기믹]
-            if "거미집 아비들 전원" in selected_guards:
-                finger_cycle = hour % 5
-                if finger_cycle == 1: 
-                    current_team_power += 15
-                    hour_log += "> 🧥 **[엄지의 규율]** 발렌치나가 기세를 발산해 방어 점수가 15 상승합니다.\n\n"
-                elif finger_cycle == 2: 
-                    if random.random() < 0.15: 
-                        effective_kali_attack = 0
-                        hour_log += "> 📜 **[검지의 지령]** 헤르메스의 의지로 공격을 흘려보냈습니다!\n\n"
-                elif finger_cycle == 3: 
-                    if effective_kali_attack > current_team_power:
-                        damage_diff = effective_kali_attack - current_team_power
-                        counter_reflect = int(damage_diff * 0.25)
-                        effective_kali_attack -= counter_reflect
-                        hour_log += f"> ⛓️ **[중지의 반격]** 마티아스가 받은 피해의 25%({counter_reflect})를 역으로 상쇄했습니다.\n\n"
-                    else:
-                        hour_log += "> ⛓️ **[중지의 대기]** 마티아스가 반격을 준비했으나, 칼리의 참격이 닿지 않았습니다.\n\n"
-                elif finger_cycle == 4: 
-                    effective_kali_attack -= 15
-                    if effective_kali_attack < 0: effective_kali_attack = 0
-                    hour_log += "> 🎨 **[약지의 예술]** 칼리스토의 예술적인 조형물로 위력을 15 감소시켰습니다.\n\n"
-                elif finger_cycle == 0: 
-                    kali_perm_debuff += 5
-                    effective_kali_attack -= 5
-                    if effective_kali_attack < 0: effective_kali_attack = 0
-                    hour_log += "> 🤫 **[천살성도 발도]** 시오미 요루가 천살성도로 칼리를 상처입힙니다. 위력이 영구적으로 5 감소합니다.\n\n"
 
             # [최종 방어 판정]
             if "푸른잔향 아르갈리아" in selected_guards and abs(effective_kali_attack - current_team_power) <= 7:
@@ -206,7 +281,12 @@ if st.button("⏳ 시뮬레이션 시작"):
                 
                 hour_log += f"> 🛡️ **방어 성공!** (칼리의 위력: {effective_kali_attack} / 호위 방어선: {int(current_team_power)})\n\n"
             else:
-                if blood_gauge >= 50:
+                if "중지 아비 마티아스" in selected_guards and effective_kali_attack > current_team_power:
+                    damage_diff = effective_kali_attack - current_team_power
+                    counter_reflect = int(damage_diff * 0.30) # 30% 반사
+                    effective_kali_attack -= counter_reflect
+                    hour_log += f"> ⛓️ **[앙갚음]** 마티아스가 받은 피해의 30%({counter_reflect})를 즉각 되돌려주어 충격을 완화했습니다!\n"
+                elif blood_gauge >= 50:
                     blood_gauge -= 50
                     hour_log += f"> 🩸 **[경혈식 발동]** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
                 elif baral_w_serum > 0:
@@ -241,6 +321,6 @@ if st.button("⏳ 시뮬레이션 시작"):
         # 결과 출력
         st.write("---")
         if survival_status:
-            st.success(f"🎉 **미션 성공!** {target_hours}시간 동안 붉은안개로부터 살아남았습니다. 칼리가 쑥쓰러운 듯 사과를 남기고 빠르게 시야 너머로 사라집니다.")
+            st.success(f"🎉 **미션 성공!** {target_hours}시간 동안 붉은안개로부터 살아남았습니다. 칼리가 정중한 사과를 남기고 빠르게 시야 너머로 사라집니다.")
         else:
             st.error("💀 **미션 실패.** 호위들은 전멸했고, 당신의 기록은 여기서 끊어졌습니다.")
