@@ -32,7 +32,7 @@ guards_db = {
 
 items_db = {
     "K사 앰플 3개": {"cost": 200, "desc": "사망에 이르는 피해를 입을 시, 3회 부활합니다."},
-    "T사 수사관 배지": {"cost": 250, "desc": "치명적인 위기의 순간, 1회 시간을 정지시켜 회피한 뒤 칼리의 시간을 조금 되돌려 기세를 꺾습니다."},
+    "T사 수사관 배지": {"cost": 250, "desc": "치명적인 위기의 순간, 1회 붉은안개가 기세를 올리기 전으로 시간을 되감습니다!"},
     "인식 저해 가면": {"cost": 275, "desc": "칼리의 공격이 당신을 향할 확률과 위력을 30% 감소시킵니다."},
     "M사 월광석": {"cost": 425, "desc": "칼리의 정신 착란을 완화하여, 버텨야 할 시간을 18시간으로 단축합니다."}
 }
@@ -212,13 +212,13 @@ if st.button("⏳ 시뮬레이션 시작"):
             # [칼리 기본 공격력 결정]
             if hour <= 12:
                 kali_max_roll = 10 if "R사 제 4무리 대장들" in selected_guards else 20
-                kali_base = 60 + (hour * 5) 
+                kali_base = 50 + (hour * 5) 
                 kali_roll = random.randint(kali_base - 10, kali_base + kali_max_roll)
                 if hour == 1:
                     hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 대검을 가볍게 쥐고 천천히 접근합니다.\n\n"
             else:
                 kali_max_roll = 15 if "R사 제 4무리 대장들" in selected_guards else 40
-                kali_base = 110 + ((hour - 12) * 18) 
+                kali_base = 100 + ((hour - 12) * 18) 
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
                 if hour == 13:
                     hour_log += "> 🔴 **[E.G.O 발현]** *\"이것이...내 껍데기다.\"* 칼리가 붉은 갑주로 스스로를 감싸며 위력이 폭증합니다!\n\n"
@@ -316,14 +316,14 @@ if st.button("⏳ 시뮬레이션 시작"):
                 elif has_t_badge:
                     has_t_badge = False
                     kali_perm_debuff += 30  # 시간 역행으로 칼리의 위력 스노우볼을 깎아버림
-                    hour_log += f"> ⏱️ **[시간 역행]** 방어선이 붕괴된 순간, T사 배지를 부수어 붉은안개가 기세를 올리기 전으로 시간을 되감습니다!\n\n"
-                    hour_log += f"> ⚠️ **(강제 생존 / 붉은안개의 영구 위력 30 감소)**\n\n"
+                    hour_log += f"> ⏱️ **[시간 역행]** 방어선이 붕괴된 순간, 배지를 부수어 붉은안개가 기세를 올리기 전으로 시간을 되감습니다!\n\n"
+                    hour_log += f"> ⚠️ **(강제 생존 / 붉은안개의 위력이 영구적으로 30 감소)**\n\n"
                 elif revives_left > 0:
                     revives_left -= 1
                     if is_angelica_alive and random.random() < 0.5: is_angelica_alive = False
                     hour_log += f"> 💊 **[치명상 발생]** K사 앰플의 효과로 육체가 즉시 수복됩니다. (남은 앰플: {revives_left})\n\n"
                 else:
-                    hour_log += f"> 💀 **[방어 수단 소진]** 붉은안개의 대검이 당신을 갈랐습니다.\n\n"
+                    hour_log += f"> 💀 **[방어 수단 소진]** 붉은안개의 미미크리가 당신을 갈랐습니다.\n\n"
                     battle_logs += hour_log
                     log_container.markdown(battle_logs)
                     survival_status = False
