@@ -312,12 +312,6 @@ if st.button("⏳ 시뮬레이션 시작"):
                 # [수정점] 상시 유지 버프는 1시간째에 한 번만 출력되도록 제한
                 if hour == 1:
                     hour_log += "> 🐉 **[천강성의 오망]** 옥기린의 가르침으로, 아군 전체의 방어 점수가 1.2배 증폭됩니다!\n\n"
-                
-            if "어느 싱클레어" in selected_guards and hour <= 4: 
-                current_team_power += guards_db["어느 싱클레어"]["power"]
-                # [수정점] 4시간 동안 유지되는 초반 버프 역시 1시간째에 한 번만 선언
-                if hour == 1:
-                    hour_log += "> 🌿 **[아브락사스의 전차]** 싱클레어가 전차와도 같은 맹렬한 기세로 전열을 굳힙니다!\n\n"
 
             if "LCD 에즈라" in selected_guards:
                 ezra_buff = random.randint(5, 25)
