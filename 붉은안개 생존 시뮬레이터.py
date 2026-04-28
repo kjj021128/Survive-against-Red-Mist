@@ -86,6 +86,8 @@ if st.button("⏳ 시뮬레이션 시작"):
         log_container = st.empty()
         survival_status = True
 
+        last_myat_counter_hour = -99  # 마티아스의 마지막 반격 턴 기록 (처음엔 발동한 적 없으므로 임의의 음수)
+
         # 시간 흐름 루프 시작
         for hour in range(1, target_hours + 1):
             hour_log = f"**🕒 [{hour}시간 경과]**\n"
@@ -294,10 +296,14 @@ if st.button("⏳ 시뮬레이션 시작"):
                 hour_log += f"> 🛡️ **방어 성공!** (칼리의 위력: {effective_kali_attack} / 호위 방어선: {int(current_team_power)})\n\n"
             else:
                 if "중지 아비 마티아스" in selected_guards and effective_kali_attack > current_team_power:
-                    damage_diff = effective_kali_attack - current_team_power
-                    counter_reflect = min(int(damage_diff * 0.1), 30)
-                    effective_kali_attack -= counter_reflect
-                    hour_log += f"> ⛓️ **[앙갚음]** 마티아스가 받은 피해의 10%({counter_reflect})를 즉각 되돌려주어 충격을 완화했습니다!\n\n"
+                    if hour > last_myat_counter_hour + 1:
+                        damage_diff = effective_kali_attack - current_team_power
+                        counter_reflect = int(damage_diff * 0.15) # 15% 반사
+                        effective_kali_attack -= counter_reflect
+                        last_myat_counter_hour = hour
+                        hour_log += f"> ⛓️ **[되갚아주지!]** 마티아스가 받은 피해의 15%({counter_reflect})를 즉각 되돌려주어 충격을 완화했습니다!\n\n"
+                    else:
+                        hour_log += "> ⛓️ **[숨 고르기]** 마티아스가 직전의 무리한 반격으로 인해 체제를 정비하느라 나서지 못합니다.\n\n"
                 elif blood_gauge >= 50:
                     blood_gauge -= 50
                     hour_log += f"> 🩸 **[경혈식 발동]** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
