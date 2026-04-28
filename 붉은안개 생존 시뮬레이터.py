@@ -437,7 +437,9 @@ if st.button("⏳ 시뮬레이션 시작"):
                 kali_perm_debuff += 5
                 hour_log += "> 🍂 **[알을 깨고 나온 자]** 힘을 다한 싱클레어가 물러나며, 연기 장막을 영구적으로 남깁니다.\n\n"
 
-            last_hour_gap = max(0, effective_kali_attack - current_team_power)
+            raw_gap = abs(effective_kali_attack - current_team_power)
+            last_hour_gap = min(300, raw_gap) 
+            
             battle_logs += hour_log
             log_container.markdown(battle_logs)
 
