@@ -32,7 +32,7 @@ guards_db = {
 
 items_db = {
     "K사 앰플 3개": {"cost": 200, "desc": "사망에 이르는 피해를 입을 시, 3회 부활합니다."},
-    "T사 수사관 배지": {"cost": 250, "desc": "치명적인 위기의 순간, 1회 붉은안개가 기세를 올리기 전으로 시간을 되감습니다!"},
+    "T사 수사관 배지": {"cost": 250, "desc": "치명적인 위기의 순간, 붉은안개가 기세를 올리기 전으로 시간을 되감습니다."},
     "인식 저해 가면": {"cost": 275, "desc": "칼리의 공격이 당신을 향할 확률과 위력을 30% 감소시킵니다."},
     "M사 월광석": {"cost": 425, "desc": "칼리의 정신 착란을 완화하여, 버텨야 할 시간을 18시간으로 단축합니다."}
 }
@@ -200,9 +200,11 @@ if st.button("⏳ 시뮬레이션 시작"):
                 current_team_power += ezra_buff
                 hour_log += f"> 🛠️ **[시제품 테스트]** 에즈라가 미완성 장비를 가동합니다! (추가 방어선 +{ezra_buff})\n\n"
 
-            if "엄지 아비 발렌치나" in selected_guards and hour % 3 == 0:
-                current_team_power += 30
-                hour_log += "> 🧥 **[팔레르모 검술]** 발렌치나가 예비 탄환을 쏟아부어 화력을 집중합니다! (이번 시간 방어선 +30)\n\n"
+            if "엄지 아비 발렌치나" in selected_guards:
+                burn_stack += (2 + thumb_burn_bonus)
+                if hour % 3 == 0:
+                    current_team_power += 30
+                    hour_log += "> 🧥 **[팔레르모 검술]** 발렌치나가 예비 탄환을 쏟아부어 화력을 집중합니다! (이번 시간 방어선 +30)\n\n"
                 
             if is_angelica_alive: 
                 angelica_buff = random.randint(5, 45)
