@@ -344,7 +344,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                             hour_log += "> 🎭 :blue[**[시너지 발동: 공조의 극의]**] 롤랑의 빈틈없는 엄호가 뤼엔의 서툰 동작을 보완합니다! (대실패 면역)\n\n"
                         else:
                             current_team_power -= (base_power + 1) # 방금 더했던 위력을 다시 빼서 0으로 무효화
-                            hour_log += f"> 🌀 **[빗나감]** {guard}의 공격이 완전히 빗나가며 붉은안개에게 무방비하게 노출됩니다! (위력 무효화)\n\n"
+                            hour_log += f"> 🌀 **[빗나감]** {guard}의 공격이 완전히 빗나가며 붉은안개에게 무방비하게 노출됩니다! ({guard} 위력 무효화)\n\n"
             
             if "옥기린 가치우" in selected_guards: 
                 current_team_power *= 1.2
@@ -455,7 +455,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             # 뤼엔의 지령 회피 (15% 확률로 위력 0)
             if "검지 아비 뤼엔" in selected_guards and random.random() < 0.15:
                 effective_kali_attack = 0
-                hour_log += "> 📜 **[지령 수행]** 뤼엔이 헤르메스의 의지로 칼리의 공격을 완전히 간파해냅니다! (위력 무효화)\n\n"
+                hour_log += "> 📜 **[지령 수행]** 뤼엔이 헤르메스의 의지로 칼리의 공격을 완전히 간파해냅니다! (칼리의 위력 무효화)\n\n"
 
             if effective_kali_attack < 0: effective_kali_attack = 0
 
