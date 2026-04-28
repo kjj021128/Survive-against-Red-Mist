@@ -321,7 +321,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             if "LCD 에즈라" in selected_guards:
                 ezra_buff = random.randint(5, 25)
                 current_team_power += ezra_buff
-                hour_log += f"> 🛠️ :blue[**[시제품 테스트]**] 에즈라가 미완성 장비를 가동합니다! (+{ezra_buff})\n\n"
+                hour_log += f"> 🛠️ **[시제품 테스트]** 에즈라가 가방에서 미완성 무기를 뽑아듭니다! (+{ezra_buff})\n\n"
                 # ⚔️ [무기 진심녀] 시너지 발동 (30% 확률로 추가 무기 전개)
                 if "검은침묵 안젤리카" in selected_guards and random.random() < 0.30:
                     extra_buff = random.randint(5, 25)
