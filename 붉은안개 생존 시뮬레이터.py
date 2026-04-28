@@ -318,12 +318,10 @@ if st.button("⏳ 시뮬레이션 시작"):
             # [롤랑 기믹 처리]
             if "롤랑" in selected_guards:
                 if is_roland_berserk:
-                    roland_base_power = guards_db["롤랑"]["power"] 
-                    current_team_power -= roland_base_power 
-                    
+                    current_team_power += 9999 
                     kali_perm_debuff += 25 
                     
-                    hour_log += f"> ⬛ **[맹목적인 분노]** 롤랑이 진형을 이탈하여 붉은안개에게 자비 없는 난격을 쏟아붓습니다! (팀 방어선 -{roland_base_power} / 칼리 영구 위력 -25)\n\n"
+                    hour_log += "> ⬛ **[침묵의 사냥]** 롤랑이 당신의 앞을 가로막고 붉은안개와 단독 혈투를 벌입니다! (플레이어 무적 / 칼리 위력 지속적으로 -25)\n"
                     if random.random() < 0.20:
                         selected_guards.remove("롤랑")
                         hour_log += "> 🥀 **[침묵]** 롤랑이 피를 토하며 쓰러집니다... 복수귀의 처절한 춤사위가 마침내 끝을 맺었습니다.\n\n"
@@ -331,6 +329,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         hour_log += "\n"
                         
                 else:
+                    # --- (B) 일반 상태: 기존 6시간 주기 기믹 유지 ---
                     if hour % 6 == 0:
                         temp_debuff += 50
                         if "검은침묵 안젤리카" in selected_guards:
