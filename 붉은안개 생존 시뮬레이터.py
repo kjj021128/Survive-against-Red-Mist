@@ -178,7 +178,7 @@ if st.button("⏳ 시뮬레이션 시작"):
 
         # 시간 흐름 루프 시작
         for hour in range(1, target_hours + 1):
-            hour_log = f"## **🕒 [{hour}시간 경과]**\n"
+            hour_log = f"#### **🕒 [{hour}시간 경과]**\n"
             
             # [이오리 기믹] 차원 도약
             if "보라눈물 이오리" in selected_guards and hour % 4 == 0:
