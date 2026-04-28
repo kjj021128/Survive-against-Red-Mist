@@ -39,7 +39,7 @@ items_db = {
 
 st.set_page_config(page_title="Project Moon: 생존 시뮬레이터", layout="wide")
 st.title("🔴 붉은안개 생존 시뮬레이터")
-st.markdown("전성기 시절의 붉은안개 칼리가 당신을 살해하기 위해 찾아옵니다...행운을 빌죠!")
+st.markdown("전성기 시절의 붉은안개 칼리가 당신을 연구소 테러범으로 착각하고 있습니다...")
 
 st.write("---")
 
@@ -204,67 +204,108 @@ if st.button("⏳ 시뮬레이션 시작"):
                     if roll == max_dice:
                         if guard == "LCD 에즈라":
                             current_team_power += 15
-                            hour_log += "> 🛠️ **[유리아 공방 - 총공 모드, 마크 17!]** 에즈라가 온갖 무기를 한꺼번에 전개하여 화력을 쏟아붓습니다!\n\n"
+                            hour_log += "### 💥 :red[[필살기: 유리아 공방 - 총공 모드, 마크 17!]]\n"
+                            hour_log += "> 에즈라가 온갖 무기를 한꺼번에 전개하여 화력을 쏟아붓습니다!\n\n"
+                        
                         elif guard == "LCD 팀장 모제스":
-                            kali_perm_debuff += 10 # 위력 대신 칼리 영구 디버프 부여
-                            hour_log += "> 👁️ **[붉은 점]** 모제스가 연기 너머로 E.G.O의 가장 취약한 틈새를 꿰뚫어 봅니다! (칼리 영구 위력 -10)\n\n"
+                            kali_perm_debuff += 10 
+                            hour_log += "### 👁️ :red[[필살기: 붉은 점]]\n"
+                            hour_log += "> 모제스가 연기 너머로 E.G.O의 가장 취약한 틈새를 꿰뚫어 봅니다! (칼리 영구 위력 -10)\n\n"
+                        
                         elif guard == "천퇴성 뇌횡":
                             current_team_power += 20
-                            hour_log += "> 🐯 **[초절맹호살격난참]** 뇌횡이 맹호의 기세로 적의 숨통을 끊을 난격을 꽂아 넣습니다!\n\n"
+                            hour_log += "### 🐯 :red[[필살기: 초절맹호살격난참]]\n"
+                            hour_log += "> 뇌횡이 맹호의 기세로 적의 숨통을 끊을 난격을 꽂아 넣습니다!\n\n"
+                        
                         elif guard == "어느 싱클레어":
                             current_team_power += 25
-                            hour_log += "> 🌿 **[취수낭랑 - 성]** 어느 싱클레어의 맑은 일격이 붉은안개의 참격을 유려하게 흘려냅니다!\n\n"
+                            hour_log += "### 🌿 :red[[필살기: 취수낭랑 - 성]]\n"
+                            hour_log += "> 어느 싱클레어의 맑은 일격이 붉은안개의 참격을 유려하게 흘려냅니다!\n\n"
+                        
                         elif guard == "제2권속 산초":
                             current_team_power += 30
-                            hour_log += "> 🩸 **[아류 산초 경혈식 - 라 샹그레]** 산초가 끓어오르는 피를 창끝에 모아 폭발시킵니다!\n\n"
+                            hour_log += "### 🩸 :red[[필살기: 아류 산초 경혈식 - 라 샹그레]]\n"
+                            hour_log += "> 산초가 끓어오르는 피를 창끝에 모아 폭발시킵니다!\n\n"
+                        
                         elif guard == "R사 제 4무리 대장들":
                             current_team_power += 35
-                            hour_log += "> 🎯 **[처분]** 니콜라이의 완벽한 표식 위로 대장들의 치명적인 협공이 꽂힙니다!\n\n"
+                            hour_log += "### 🎯 :red[[필살기: 처분]]\n"
+                            hour_log += "> 니콜라이의 완벽한 표식 위로 대장들의 치명적인 협공이 꽂힙니다!\n\n"
+                        
                         elif guard == "E.G.O 발현 샤오":
                             current_team_power += 35
-                            hour_log += "> 🐉 **[도철]** 샤오가 불타오르는 언월도를 휘두르며 거대한 화염의 용을 뿜어냅니다!\n\n"
+                            hour_log += "### 🐉 :red[[필살기: 도철]]\n"
+                            hour_log += "> 샤오가 불타오르는 언월도를 휘두르며 거대한 화염의 용을 뿜어냅니다!\n\n"
+                        
                         elif guard == "엄지 아비 발렌치나":
                             current_team_power += 35
-                            hour_log += "> 🔫 **[세치오나투라 디 엘레판테]** 발렌치나가 원망을 실은 칼날 두 자루를 무자비하게 휘두릅니다!\n\n"
+                            hour_log += "### 🔫 :red[[필살기: 세치오나투라 디 엘레판테]]\n"
+                            hour_log += "> 발렌치나가 원망을 실은 칼날 두 자루를 무자비하게 휘두릅니다!\n\n"
+                        
                         elif guard == "중지 아비 마티아스":
                             current_team_power += 35
-                            hour_log += "> ⛓️ **[즉결처형 - 레바테인]** 마티아스가 장부의 기록에 따라 피할 수 없는 징벌을 내립니다!\n\n"
+                            hour_log += "### ⛓️ :red[[필살기: 즉결처형 - 레바테인]]\n"
+                            hour_log += "> 마티아스가 장부의 기록에 따라 피할 수 없는 징벌을 내립니다!\n\n"
+                        
                         elif guard == "노란작살 베스파":
                             current_team_power += 40
-                            hour_log += "> 🐝 **[섬봉광검술 - 환도]** 베스파가 시야에서 사라진 순간, 사각을 파고드는 치명적인 참격이 작렬합니다!\n\n"
+                            hour_log += "### 🐝 :red[[필살기: 섬봉광검술 - 환도]]\n"
+                            hour_log += "> 베스파가 시야에서 사라진 순간, 사각을 파고드는 치명적인 참격이 작렬합니다!\n\n"
+                        
                         elif guard == "검지 아비 뤼엔":
                             current_team_power += 40
-                            hour_log += "> 📜 **[Furioso - Replica]** 뤼엔이 헤르메스의 의지로 검은침묵의 난무를 기괴하게 모방해냅니다!\n\n"
+                            hour_log += "### 📜 :red[[필살기: Furioso - Replica]]\n"
+                            hour_log += "> 뤼엔이 헤르메스의 의지로 검은침묵의 난무를 기괴하게 모방해냅니다!\n\n"
+                        
                         elif guard == "붉은시선 베르길리우스":
                             current_team_power += 45
-                            hour_log += "> 🩸 **[죽은 혈귀를 위한 장례]** 베르길리우스의 글라디우스가 피의 궤적을 그리며 주변을 압도합니다!\n\n"
+                            hour_log += "### 🩸 :red[[필살기: 죽은 혈귀를 위한 장례]]\n"
+                            hour_log += "> 베르길리우스의 글라디우스가 피의 궤적을 그리며 주변을 압도합니다!\n\n"
+                        
                         elif guard == "옥기린 가치우":
                             current_team_power += 45
-                            hour_log += "> 🐉 **[천강성 - 격]** 가치우의 봉에 다섯 개의 망이 감기고, 파괴적인 힘을 뿜어냅니다!\n\n"
+                            hour_log += "### 🐉 :red[[필살기: 천강성 - 격]]\n"
+                            hour_log += "> 가치우의 봉에 다섯 개의 망이 감기고, 파괴적인 힘을 뿜어냅니다!\n\n"
+                        
                         elif guard == "푸른잔향 아르갈리아":
                             current_team_power += 50
-                            hour_log += "> 🎼 **[최후의 선율]** 아르갈리아가 광소하며 치명적인 진동의 낫을 휘두릅니다!\n\n"
+                            hour_log += "### 🎼 :red[[필살기: 최후의 선율]]\n"
+                            hour_log += "> 아르갈리아가 광소하며 치명적인 진동의 낫을 휘두릅니다!\n\n"
+                        
                         elif guard == "롤랑":
                             current_team_power += 50
-                            hour_log += "> ⬛ **[Furioso]** 롤랑이 9개의 무기를 꺼내어 숨 쉴 틈 없는 난무를 펼칩니다!\n\n"
+                            hour_log += "### ⬛ :red[[필살기: Furioso]]\n"
+                            hour_log += "> 롤랑이 9개의 무기를 꺼내어 숨 쉴 틈 없는 난무를 펼칩니다!\n\n"
+                        
                         elif guard == "검은침묵 안젤리카":
                             current_team_power += 50
-                            hour_log += "> 🧤 **[백색 왈츠]** 안젤리카가 무도회를 거닐듯 우아하고도 파괴적인 공방 무기 연계를 선보입니다!\n\n"
+                            hour_log += "### 🧤 :red[[필살기: 백색 왈츠]]\n"
+                            hour_log += "> 안젤리카가 무도회를 거닐듯 우아하고도 파괴적인 공방 무기 연계를 선보입니다!\n\n"
+                        
                         elif guard == "보라눈물 이오리":
                             current_team_power += 50
-                            hour_log += "> 🔮 **[환영난무]** 보라눈물이 여러 차원의 자세를 동시에 전개하여 회피불능의 참격을 날립니다!\n\n"
+                            hour_log += "### 🔮 :red[[필살기: 환영난무]]\n"
+                            hour_log += "> 보라눈물이 여러 차원의 자세를 동시에 전개하여 회피불능의 참격을 날립니다!\n\n"
+                        
                         elif guard == "처형자 바랄":
                             current_team_power += 55
-                            hour_log += "> 💉 **[혈청 R]** 바랄이 혈청 R을 투여하여 폭발적인 기세로 칼리에게 돌진합니다!\n\n"
+                            hour_log += "### 💉 :red[[필살기: 혈청 R]]\n"
+                            hour_log += "> 바랄이 혈청 R을 투여하여 폭발적인 기세로 칼리에게 돌진합니다!\n\n"
+                        
                         elif guard == "바퀴 황제":
                             current_team_power += 60
-                            hour_log += "> 🪳 **[황제의 적출]** 진화를 거듭한 황제가 거대한 껍데기를 휘둘러 대지를 짓뭉갭니다!\n\n"
+                            hour_log += "### 🪳 :red[[필살기: 황제의 적출]]\n"
+                            hour_log += "> 진화를 거듭한 황제가 거대한 껍데기를 휘둘러 대지를 짓뭉갭니다!\n\n"
+                        
                         elif guard == "핏빛 밤 엘레나":
                             current_team_power += 70
-                            hour_log += "> 🧛‍♀️ **[핏빛 밤의 분노]** 엘레나가 굶주림을 개방하여 시야에 보이는 모든 것을 찢어발깁니다!\n\n"
+                            hour_log += "### 🧛‍♀️ :red[[필살기: 핏빛 밤의 분노]]\n"
+                            hour_log += "> 엘레나가 굶주림을 개방하여 시야에 보이는 모든 것을 찢어발깁니다!\n\n"
+                        
                         elif guard == "장로 돈키호테":
                             current_team_power += 85
-                            hour_log += "> 🎠 **[돈키호테류 경혈 오의 - 구]** 장로 돈키호테가 만든 피의 구가 폭발하며 전장을 뒤덮습니다!\n\n"
+                            hour_log += "### 🎠 :red[[필살기: 돈키호테류 경혈 오의 - 구]]\n"
+                            hour_log += "> 장로 돈키호테가 만든 피의 구가 폭발하며 전장을 뒤덮습니다!\n\n"
                     # 💥 [대실패 발동 로직] 주사위가 1이 떴을 때! (f-string으로 우아하게 통합)
                     elif roll == 1:
                         current_team_power -= (base_power + 1) # 방금 더했던 위력을 다시 빼서 0으로 무효화
@@ -313,7 +354,8 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += "> 🔴 **[E.G.O 발현]** 칼리가 붉은 갑주로 스스로를 감싸며 위력이 폭증합니다!\n\n"
                 if hour == 20:
                     kali_roll = 225
-                    hour_log += "> ⚠️ **[대절단 - 가로]** 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
+                    hour_log += "### ⚠️ :red[[필살기: 대절단 - 가로]]\n"
+                    hour_log += "> *\"갈라져라!\"* 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
             
             # [다수의 적을 상대할 때 칼리의 투지 상승 (1명당 위력 +8)]
             crowd_bonus = len(selected_guards) * 8
