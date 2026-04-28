@@ -119,7 +119,7 @@ if smoke_war_count >= 2:
 
 # 10. 🎭 [원본과 모조품] 시너지
 if "롤랑" in selected_guards and "검지 아비 뤼엔" in selected_guards:
-    synergy_messages.append("💡 **[시너지 발견: 진품과 모조품]** 뤼엔이 롤랑의 움직임을 모방하며 필살기 발동 확률이 폭증하고, 두 사람의 필살기 위력이 1.5배 증가합니다!")
+    synergy_messages.append("💡 **[시너지 발견: 진품과 모조품]** 뤼엔이 롤랑의 움직임을 모방하며 필살기 발동 확률이 폭증하고, 뤼엔의 공격이 반드시 명중합니다!")
 
 # 시너지 알림창 출력 (Streamlit의 초록색 성공 박스 활용)
 if synergy_messages:
@@ -253,7 +253,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         
                         elif guard == "어느 싱클레어":
                             current_team_power += 25
-                            hour_log += "> 🌿 :red[**[필살기: 취수낭랑 - 성]**] 어느 싱클레어의 맑은 일격이 붉은안개의 참격을 유려하게 흘려냅니다!\n\n"
+                            hour_log += "> 🐣 :red[**[필살기: 취수낭랑 - 성]**] 어느 싱클레어의 맑은 일격이 붉은안개의 참격을 유려하게 흘려냅니다!\n\n"
                         
                         elif guard == "제2권속 산초":
                             current_team_power += 30
@@ -281,8 +281,8 @@ if st.button("⏳ 시뮬레이션 시작"):
                         
                         elif guard == "검지 아비 뤼엔":
                             if "롤랑" in selected_guards:
-                                current_team_power += 60
-                                hour_log += "> 📜 :red[**[필살기: Furioso - Replica (공명)]**] 뤼엔이 원본의 움직임에 완벽히 동기화하여 파괴적인 모방 난무를 펼칩니다!\n\n"
+                                current_team_power += 40
+                                hour_log += "> 📜 :red[**[필살기: Furioso - Replica]**] 뤼엔이 원본의 움직임에 완벽히 동기화하여 파괴적인 모방 난무를 펼칩니다!\n\n"
                             else:
                                 current_team_power += 40
                                 hour_log += "> 📜 :red[**[필살기: Furioso - Replica]**] 뤼엔이 헤르메스의 의지로 검은침묵의 난무를 기괴하게 모방해냅니다!\n\n"
@@ -301,7 +301,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         
                         elif guard == "롤랑":
                             if "검지 아비 뤼엔" in selected_guards:
-                                current_team_power += 75
+                                current_team_power += 50
                                 hour_log += "> ⬛ :red[**[필살기: Furioso]**] 롤랑이 모조품 앞에서 원본의 숨 쉴 틈 없는 난무를 보여줍니다!\n\n"
                             else:
                                 current_team_power += 50
@@ -332,8 +332,16 @@ if st.button("⏳ 시뮬레이션 시작"):
                             hour_log += "> 🎠 :red[**[필살기: 돈키호테류 경혈 오의 - 구]**] 장로 돈키호테가 만든 피의 구가 폭발하며 전장을 뒤덮습니다!\n\n"
                     # 💥 [대실패 발동 로직] 주사위가 1이 떴을 때! (f-string으로 우아하게 통합)
                     elif roll == 1:
-                        current_team_power -= (base_power + 1) # 방금 더했던 위력을 다시 빼서 0으로 무효화
-                        hour_log += f"> 🌀 **[빗나감]** {guard}의 공격이 완전히 빗나가며 붉은안개에게 무방비하게 노출됩니다! (위력 무효화)\n\n"
+                        # 1. 어느 싱클레어 (기본 패시브)
+                        if guard == "어느 싱클레어":
+                            hour_log += "> 🐣 :**[흔들림 없는 자세]** 싱클레어의 맑은 일격은 결코 빗나가지 않습니다! (대실패 면역)\n\n"
+                        
+                        # 2. 검지 아비 뤼엔 (롤랑 시너지 시 발동)
+                        elif guard == "검지 아비 뤼엔" and "롤랑" in selected_guards:
+                            hour_log += "> 🎭 :blue[**[공조의 극의]**] 롤랑의 빈틈없는 엄호가 뤼엔의 서툰 동작을 보완합니다! (대실패 면역)\n\n"
+                        else:
+                            current_team_power -= (base_power + 1) # 방금 더했던 위력을 다시 빼서 0으로 무효화
+                            hour_log += f"> 🌀 **[빗나감]** {guard}의 공격이 완전히 빗나가며 붉은안개에게 무방비하게 노출됩니다! (위력 무효화)\n\n"
             
             if "옥기린 가치우" in selected_guards: 
                 current_team_power *= 1.2
