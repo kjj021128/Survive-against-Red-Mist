@@ -191,11 +191,11 @@ if st.button("⏳ 시뮬레이션 시작"):
             if "LCD 에즈라" in selected_guards:
                 ezra_buff = random.randint(5, 25)
                 current_team_power += ezra_buff
-                hour_log += f"> 🛠️ **[시제품 테스트]** 에즈라가 미완성 장비를 가동합니다! (추가 방어선 +{ezra_buff})\n"
+                hour_log += f"> 🛠️ **[시제품 테스트]** 에즈라가 미완성 장비를 가동합니다! (추가 방어선 +{ezra_buff})\n\n"
 
             if "엄지 아비 발렌치나" in selected_guards and hour % 3 == 0:
                 current_team_power += 30
-                hour_log += "> 🧥 **[엄지의 규율]** 발렌치나가 예비 탄환을 쏟아부어 화력을 집중합니다! (이번 시간 방어선 +30)\n"
+                hour_log += "> 🧥 **[팔레르모 검술]** 발렌치나가 예비 탄환을 쏟아부어 화력을 집중합니다! (이번 시간 방어선 +30)\n\n"
                 
             if is_angelica_alive: 
                 angelica_buff = random.randint(5, 45)
@@ -251,12 +251,12 @@ if st.button("⏳ 시뮬레이션 시작"):
             if "뒤틀림 탐정 모제스" in selected_guards:
                 reduction = int(effective_kali_attack * 0.15)
                 effective_kali_attack -= reduction
-                hour_log += f"> 💨 **[곰방대의 연기]** 모제스가 연기를 뿜어 칼리의 공격 궤적을 흐트러뜨립니다. (위력 -15% : {reduction})\n"
+                hour_log += f"> 💨 **[곰방대의 연기]** 모제스가 연기를 뿜어 칼리의 공격 궤적을 흐트러뜨립니다. (위력 -15% : {reduction})\n\n"
 
             # 뤼엔의 지령 회피 (15% 확률로 위력 0)
             if "검지 아비 뤼엔" in selected_guards and random.random() < 0.15:
                 effective_kali_attack = 0
-                hour_log += "> 📜 **[지령 수행]** 뤼엔이 지령에 적힌 불합리한 회피 경로를 완벽히 수행해 냈습니다! (위력 무효화)\n"
+                hour_log += "> 📜 **[지령 수행]** 뤼엔이 지령에 적힌 불합리한 회피 경로를 완벽히 수행해 냈습니다! (위력 무효화)\n\n"
 
             if effective_kali_attack < 0: effective_kali_attack = 0
 
@@ -285,7 +285,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     damage_diff = effective_kali_attack - current_team_power
                     counter_reflect = int(damage_diff * 0.30) # 30% 반사
                     effective_kali_attack -= counter_reflect
-                    hour_log += f"> ⛓️ **[앙갚음]** 마티아스가 받은 피해의 30%({counter_reflect})를 즉각 되돌려주어 충격을 완화했습니다!\n"
+                    hour_log += f"> ⛓️ **[앙갚음]** 마티아스가 받은 피해의 30%({counter_reflect})를 즉각 되돌려주어 충격을 완화했습니다!\n\n"
                 elif blood_gauge >= 50:
                     blood_gauge -= 50
                     hour_log += f"> 🩸 **[경혈식 발동]** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
