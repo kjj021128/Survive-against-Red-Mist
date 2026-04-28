@@ -120,7 +120,8 @@ if st.button("⏳ 시뮬레이션 시작"):
         
         blood_gauge = (100 if "제2권속 산초" in selected_guards else 0) + (300 if "장로 돈키호테" in selected_guards else 0)
         baral_w_serum = 2 if "처형자 바랄" in selected_guards else 0
-        is_roland_berserk = False  
+        is_roland_berserk = False
+        last_hour_gap = 0  # 직전 시간의 위력 격차 저장
         gachiu_shield_used = False
         is_angelica_alive = "검은침묵 안젤리카" in selected_guards
 
@@ -151,7 +152,7 @@ if st.button("⏳ 시뮬레이션 시작"):
         # 6. 📜 [소지] 시너지 (영구 방어선 증가)
         if "옥기린 가치우" in selected_guards and "천퇴성 뇌횡" in selected_guards:
             persistent_power_bonus += 15
-        
+
         battle_logs = ""
         log_container = st.empty()
         survival_status = True
@@ -312,8 +313,10 @@ if st.button("⏳ 시뮬레이션 시작"):
                 hour_log += f"> 🔥 **[화상 누적]** 타오르는 불꽃이 칼리의 육체를 갉아먹어 위력을 {current_burn_penalty}만큼 깎아냅니다.\n\n"
             
             if "노란작살 베스파" in selected_guards and hour % 3 == 0: 
-                temp_debuff += 30
-                hour_log += "> 🐝 **[궁니르 공명]** 노란작살 베스파가 맹렬한 찌르기로 칼리의 템포를 늦춥니다! (위력 -30)\n\n"
+                # 기본 30 + 지난 격차의 20% 보너스
+                tactical_bonus = int(last_hour_gap * 0.2)
+                temp_debuff += (30 + tactical_bonus)
+                hour_log += f"> 🐝 **[궁니르 공명]** 베스파가 칼리의 공격 궤적에서 찾아낸 허점을 놓치지 않고 찌릅니다! (위력 -30 / 전술 보너스 -{tactical_bonus})\n\n"
             
             # [롤랑 기믹 처리]
             if "롤랑" in selected_guards:
@@ -329,13 +332,16 @@ if st.button("⏳ 시뮬레이션 시작"):
                         hour_log += "\n"
                         
                 else:
-                    # --- (B) 일반 상태: 기존 6시간 주기 기믹 유지 ---
+                    # --- (B) 일반 상태: 전술적 복기 적용 ---
                     if hour % 6 == 0:
-                        temp_debuff += 50
+                        # 기본 50 + 지난 격차의 40% 보너스
+                        tactical_bonus = int(last_hour_gap * 0.4)
+                        temp_debuff += (50 + tactical_bonus)
+                        
                         if "검은침묵 안젤리카" in selected_guards:
-                            hour_log += "> ⬛ **[검은침묵의 왈츠]** 롤랑이 안젤리카와 완벽한 호흡으로 무기를 교차하며 적의 기세를 꺾습니다! (이번 턴 칼리 위력 -50)\n\n"
+                            hour_log += f"> ⬛ **[검은침묵의 왈츠]** 롤랑 부부가 지난 공방의 빈틈을 완벽히 분석했습니다! (위력 -50 / 전술 보너스 -{tactical_bonus})\n\n"
                         else:
-                            hour_log += "> ⬛ **[뒤랑달]** 롤랑이 뒤랑달을 맹렬히 휘둘러 칼리의 기세를 일시적으로 꺾었습니다! (이번 턴 칼리 위력 -50)\n\n"
+                            hour_log += f"> ⬛ **[뒤랑달]** 롤랑이 홀로 칼리의 흐트러진 자세를 파고들어 맹공을 퍼붓습니다! (위력 -50 / 전술 보너스 -{tactical_bonus})\n\n"
             
             if "R사 제 4무리 대장들" in selected_guards:
                 hour_log += "> 🎯 **[처분 표식]** 니콜라이의 지휘로 칼리의 위력 최댓값이 억제되고 있습니다.\n\n"
@@ -430,7 +436,8 @@ if st.button("⏳ 시뮬레이션 시작"):
                 team_power_base -= guards_db["어느 싱클레어"]["power"]
                 kali_perm_debuff += 5
                 hour_log += "> 🍂 **[알을 깨고 나온 자]** 힘을 다한 싱클레어가 물러나며, 연기 장막을 영구적으로 남깁니다.\n\n"
-            
+
+            last_hour_gap = max(0, effective_kali_attack - current_team_power)
             battle_logs += hour_log
             log_container.markdown(battle_logs)
 
