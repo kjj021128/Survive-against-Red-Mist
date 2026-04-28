@@ -90,7 +90,6 @@ if "엄지 아비 발렌치나" in selected_guards and "천퇴성 뇌횡" in sel
 
 # 4. 🕸️ [거미집] 시너지 판정 (2명 이상일 때)
 spider_members = ["엄지 아비 발렌치나", "검지 아비 뤼엔", "중지 아비 마티아스"]
-# 선택된 명단 중 거미집 멤버가 몇 명인지 숫자로 셉니다.
 spider_count = sum(1 for g in spider_members if g in selected_guards)
 if spider_count >= 2:
     synergy_messages.append(f"💡 **[시너지 발견: 거미집의 사냥법]** {spider_count}인의 아비가 모여 거미줄을 칩니다! (붉은안개의 위력 -50)")
@@ -103,6 +102,14 @@ if len(color_fixers) >= 2:
 # 6. 📜 [소지] 시너지
 if "옥기린 가치우" in selected_guards and "천퇴성 뇌횡" in selected_guards:
     synergy_messages.append("💡 **[시너지 발견: 엇갈린 맹약]** 인협과 호걸의 기묘한 조화가 이루어집니다! (아군 진형의 영구 방어 점수 +15 상승)")
+
+# 7. 👁️‍🗨️ [차원 유랑] 시너지
+if "처형자 바랄" in selected_guards and "보라눈물 이오리" in selected_guards:
+    synergy_messages.append("💡 **[시너지 발견: 차원 도약]** 이오리와 바랄이 차원을 가로지르는 경험에 대하여 담소를 나눕니다! (바랄의 혈청 W를 추가로 한 번 더 사용 가능)")
+
+# 8. ⚔️ [무기 진심녀] 시너지
+if "LCD 에즈라" in selected_guards and "검은침묵 안젤리카" in selected_guards:
+    synergy_messages.append("💡 **[시너지 발견: 무기 진심녀]** 두 여전사가 공방의 무기와 방어구에 대한 수다를 시작합니다! (30% 확률로 에즈라가 무기를 한 번 더 전개)")
 
 # 시너지 알림창 출력 (Streamlit의 초록색 성공 박스 활용)
 if synergy_messages:
@@ -138,6 +145,9 @@ if st.button("⏳ 시뮬레이션 시작"):
         
         blood_gauge = (100 if "제2권속 산초" in selected_guards else 0) + (250 if "장로 돈키호테" in selected_guards else 0)
         baral_w_serum = 2 if "처형자 바랄" in selected_guards else 0
+        if "처형자 바랄" in selected_guards and "보라눈물 이오리" in selected_guards:
+            baral_w_serum += 1
+            battle_logs += "> 🌀 **[시너지 발동: 차원 유랑]** 이오리의 공간 조작이 바랄의 혈청 W 실린더를 하나 더 복제해 냅니다. (혈청 W 최대 3회)\n\n"
         is_roland_berserk = False
         last_hour_gap = 0  # 직전 시간의 위력 격차 저장
         gachiu_shield_used = False
@@ -311,7 +321,12 @@ if st.button("⏳ 시뮬레이션 시작"):
             if "LCD 에즈라" in selected_guards:
                 ezra_buff = random.randint(5, 25)
                 current_team_power += ezra_buff
-                hour_log += f"> 🛠️ **[시제품 테스트]** 에즈라가 미완성 장비를 가동합니다! (추가 방어선 +{ezra_buff})\n\n"
+                hour_log += f"> 🛠️ :blue[**[시제품 테스트]**] 에즈라가 미완성 장비를 가동합니다! (+{ezra_buff})\n\n"
+                # ⚔️ [무기 진심녀] 시너지 발동 (30% 확률로 추가 무기 전개)
+                if "검은침묵 안젤리카" in selected_guards and random.random() < 0.30:
+                    extra_buff = random.randint(5, 25)
+                    current_team_power += extra_buff
+                    hour_log += f"> ⚔️ :blue[**[시너지 발동: 무기 진심녀]**] 안젤리카의 예리한 조언에 자극받은 에즈라가 무기를 한 번 더 전개합니다! (+{extra_buff})\n\n"
 
             # [발렌치나 기믹 처리]
             if "엄지 아비 발렌치나" in selected_guards and hour % 3 == 0:
