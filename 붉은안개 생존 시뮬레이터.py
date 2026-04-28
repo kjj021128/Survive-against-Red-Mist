@@ -224,7 +224,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                             hour_log += "> 🐉 **[천강성 - 격]** 가치우의 봉에 다섯 개의 망이 감기고, 파괴적인 힘을 뿜어냅니다!\n\n"
                         elif guard == "푸른잔향 아르갈리아":
                             current_team_power += 50
-                            hour_log += "> 🎸 **[최후의 선율]** 아르갈리아가 광소하며 치명적인 진동의 낫을 휘두릅니다!\n\n"
+                            hour_log += "> 🎼 **[최후의 선율]** 아르갈리아가 광소하며 치명적인 진동의 낫을 휘두릅니다!\n\n"
                         elif guard == "롤랑":
                             current_team_power += 50
                             hour_log += "> ⬛ **[Furioso]** 롤랑이 9개의 무기를 꺼내어 숨 쉴 틈 없는 난무를 펼칩니다!\n\n"
@@ -367,7 +367,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             # [최종 방어 판정]
             if "푸른잔향 아르갈리아" in selected_guards and abs(effective_kali_attack - current_team_power) <= 7:
                 persistent_power_bonus += 10
-                hour_log += "> 🎸 **[아르갈리아의 공명]** 칼리의 궤적과 아슬아슬하게 합을 맞추며 영구적인 흐름을 가져옵니다! (영구 방어선 +10)\n\n"
+                hour_log += "> 🎼 **[아르갈리아의 공명]** 칼리의 궤적과 아슬아슬하게 합을 맞추며 영구적인 흐름을 가져옵니다! (영구 방어선 +10)\n\n"
                 
                 # 만약 방어선이 뚫릴 뻔했다면, 강제로 방어 점수를 끌어올려 세이브
                 if current_team_power < effective_kali_attack:
@@ -390,7 +390,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     is_angelica_alive = False
                     is_roland_berserk = True
                     hour_log += "> 🧤 **[숭고한 희생]** 붉은안개의 대검이 당신과 롤랑을 가르려는 찰나, 안젤리카가 뛰어들어 대신 참격을 받아냅니다!\n\n"
-                    hour_log += "> 💀 **(안젤리카 즉사 / 이번 턴 강제 생존)**\n\n"
+                    hour_log += "> 🎵 **[안젤리카 사망]**\n\n"
                     hour_log += "> ⬛ **[롤랑의 절규]** 아내를 지키지 못한 롤랑에게서 검은 기운이 일렁입니다... (롤랑, '광란' 상태 돌입)\n\n"
                 # 1순위 생존기: 마티아스의 강제 희생
                 elif "중지 아비 마티아스" in selected_guards and len(selected_guards) > 1:
@@ -405,7 +405,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     kali_perm_debuff += debuff_amount
                     
                     hour_log += f"> ⛓️ **[마티아스의 변덕]** 방어선이 무너지자, 마티아스가 충동적으로 곁에 있던 **{sacrifice}**를 붉은안개의 참격 앞으로 밀쳐냅니다!\n\n"
-                    hour_log += f"> 💀 **(희생양 즉사 / 붉은안개의 영구 위력 {debuff_amount} 감소 / 이번 턴 강제 생존)**\n\n"
+                    hour_log += f"> 😵 **[희생양 즉사 / 붉은안개의 영구 위력 {debuff_amount} 감소 / 이번 턴 강제 생존]**\n\n"
                 elif blood_gauge >= 50:
                     blood_gauge -= 50
                     hour_log += f"> 🩸 **[경혈식 발동]** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
