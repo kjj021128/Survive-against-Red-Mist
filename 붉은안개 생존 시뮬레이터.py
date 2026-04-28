@@ -85,7 +85,7 @@ if len(detective_team) >= 2:
 
 # 3. 🔫 [엄지] 시너지
 if "엄지 아비 발렌치나" in selected_guards and "천퇴성 뇌횡" in selected_guards:
-    synergy_messages.append("💡 **[시너지 발견: 엄지의 탄환보급]** 일제 사격 준비가 끝났습니다! (발렌치나도 매 턴 화상을 부여)")
+    synergy_messages.append("💡 **[시너지 발견: 엄지의 탄환보급]** 일제 사격 준비가 끝났습니다! (화상 부여량 +3)")
 
 # 4. 🕸️ [거미집] 시너지 판정 (2명 이상일 때)
 spider_members = ["엄지 아비 발렌치나", "검지 아비 뤼엔", "중지 아비 마티아스"]
