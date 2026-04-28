@@ -390,7 +390,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             if effective_kali_attack < 0: effective_kali_attack = 0
 
             # 모제스의 연기 디버프 (최종 위력 15% 감소)
-            if "뒤틀림 탐정 모제스" in selected_guards:
+            if "LCD 팀장 모제스" in selected_guards:
                 reduction = int(effective_kali_attack * 0.15)
                 effective_kali_attack -= reduction
                 hour_log += f"> 💨 **[곰방대의 연기]** 모제스가 연기를 뿜어 칼리의 공격 궤적을 흐트러뜨립니다. (위력 -15% : {reduction})\n\n"
@@ -398,7 +398,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             # 뤼엔의 지령 회피 (15% 확률로 위력 0)
             if "검지 아비 뤼엔" in selected_guards and random.random() < 0.15:
                 effective_kali_attack = 0
-                hour_log += "> 📜 **[지령 수행]** 뤼엔이 지령에 적힌 불합리한 회피 경로를 완벽히 수행해 냈습니다! (위력 무효화)\n\n"
+                hour_log += "> 📜 **[지령 수행]** 뤼엔이 헤르메스의 의지로 칼리의 공격을 완전히 간파해냅니다! (위력 무효화)\n\n"
 
             if effective_kali_attack < 0: effective_kali_attack = 0
 
