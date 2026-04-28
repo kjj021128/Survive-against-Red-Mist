@@ -291,10 +291,10 @@ if st.button("⏳ 시뮬레이션 시작"):
                 kali_base = 100 + ((hour - 12) * 18) 
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
                 if hour == 13:
-                    hour_log += "> 🔴 **[E.G.O 발현]** *\"이것이...내 껍데기다.\"* 칼리가 붉은 갑주로 스스로를 감싸며 위력이 폭증합니다!\n\n"
+                    hour_log += "> 🔴 **[E.G.O 발현]** 칼리가 붉은 갑주로 스스로를 감싸며 위력이 폭증합니다!\n\n"
                 if hour == 20:
                     kali_roll = 225
-                    hour_log += "> ⚠️ **[대절단 - 가로]** *\"갈라져라!\"* 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
+                    hour_log += "> ⚠️ **[대절단 - 가로]** 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
             
             # [다수의 적을 상대할 때 칼리의 투지 상승 (1명당 위력 +8)]
             crowd_bonus = len(selected_guards) * 8
@@ -391,7 +391,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     is_roland_berserk = True
                     hour_log += "> 🧤 **[숭고한 희생]** 붉은안개의 대검이 당신과 롤랑을 가르려는 찰나, 안젤리카가 뛰어들어 대신 참격을 받아냅니다!\n\n"
                     hour_log += "> 🎵 **[안젤리카 사망]**\n\n"
-                    hour_log += "> ⬛ **[롤랑의 절규]** 아내를 지키지 못한 롤랑에게서 검은 기운이 일렁입니다... (롤랑, '광란' 상태 돌입)\n\n"
+                    hour_log += "> ⬛ **[롤랑의 절규]** 아내를 지키지 못한 롤랑에게서 검은 기운이 일렁입니다...\n\n"
                 # 1순위 생존기: 마티아스의 강제 희생
                 elif "중지 아비 마티아스" in selected_guards and len(selected_guards) > 1:
                     # 조건이 만족되었을 때(elif 안쪽) 비로소 명단을 작성합니다.
@@ -408,7 +408,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += f"> 😵 **[희생양 즉사 / 붉은안개의 영구 위력 {debuff_amount} 감소 / 이번 턴 강제 생존]**\n\n"
                 elif blood_gauge >= 50:
                     blood_gauge -= 50
-                    hour_log += f"> 🩸 **[경혈식 발동]** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
+                    hour_log += f"> 🩸 **[돈키호테류 경혈식 방패]** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
                 elif baral_w_serum > 0:
                     baral_w_serum -= 1
                     hour_log += f"> 💉 **[처형자의 기지]** 혈청 W를 투여해 공간을 격리했습니다. (남은 회피: {baral_w_serum})\n\n"
