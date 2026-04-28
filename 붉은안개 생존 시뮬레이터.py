@@ -245,7 +245,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += "> ⬛ **[Furioso]** 롤랑이 안젤리카를 잃은 분노로 미친 듯이 무기를 휘두릅니다! (위력 -50)\n\n"
             
             if "R사 제 4무리 대장들" in selected_guards:
-                hour_log += "> 🎯 **[처분 표식]** 니콜라이의 지휘로 칼리의 위력 최댓값이 억제되고 있습니다.\n"
+                hour_log += "> 🎯 **[처분 표식]** 니콜라이의 지휘로 칼리의 위력 최댓값이 억제되고 있습니다.\n\n"
 
               # [칼리 최종 공격력 산출]
             effective_kali_attack = int((kali_roll - temp_debuff) * aggro_multiplier)
@@ -287,9 +287,9 @@ if st.button("⏳ 시뮬레이션 시작"):
             else:
                 if "중지 아비 마티아스" in selected_guards and effective_kali_attack > current_team_power:
                     damage_diff = effective_kali_attack - current_team_power
-                    counter_reflect = min(int(damage_diff * 0.15), 30)
+                    counter_reflect = min(int(damage_diff * 0.1), 30)
                     effective_kali_attack -= counter_reflect
-                    hour_log += f"> ⛓️ **[앙갚음]** 마티아스가 받은 피해의 20%({counter_reflect})를 즉각 되돌려주어 충격을 완화했습니다!\n\n"
+                    hour_log += f"> ⛓️ **[앙갚음]** 마티아스가 받은 피해의 10%({counter_reflect})를 즉각 되돌려주어 충격을 완화했습니다!\n\n"
                 elif blood_gauge >= 50:
                     blood_gauge -= 50
                     hour_log += f"> 🩸 **[경혈식 발동]** 혈액을 소모하여 버텼습니다. (남은 혈액: {blood_gauge})\n\n"
