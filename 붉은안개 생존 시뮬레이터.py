@@ -321,7 +321,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     current_team_power += 9999 
                     kali_perm_debuff += 25 
                     
-                    hour_log += "> ⬛ **[침묵의 사냥]** 롤랑이 당신의 앞을 가로막고 붉은안개와 단독 혈투를 벌입니다! (플레이어 무적 / 칼리 위력 지속적으로 -25)\n"
+                    hour_log += "> ⬛ **[침묵의 사냥]** 롤랑이 당신의 앞을 가로막고 붉은안개와 단독 혈투를 벌입니다! (플레이어 무적 / 칼리 위력 지속적으로 -25)\n\n"
                     if random.random() < 0.20:
                         selected_guards.remove("롤랑")
                         hour_log += "> 🥀 **[침묵]** 롤랑이 피를 토하며 쓰러집니다... 복수귀의 처절한 춤사위가 마침내 끝을 맺었습니다.\n\n"
@@ -384,7 +384,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     is_angelica_alive = False
                     is_roland_berserk = True
                     hour_log += "> 🧤 **[숭고한 희생]** 붉은안개의 대검이 당신과 롤랑을 가르려는 찰나, 안젤리카가 뛰어들어 대신 참격을 받아냅니다!\n\n"
-                    hour_log += "> 💀 **(안젤리카 즉사 / 이번 턴 강제 생존)**\n"
+                    hour_log += "> 💀 **(안젤리카 즉사 / 이번 턴 강제 생존)**\n\n"
                     hour_log += "> ⬛ **[롤랑의 절규]** 아내를 지키지 못한 롤랑에게서 검은 기운이 일렁입니다... (롤랑, '광란' 상태 돌입)\n\n"
                 # 1순위 생존기: 마티아스의 강제 희생
                 elif "중지 아비 마티아스" in selected_guards and len(selected_guards) > 1:
