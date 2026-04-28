@@ -446,7 +446,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             effective_kali_attack = int((kali_roll - temp_debuff) * aggro_multiplier)
             if effective_kali_attack < 0: effective_kali_attack = 0
 
-            # 모제스의 연기 디버프 (최종 위력 15% 감소)
+            # 모제스의 연기 디버프 (최종 위력 10% 감소)
             if "LCD 팀장 모제스" in selected_guards and hour % 2 == 0:
                 reduction = int(effective_kali_attack * 0.1)
                 effective_kali_attack -= reduction
