@@ -88,7 +88,7 @@ if len(detective_team) >= 2:
 if "엄지 아비 발렌치나" in selected_guards and "천퇴성 뇌횡" in selected_guards:
     synergy_messages.append("💡 **[시너지 발견: 엄지의 탄환보급]** 일제 사격 준비가 끝났습니다! (턴당 화상 부여량 +3)")
 
-# 4. 🕸️ [거미집] 시너지 판정 (2명 이상일 때)
+# 4. 🕸️ [거미집] 시너지
 spider_members = ["엄지 아비 발렌치나", "검지 아비 뤼엔", "중지 아비 마티아스"]
 spider_count = sum(1 for g in spider_members if g in selected_guards)
 if spider_count >= 2:
@@ -110,6 +110,16 @@ if "처형자 바랄" in selected_guards and "보라눈물 이오리" in selecte
 # 8. ⚔️ [무기 진심녀] 시너지
 if "LCD 에즈라" in selected_guards and "검은침묵 안젤리카" in selected_guards:
     synergy_messages.append("💡 **[시너지 발견: 무기 진심녀]** 두 여전사가 공방의 무기와 방어구에 대한 수다를 시작합니다! (30% 확률로 에즈라가 무기를 한 번 더 전개)")
+
+# 9. 🪖 [연기 전쟁] 시너지
+smoke_war = ["어느 싱클레어", "엄지 아비 발렌치나", "바퀴 황제"]
+smoke_war_count = sum(1 for g in smoke_war if g in selected_guards)
+if smoke_war_count >= 2:
+    synergy_messages.append(f"💡 **[시너지 발견: 연기전쟁의 참상]** {smoke_war_count}인의 참전용사가 모여, 그 날의 끔찍한 기억을 되살립니다! (4턴마다 붉은안개의 위력 -10)")
+
+# 10. 🎭 [원본과 모조품] 시너지
+if "롤랑" in selected_guards and "검지 아비 뤼엔" in selected_guards:
+    synergy_messages.append("💡 **[시너지 발견: 진품과 모조품]** 뤼엔이 롤랑의 움직임을 모방하며 필살기 발동 확률이 폭증하고, 두 사람의 필살기 위력이 1.5배 증가합니다!")
 
 # 시너지 알림창 출력 (Streamlit의 초록색 성공 박스 활용)
 if synergy_messages:
@@ -193,9 +203,16 @@ if st.button("⏳ 시뮬레이션 시작"):
         has_t_gear = "T사 보조 태엽" in selected_items
         t_gear_triggers = 0  # 가속이 터진 횟수 누적
 
+        smoke_war_members = ["어느 싱클레어", "엄지 아비 발렌치나", "바퀴 황제"]
+        is_smoke_war = sum(1 for g in smoke_war_members if g in selected_guards) >= 2
+
         # 시간 흐름 루프 시작
         for hour in range(1, target_hours + 1):
             hour_log = f"#### **🕒 [{hour}시간 경과]**\n"
+
+            if is_smoke_war and hour % 4 == 0:
+                kali_perm_debuff += 10
+                hour_log += "> 🪖 :blue[**[시너지 발동: 질식하는 연기]**] 연기전쟁 참전용사들이 피워낸 짙은 연기가 붉은안개의 폐부를 찌릅니다! (칼리 영구 위력 -10)\n\n"
             
             # [이오리 기믹] 차원 도약
             if "보라눈물 이오리" in selected_guards and hour % 4 == 0:
@@ -211,6 +228,9 @@ if st.button("⏳ 시뮬레이션 시작"):
             for guard in selected_guards:
                 base_power = guards_db[guard]["power"]
                 max_dice = guards_db[guard]["dice"]
+                if guard == "검지 아비 뤼엔" and "롤랑" in selected_guards:
+                    max_dice = max(5, max_dice // 2)
+
                 if max_dice > 0:
                     roll = random.randint(1, max_dice)
                     if guard in shin_users and hour >= 13:
@@ -260,8 +280,12 @@ if st.button("⏳ 시뮬레이션 시작"):
                             hour_log += "> 🐝 :red[**[필살기: 섬봉광검술 - 환도]**] 베스파가 시야에서 사라진 순간, 사각을 파고드는 치명적인 참격이 작렬합니다!\n\n"
                         
                         elif guard == "검지 아비 뤼엔":
-                            current_team_power += 40
-                            hour_log += "> 📜 :red[**[필살기: Furioso - Replica]**] 뤼엔이 헤르메스의 의지로 검은침묵의 난무를 기괴하게 모방해냅니다!\n\n"
+                            if "롤랑" in selected_guards:
+                                current_team_power += 60
+                                hour_log += "> 📜 :red[**[필살기: Furioso - Replica (공명)]**] 뤼엔이 원본의 움직임에 완벽히 동기화하여 파괴적인 모방 난무를 펼칩니다!\n\n"
+                            else:
+                                current_team_power += 40
+                                hour_log += "> 📜 :red[**[필살기: Furioso - Replica]**] 뤼엔이 헤르메스의 의지로 검은침묵의 난무를 기괴하게 모방해냅니다!\n\n"
                         
                         elif guard == "붉은시선 베르길리우스":
                             current_team_power += 45
@@ -276,8 +300,12 @@ if st.button("⏳ 시뮬레이션 시작"):
                             hour_log += "> 🎼 :red[**[필살기: 최후의 선율]**] 아르갈리아가 광소하며 치명적인 진동의 낫을 휘두릅니다!\n\n"
                         
                         elif guard == "롤랑":
-                            current_team_power += 50
-                            hour_log += "> ⬛ :red[**[필살기: Furioso]**] 롤랑이 9개의 무기를 꺼내어 숨 쉴 틈 없는 난무를 펼칩니다!\n\n"
+                            if "검지 아비 뤼엔" in selected_guards:
+                                current_team_power += 75
+                                hour_log += "> ⬛ :red[**[필살기: Furioso]**] 롤랑이 모조품 앞에서 원본의 숨 쉴 틈 없는 난무를 보여줍니다!\n\n"
+                            else:
+                                current_team_power += 50
+                                hour_log += "> ⬛ :red[**[필살기: Furioso]**] 롤랑이 9개의 무기를 꺼내어 숨 쉴 틈 없는 난무를 펼칩니다!\n\n"
                         
                         elif guard == "검은침묵 안젤리카":
                             current_team_power += 50
