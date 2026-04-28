@@ -447,7 +447,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             if effective_kali_attack < 0: effective_kali_attack = 0
 
             # 모제스의 연기 디버프 (최종 위력 15% 감소)
-            if "LCD 팀장 모제스" in selected_guards and hour/2 == 0:
+            if "LCD 팀장 모제스" in selected_guards and hour % 2 == 0:
                 reduction = int(effective_kali_attack * 0.15)
                 effective_kali_attack -= reduction
                 hour_log += f"> 💨 **[곰방대의 연기]** 모제스가 연기를 뿜어 칼리의 공격 궤적을 흐트러뜨립니다. (위력 -15% : {reduction})\n\n"
