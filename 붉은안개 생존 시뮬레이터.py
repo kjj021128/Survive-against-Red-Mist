@@ -206,16 +206,16 @@ if st.button("⏳ 시뮬레이션 시작"):
             # [칼리 기본 공격력 결정]
             if hour <= 12:
                 kali_max_roll = 10 if "R사 제 4무리 대장들" in selected_guards else 20
-                kali_base = 40 + (hour * 4) 
+                kali_base = 50 + (hour * 4) 
                 kali_roll = random.randint(kali_base - 10, kali_base + kali_max_roll)
                 if hour == 1:
                     hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 대검을 가볍게 쥐고 천천히 접근합니다.\n\n"
             else:
                 kali_max_roll = 15 if "R사 제 4무리 대장들" in selected_guards else 40
-                kali_base = 88 + ((hour - 12) * 18) 
+                kali_base = 90 + ((hour - 12) * 18) 
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
                 if hour == 13:
-                    hour_log += "> 🔴 **[E.G.O 발현]** *\"이것이... 내 껍데기다.\"* 칼리가 붉은 갑주로 스스로를 감싸며 위력이 폭증합니다!\n\n"
+                    hour_log += "> 🔴 **[E.G.O 발현]** *\"이것이...내 껍데기다.\"* 칼리가 붉은 갑주로 스스로를 감싸며 위력이 폭증합니다!\n\n"
                 if hour == 20:
                     kali_roll = 200
                     hour_log += "> ⚠️ **[대절단 - 가로]** *\"갈라져라!\"* 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
