@@ -40,7 +40,7 @@ items_db = {
 
 st.set_page_config(page_title="Project Moon: 생존 시뮬레이터", layout="wide")
 st.title("🔴 붉은안개 생존 시뮬레이터")
-st.markdown("전성기 시절의 붉은안개 칼리가 당신을 연구소 테러범으로 착각하고 있습니다...")
+st.markdown("붉은안개 칼리가 당신을 연구소 테러범으로 착각하고 있습니다...")
 
 st.write("---")
 
@@ -352,7 +352,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 kali_base = 100 + ((hour - 12) * 18) 
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
                 if hour == 13:
-                    hour_log += "> 🔴 **[E.G.O 발현]** *\"이것이...내 껍데기다.\"* 칼리가 붉은 갑주로 스스로를 감싸며 위력이 폭증합니다!\n\n"
+                    hour_log += "> 🔴 :red[**[E.G.O 발현]**] 칼리가 붉은 갑주로 스스로를 감싸며 위력이 폭증합니다!\n\n"
                     if any(g in selected_guards for g in shin_users):
                         hour_log += "> 💫 **[신(心)의 공명]** 압도적인 공포 앞에서도, 무언가를 강렬히 바라는 마음만은 꺾이지 않습니다! (신 사용자 방어선 영구 +15)\n\n"
                 if hour == 20:
