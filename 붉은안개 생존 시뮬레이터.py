@@ -41,6 +41,8 @@ st.set_page_config(page_title="Project Moon: 생존 시뮬레이터", layout="wi
 st.title("🔴 붉은안개 생존 시뮬레이터")
 st.markdown("전성기 시절의 붉은안개 칼리가 당신을 살해하기 위해 찾아옵니다...행운을 빌죠!")
 
+st.write("---")
+
 # --- [2] 사용자 UI 및 고용 시스템 ---
 col1, col2 = st.columns(2)
 
@@ -85,8 +87,6 @@ if st.button("⏳ 시뮬레이션 시작"):
         battle_logs = ""
         log_container = st.empty()
         survival_status = True
-
-        last_myat_counter_hour = -99  # 마티아스의 마지막 반격 턴 기록 (처음엔 발동한 적 없으므로 임의의 음수)
 
         # 시간 흐름 루프 시작
         for hour in range(1, target_hours + 1):
