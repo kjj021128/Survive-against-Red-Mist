@@ -81,6 +81,7 @@ if st.button("⏳ 시뮬레이션 시작"):
         
         blood_gauge = (100 if "제2권속 산초" in selected_guards else 0) + (300 if "장로 돈키호테" in selected_guards else 0)
         baral_w_serum = 2 if "처형자 바랄" in selected_guards else 0
+        is_roland_berserk = False  
         gachiu_shield_used = False
         is_angelica_alive = "검은침묵 안젤리카" in selected_guards
         
@@ -158,7 +159,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                             hour_log += "> 🎸 **[최후의 선율]** 아르갈리아가 광소하며 치명적인 진동의 낫을 휘두릅니다!\n\n"
                         elif guard == "롤랑":
                             current_team_power += 50
-                            hour_log += "> ⬛ **[Furioso]** 롤랑이 9개의 공방 무기를 꺼내 들며 숨 쉴 틈 없는 난무를 펼칩니다!\n\n"
+                            hour_log += "> ⬛ **[Furioso]** 롤랑이 9개의 무기를 꺼내어 숨 쉴 틈 없는 난무를 펼칩니다!\n\n"
                         elif guard == "검은침묵 안젤리카":
                             current_team_power += 50
                             hour_log += "> 🧤 **[백색 왈츠]** 안젤리카가 무도회를 거닐듯 우아하고도 파괴적인 공방 무기 연계를 선보입니다!\n\n"
@@ -246,18 +247,33 @@ if st.button("⏳ 시뮬레이션 시작"):
                 temp_debuff += 30
                 hour_log += "> 🐝 **[궁니르 공명]** 노란작살 베스파가 맹렬한 찌르기로 칼리의 템포를 늦춥니다! (위력 -30)\n\n"
             
-            furioso_cycle = 4 if not is_angelica_alive and "롤랑" in selected_guards else 6
-            if "롤랑" in selected_guards and hour % furioso_cycle == 0: 
-                temp_debuff += 50
-                if is_angelica_alive:
-                    hour_log += "> ⬛ **[뒤랑달]** 롤랑이 뒤랑달을 맹렬히 휘둘러 칼리의 기세를 일시적으로 꺾었습니다! (위력 -50)\n\n"
+            # [롤랑 기믹 처리]
+            if "롤랑" in selected_guards:
+                if is_roland_berserk:
+                    roland_base_power = guards_db["롤랑"]["power"] 
+                    current_team_power -= roland_base_power 
+                    
+                    kali_perm_debuff += 25 
+                    
+                    hour_log += f"> ⬛ **[맹목적인 분노]** 롤랑이 진형을 이탈하여 붉은안개에게 자비 없는 난격을 쏟아붓습니다! (팀 방어선 -{roland_base_power} / 칼리 영구 위력 -25)\n\n"
+                    if random.random() < 0.20:
+                        selected_guards.remove("롤랑")
+                        hour_log += "> 🥀 **[침묵]** 롤랑이 피를 토하며 쓰러집니다... 복수귀의 처절한 춤사위가 마침내 끝을 맺었습니다.\n\n"
+                    else:
+                        hour_log += "\n"
+                        
                 else:
-                    hour_log += "> ⬛ **[Furioso]** 롤랑이 안젤리카를 잃은 분노로 미친 듯이 무기를 휘두릅니다! (위력 -50)\n\n"
+                    if hour % 6 == 0:
+                        temp_debuff += 50
+                        if "검은침묵 안젤리카" in selected_guards:
+                            hour_log += "> ⬛ **[검은침묵의 왈츠]** 롤랑이 안젤리카와 완벽한 호흡으로 무기를 교차하며 적의 기세를 꺾습니다! (이번 턴 칼리 위력 -50)\n\n"
+                        else:
+                            hour_log += "> ⬛ **[뒤랑달]** 롤랑이 뒤랑달을 맹렬히 휘둘러 칼리의 기세를 일시적으로 꺾었습니다! (이번 턴 칼리 위력 -50)\n\n"
             
             if "R사 제 4무리 대장들" in selected_guards:
                 hour_log += "> 🎯 **[처분 표식]** 니콜라이의 지휘로 칼리의 위력 최댓값이 억제되고 있습니다.\n\n"
 
-              # [칼리 최종 공격력 산출]
+            # [칼리 최종 공격력 산출]
             effective_kali_attack = int((kali_roll - temp_debuff) * aggro_multiplier)
             if effective_kali_attack < 0: effective_kali_attack = 0
 
@@ -295,13 +311,26 @@ if st.button("⏳ 시뮬레이션 시작"):
                 
                 hour_log += f"> 🛡️ **방어 성공!** (칼리의 위력: {effective_kali_attack} / 호위 방어선: {int(current_team_power)})\n\n"
             else:
-                available_sacrifices = [g for g in selected_guards if g != "중지 아비 마티아스"] 
-                if "중지 아비 마티아스" in selected_guards and available_sacrifices:
+                # 0순위 생존기: 롤랑 부부 전용 기믹 (마티아스와 겹칠 일은 예산상 없지만 최상단에 배치)
+                if "롤랑" in selected_guards and "검은침묵 안젤리카" in selected_guards:
+                    selected_guards.remove("검은침묵 안젤리카")
+                    is_angelica_alive = False
+                    is_roland_berserk = True
+                    hour_log += "> 🧤 **[숭고한 희생]** 붉은안개의 대검이 당신과 롤랑을 가르려는 찰나, 안젤리카가 뛰어들어 대신 참격을 받아냅니다!\n"
+                    hour_log += "> 💀 **(안젤리카 즉사 / 이번 턴 강제 생존)**\n"
+                    hour_log += "> ⬛ **[롤랑의 절규]** 아내를 지키지 못한 롤랑에게서 검은 기운이 일렁입니다... (롤랑, '광란' 상태 돌입)\n\n"
+                # 1순위 생존기: 마티아스의 강제 희생
+                elif "중지 아비 마티아스" in selected_guards and len(selected_guards) > 1:
+                    # 조건이 만족되었을 때(elif 안쪽) 비로소 명단을 작성합니다.
+                    available_sacrifices = [g for g in selected_guards if g != "중지 아비 마티아스"]
                     sacrifice = random.choice(available_sacrifices)
-                    selected_guards.remove(sacrifice) 
+                    selected_guards.remove(sacrifice)
+                    if sacrifice == "검은침묵 안젤리카":
+                        is_angelica_alive = False
                     sacrifice_power = guards_db[sacrifice]["power"]
                     debuff_amount = int(sacrifice_power * 0.5)
                     kali_perm_debuff += debuff_amount
+                    
                     hour_log += f"> ⛓️ **[마티아스의 변덕]** 방어선이 무너지자, 마티아스가 충동적으로 곁에 있던 **{sacrifice}**를 붉은안개의 참격 앞으로 밀쳐냅니다!\n\n"
                     hour_log += f"> 💀 **(희생양 즉사 / 붉은안개의 영구 위력 {debuff_amount} 감소 / 이번 턴 강제 생존)**\n\n"
                 elif blood_gauge >= 50:
