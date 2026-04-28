@@ -232,20 +232,20 @@ if st.button("⏳ 시뮬레이션 시작"):
                 temp_debuff += 30
                 hour_log += "> 🐝 **[궁니르 공명]** 노란작살 베스파가 맹렬한 찌르기로 칼리의 템포를 늦춥니다! (위력 -30)\n\n"
             
-            furioso_cycle = 4 if not is_angelica_alive and "검은침묵 롤랑 (광란)" in selected_guards else 6
-            if "검은침묵 롤랑 (광란)" in selected_guards and hour % furioso_cycle == 0: 
+            furioso_cycle = 4 if not is_angelica_alive and "롤랑" in selected_guards else 6
+            if "롤랑" in selected_guards and hour % furioso_cycle == 0: 
                 temp_debuff += 50
                 if is_angelica_alive:
-                    hour_log += "> ⬛ **[Furioso]** 롤랑이 9개의 공방 무기를 난무하여 칼리의 흐름을 완전히 끊어냅니다! (위력 -50)\n\n"
+                    hour_log += "> ⬛ **[뒤랑달]** 롤랑이 뒤랑달을 맹렬히 휘둘러 칼리의 기세를 일시적으로 꺾었습니다! (위력 -50)\n\n"
                 else:
                     hour_log += "> ⬛ **[Furioso]** 롤랑이 안젤리카를 잃은 분노로 미친 듯이 무기를 휘두릅니다! (위력 -50)\n\n"
             
             if "R사 제 4무리 대장들" in selected_guards:
                 hour_log += "> 🎯 **[처분 표식]** 니콜라이의 지휘로 칼리의 위력 최댓값이 억제되고 있습니다.\n"
 
-            # [칼리 최종 공격력 산출]
+              # [칼리 최종 공격력 산출]
             effective_kali_attack = int((kali_roll - temp_debuff) * aggro_multiplier)
-            if effective_kali_attack < 0: effective_kali_attack = 0effective_kali_attack = int((kali_roll - temp_debuff) * aggro_multiplier)
+            if effective_kali_attack < 0: effective_kali_attack = 0
 
             # 모제스의 연기 디버프 (최종 위력 15% 감소)
             if "뒤틀림 탐정 모제스" in selected_guards:
