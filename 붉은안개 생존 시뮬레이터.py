@@ -31,6 +31,7 @@ guards_db = {
 }
 
 items_db = {
+    "T사 보조 태엽": {"cost": 150, "desc": "매 시간 종료 시 25% 확률로 시간을 가속하여, 누적 효과(화상, 적응, 회복)를 한 번 더 발동시킵니다."}
     "K사 앰플 3개": {"cost": 200, "desc": "사망에 이르는 피해를 입을 시, 3회 부활합니다."},
     "T사 수사관 배지": {"cost": 250, "desc": "치명적인 위기의 순간, 붉은안개가 기세를 올리기 전으로 시간을 되감습니다."},
     "인식 저해 가면": {"cost": 275, "desc": "칼리의 공격이 당신을 향할 확률과 위력을 30% 감소시킵니다."},
@@ -176,6 +177,11 @@ if st.button("⏳ 시뮬레이션 시작"):
         log_container = st.empty()
         survival_status = True
 
+        shin_users = ["LCD 에즈라", "천퇴성 뇌횡", "어느 싱클레어", "엄지 아비 발렌치나", "중지 아비 마티아스", "노란작살 베스파", "검지 아비 뤼엔", "붉은시선 베르길리우스", "옥기린 가치우"]
+
+        has_t_gear = "T사 보조 태엽" in selected_items
+        t_gear_triggers = 0  # 가속이 터진 횟수 누적
+
         # 시간 흐름 루프 시작
         for hour in range(1, target_hours + 1):
             hour_log = f"#### **🕒 [{hour}시간 경과]**\n"
@@ -194,10 +200,10 @@ if st.button("⏳ 시뮬레이션 시작"):
             for guard in selected_guards:
                 base_power = guards_db[guard]["power"]
                 max_dice = guards_db[guard]["dice"]
-                
                 if max_dice > 0:
-                    # 1부터 최대 주사위 값 사이의 난수를 굴림
                     roll = random.randint(1, max_dice)
+                    if guard in shin_users and hour >= 13:
+                        current_team_power += 15
                     current_team_power += (base_power + roll)
                     
                     # 🎯 [필살기 발동 로직] 주사위가 최댓값이 떴을 때!
@@ -330,7 +336,9 @@ if st.button("⏳ 시뮬레이션 시작"):
                 kali_base = 100 + ((hour - 12) * 18) 
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
                 if hour == 13:
-                    hour_log += "> 🔴 **[E.G.O 발현]** 칼리가 붉은 갑주로 스스로를 감싸며 위력이 폭증합니다!\n\n"
+                    hour_log += "> 🔴 **[E.G.O 발현]** *\"이것이...내 껍데기다.\"* 칼리가 붉은 갑주로 스스로를 감싸며 위력이 폭증합니다!\n\n"
+                    if any(g in selected_guards for g in shin_users):
+                        hour_log += "> 💫 **[신(心)의 공명]** 압도적인 공포 앞에서도 무투파 호위들은 꺾이지 않고 각자의 신(心)을 극한으로 끌어올립니다! (신 사용자 방어선 영구 +15)\n\n"
                 if hour == 20:
                     kali_roll = 225
                     hour_log += "> ⚠️ :red[**[대절단 - 가로]**] 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
@@ -345,7 +353,7 @@ if st.button("⏳ 시뮬레이션 시작"):
 
             # [디버프 적용 계산 (화상, 베스파, 롤랑 등)]
             burn_debuff = (2 if "천퇴성 뇌횡" in selected_guards else 0) + (3 if "E.G.O 발현 샤오" in selected_guards else 0) + (3 if "붉은시선 베르길리우스" in selected_guards else 0) + (2 + thumb_burn_bonus if "엄지 아비 발렌치나" in selected_guards else 0)
-            current_burn_penalty = burn_debuff * (hour // 2)
+            current_burn_penalty = burn_debuff * ((hour + t_gear_triggers) // 2)
             temp_debuff = current_burn_penalty + kali_perm_debuff
             
             if current_burn_penalty > 0:
@@ -415,12 +423,25 @@ if st.button("⏳ 시뮬레이션 시작"):
             time.sleep(0.3)
             if current_team_power >= effective_kali_attack:
                 if "바퀴 황제" in selected_guards: 
-                    persistent_power_bonus += 4
-                    hour_log += "> 🪳 **[황제의 피]** 바퀴 황제가 칼리의 참격을 버텨내며 외골격을 단단하게 진화시킵니다. (영구 방어선 +4)\n\n"
+                    # 13시간 이전에는 +4, E.G.O 발현 이후에는 +8로 성장폭 대폭 증가
+                    emp_bonus = 8 if hour >= 13 else 4
+                    persistent_power_bonus += emp_bonus
+                    hour_log += f"> 🪳 **[황제의 피]** 바퀴 황제가 칼리의 참격을 버텨내며 외골격을 단단하게 진화시킵니다. (영구 방어선 +{emp_bonus})\n\n"
                 if "핏빛 밤 엘레나" in selected_guards: 
                     persistent_power_bonus += 2
                     hour_log += "> 🧛‍♀️ **[퍼져나가는 혈액]** 핏빛 밤 엘레나가 흩뿌려진 피를 흡수하여 방어선을 복구합니다. (영구 방어선 +2)\n\n"
-                
+                if has_t_gear and random.random() < 0.25:
+                    t_gear_triggers += 1
+                    hour_log += "> ⚙️ :blue[**[시간 가속]**] T사 보조 태엽이 회전하며 시간이 가속됩니다! (턴 종료 효과 2배 적용)\n\n"
+                    
+                    if "바퀴 황제" in selected_guards: 
+                        emp_bonus = 8 if hour >= 13 else 4 # 여기서 다시 계산
+                        persistent_power_bonus += emp_bonus
+                        hour_log += f"> 🪳 **[황제의 피 - 가속]** 황제의 외골격이 한 번 더 진화합니다! (영구 방어선 +{emp_bonus})\n\n"
+                        
+                    if "핏빛 밤 엘레나" in selected_guards: 
+                        persistent_power_bonus += 2
+                        hour_log += "> 🧛‍♀️ **[퍼져나가는 혈액 - 가속]** 엘레나가 피를 추가로 흡수합니다! (영구 방어선 +2)\n\n"
                 hour_log += f"> 🛡️ **방어 성공!** (칼리의 위력: {effective_kali_attack} / 호위 방어선: {int(current_team_power)})\n\n"
             else:
                 # 0순위 생존기: 롤랑 부부 전용 기믹 (마티아스와 겹칠 일은 예산상 없지만 최상단에 배치)
