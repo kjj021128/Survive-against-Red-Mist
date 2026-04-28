@@ -10,7 +10,7 @@ guards_db = {
     "LCD 에즈라": {"cost": 250, "power": 25, "dice": 10},
     "LCD 팀장 모제스": {"cost": 275, "power": 0, "dice": 10},
     "천퇴성 뇌횡": {"cost": 300, "power": 30, "dice": 15},
-    "어느 싱클레어": {"cost": 400, "power": 45, "dice": 15}, 
+    "어느 싱클레어": {"cost": 400, "power": 70, "dice": 8}, 
     "제2권속 산초": {"cost": 450, "power": 55, "dice": 15}, 
     "R사 제 4무리 대장들": {"cost": 500, "power": 60, "dice": 20},
     "E.G.O 발현 샤오": {"cost": 500, "power": 65, "dice": 20},
@@ -105,7 +105,7 @@ if "옥기린 가치우" in selected_guards and "천퇴성 뇌횡" in selected_g
 
 # 7. 👁️‍🗨️ [차원 유랑] 시너지
 if "처형자 바랄" in selected_guards and "보라눈물 이오리" in selected_guards:
-    synergy_messages.append("💡 **[시너지 발견: 차원 도약]** 이오리와 바랄이 차원을 가로지르는 경험에 대하여 담소를 나눕니다! (바랄의 혈청 W를 추가로 한 번 더 사용 가능)")
+    synergy_messages.append("💡 **[시너지 발견: 차원 도약]** 이오리와 바랄이 차원을 가로지르는 경험에 대해 의견을 교환합니다! (바랄의 혈청 W를 추가로 한 번 더 사용 가능)")
 
 # 8. ⚔️ [무기 진심녀] 시너지
 if "LCD 에즈라" in selected_guards and "검은침묵 안젤리카" in selected_guards:
@@ -501,18 +501,13 @@ if st.button("⏳ 시뮬레이션 시작"):
                     if is_angelica_alive and random.random() < 0.5: is_angelica_alive = False
                     hour_log += f"> 💊 **[치명상 발생]** K사 앰플의 효과로 육체가 즉시 수복됩니다. (남은 앰플: {revives_left})\n\n"
                 else:
-                    hour_log += f"> 💀 **[방어 수단 소진]** 붉은안개의 미미크리가 당신을 갈랐습니다.\n\n"
+                    hour_log += f"> 💀 **[방어 수단 없음]** 붉은안개의 미미크리가 당신을 갈랐습니다.\n\n"
                     battle_logs += hour_log
                     log_container.markdown(battle_logs)
                     survival_status = False
                     break
             
             # [시간 경과 후처리 기믹]
-            if "어느 싱클레어" in selected_guards and hour == 4:
-                team_power_base -= guards_db["어느 싱클레어"]["power"]
-                kali_perm_debuff += 5
-                hour_log += "> 🍂 **[연기 거두기]** 싱클레어가 연기 장막을 영구적으로 남깁니다.\n\n"
-
             raw_gap = abs(effective_kali_attack - current_team_power)
             last_hour_gap = min(300, raw_gap) 
             
