@@ -71,7 +71,7 @@ if len(detective_team) >= 2:
 
 # 3. 🔫 [엄지] 시너지
 if "엄지 아비 발렌치나" in selected_guards and "천퇴성 뇌횡" in selected_guards:
-    synergy_messages.append("💡 **[시너지 발견: 엄지의 예]** 일제 사격 준비가 끝났습니다! (발렌치나도 매 턴 화상을 부여)")
+    synergy_messages.append("💡 **[시너지 발견: 엄지의 탄환보급]** 일제 사격 준비가 끝났습니다! (발렌치나도 매 턴 화상을 부여)")
 
 # 4. 🕸️ [거미집] 시너지
 if all(g in selected_guards for g in ["엄지 아비 발렌치나", "검지 아비 뤼엔", "중지 아비 마티아스"]):
@@ -302,7 +302,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             
             # 플레이어에게 물량전의 페널티를 암시하는 텍스트 (1시간째에 1회 출력)
             if hour == 1 and len(selected_guards) >= 3:
-                hour_log += f"> 🔴 **[붉은안개의 투지]** *\"머릿수로 밀어붙일 셈인가?\"* 적이 많을수록 칼리의 참격이 더욱 거세집니다. (매 턴 위력 +{crowd_bonus})\n\n"
+                hour_log += f"> 🔴 **[붉은안개의 투지]** 적이 많을수록 칼리의 참격이 더욱 거세집니다. (매 턴 위력 +{crowd_bonus})\n\n"
 
             # [디버프 적용 계산 (화상, 베스파, 롤랑 등)]
             burn_debuff = (2 if "천퇴성 뇌횡" in selected_guards else 0) + (3 if "E.G.O 발현 샤오" in selected_guards else 0) + (3 if "붉은시선 베르길리우스" in selected_guards else 0) + (2 + thumb_burn_bonus if "엄지 아비 발렌치나" in selected_guards else 0)
