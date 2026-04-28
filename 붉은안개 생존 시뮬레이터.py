@@ -136,7 +136,7 @@ if st.button("⏳ 시뮬레이션 시작"):
         persistent_power_bonus = 0 # 바퀴 황제, 엘레나 등의 누적 스탯 
         kali_perm_debuff = 0
         
-        blood_gauge = (100 if "제2권속 산초" in selected_guards else 0) + (300 if "장로 돈키호테" in selected_guards else 0)
+        blood_gauge = (100 if "제2권속 산초" in selected_guards else 0) + (250 if "장로 돈키호테" in selected_guards else 0)
         baral_w_serum = 2 if "처형자 바랄" in selected_guards else 0
         is_roland_berserk = False
         last_hour_gap = 0  # 직전 시간의 위력 격차 저장
