@@ -209,6 +209,7 @@ if st.button("⏳ 시뮬레이션 시작"):
         # 시간 흐름 루프 시작
         for hour in range(1, target_hours + 1):
             hour_log = f"#### **🕒 [{hour}시간 경과]**\n"
+            missed_guards_this_turn = []
 
             if is_smoke_war and hour % 6 == 0:
                 kali_perm_debuff += 10
@@ -345,6 +346,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         else:
                             current_team_power -= (base_power + 1) # 방금 더했던 위력을 다시 빼서 0으로 무효화
                             hour_log += f"> 🌀 **[빗나감]** {guard}의 공격이 완전히 빗나가며 붉은안개에게 무방비하게 노출됩니다! ({guard} 위력 무효화)\n\n"
+                            missed_guards_this_turn.append(guard)
             
             if "옥기린 가치우" in selected_guards: 
                 current_team_power *= 1.2
@@ -352,7 +354,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 if hour == 1:
                     hour_log += "> 🐉 **[천강성의 오망]** 옥기린의 가르침으로, 아군 전체의 방어 점수가 1.2배 증폭됩니다!\n\n"
 
-            if "에즈라" in selected_guards:
+            if "에즈라" in selected_guards and "에즈라" not in missed_guards_this_turn:
                 ezra_buff = random.randint(5, 25)
                 current_team_power += ezra_buff
                 hour_log += f"> 🛠️ **[시제품 테스트]** 에즈라가 가방에서 미완성 무기를 뽑아듭니다! (+{ezra_buff})\n\n"
@@ -363,11 +365,11 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += f"> ⚔️ :blue[**[시너지 발동: 무기 진심녀]**] 안젤리카의 예리한 조언에 자극받은 에즈라가 무기를 한 번 더 전개합니다! (+{extra_buff})\n\n"
 
             # [발렌치나 기믹 처리]
-            if "엄지 아비 발렌치나" in selected_guards and hour % 3 == 0:
+            if "엄지 아비 발렌치나" in selected_guards and hour % 3 == 0 and "엄지 아비 발렌치나" not in missed_guards_this_turn:
                 current_team_power += 30
                 hour_log += "> 🤺 **[팔레르모 검술]** 발렌치나가 예비 탄환을 쏟아부어 화력을 집중합니다! (이번 시간 방어선 +30)\n\n"
                 
-            if is_angelica_alive: 
+            if is_angelica_alive and "검은침묵 안젤리카" not in missed_guards_this_turn: 
                 angelica_buff = random.randint(5, 45)
                 current_team_power += angelica_buff
                 # 안젤리카의 버프는 매시간 수치가 바뀌는 '동적' 스킬이므로 그대로 둡니다.
@@ -408,7 +410,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             if current_burn_penalty > 0:
                 hour_log += f"> 🔥 **[화상 누적]** 타오르는 불꽃이 칼리의 육체를 갉아먹어 위력을 {current_burn_penalty}만큼 깎아냅니다.\n\n"
             
-            if "노란작살 베스파" in selected_guards and hour % 3 == 0: 
+            if "노란작살 베스파" in selected_guards and hour % 3 == 0 and "노란작살 베스파" not in missed_guards_this_turn: 
                 # 기본 30 + 지난 격차의 20% 보너스
                 tactical_bonus = int(last_hour_gap * 0.2)
                 temp_debuff += (30 + tactical_bonus)
@@ -429,7 +431,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         
                 else:
                     # --- (B) 일반 상태: 전술적 복기 적용 ---
-                    if hour % 6 == 0:
+                    if hour % 6 == 0 and "롤랑" not in missed_guards_this_turn:
                         # 기본 50 + 지난 격차의 40% 보너스
                         tactical_bonus = int(last_hour_gap * 0.4)
                         temp_debuff += (50 + tactical_bonus)
@@ -439,7 +441,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         else:
                             hour_log += f"> ⬛ **[뒤랑달]** 롤랑이 홀로 칼리의 흐트러진 자세를 파고들어 맹공을 퍼붓습니다! (위력 -50 / 전술 보너스 -{tactical_bonus})\n\n"
             
-            if "R사 제 4무리 대장들" in selected_guards:
+            if "R사 제 4무리 대장들" in selected_guards and "R사 제 4무리 대장들" not in missed_guards_this_turn:
                 hour_log += "> 🎯 **[처분 표식]** 니콜라이의 지휘로 칼리의 위력 최댓값이 억제되고 있습니다.\n\n"
 
             # [칼리 최종 공격력 산출]
@@ -447,13 +449,13 @@ if st.button("⏳ 시뮬레이션 시작"):
             if effective_kali_attack < 0: effective_kali_attack = 0
 
             # 모제스의 연기 디버프 (최종 위력 10% 감소)
-            if "모제스" in selected_guards and hour % 2 == 0:
+            if "모제스" in selected_guards and hour % 2 == 0 and "모제스" not in missed_guards_this_turn:
                 reduction = int(effective_kali_attack * 0.1)
                 effective_kali_attack -= reduction
                 hour_log += f"> 💨 **[곰방대의 연기]** 모제스가 연기를 뿜어 칼리의 공격 궤적을 흐트러뜨립니다. (감소된 위력: {reduction})\n\n"
 
             # 뤼엔의 지령 회피 (15% 확률로 위력 0)
-            if "검지 아비 뤼엔" in selected_guards and random.random() < 0.15:
+            if "검지 아비 뤼엔" in selected_guards and random.random() < 0.15 and "검지 아비 뤼엔" not in missed_guards_this_turn:
                 effective_kali_attack = 0
                 hour_log += "> 📜 **[지령 수행]** 뤼엔이 헤르메스의 의지로 칼리의 공격을 완전히 간파해냅니다! (칼리의 위력 무효화)\n\n"
 
@@ -461,7 +463,7 @@ if st.button("⏳ 시뮬레이션 시작"):
 
 
             # [최종 방어 판정]
-            if "푸른잔향 아르갈리아" in selected_guards and abs(effective_kali_attack - current_team_power) <= 7:
+            if "푸른잔향 아르갈리아" in selected_guards and abs(effective_kali_attack - current_team_power) <= 7 and "푸른잔향 아르갈리아" not in missed_guards_this_turn:
                 persistent_power_bonus += 10
                 hour_log += "> 🎼 **[아르갈리아의 공명]** 칼리의 궤적과 아슬아슬하게 합을 맞추며 영구적인 흐름을 가져옵니다! (영구 방어선 +10)\n\n"
                 
@@ -498,9 +500,9 @@ if st.button("⏳ 시뮬레이션 시작"):
                     selected_guards.remove("검은침묵 안젤리카")
                     is_angelica_alive = False
                     is_roland_berserk = True
-                    hour_log += "> 🧤 **[숭고한 희생]** 붉은안개의 대검이 당신과 롤랑을 가르려는 찰나, 안젤리카가 뛰어들어 대신 참격을 받아냅니다!\n\n"
+                    hour_log += "> 🪦 **[숭고한 희생]** 붉은안개의 대검이 당신과 롤랑을 가르려는 찰나, 안젤리카가 뛰어들어 대신 참격을 받아냅니다!\n\n"
                     hour_log += "> 🎵 **[안젤리카 사망]**\n\n"
-                    hour_log += "> ⬛ **[롤랑의 절규]** 아내를 지키지 못한 롤랑에게서 검은 기운이 일렁입니다...\n\n"
+                    hour_log += "> 💔 **[롤랑의 절규]** 아내를 지키지 못한 롤랑에게서 검은 기운이 일렁입니다...\n\n"
                 # 1순위 생존기: 마티아스의 강제 희생
                 elif "중지 아비 마티아스" in selected_guards and len(selected_guards) > 1:
                     # 조건이 만족되었을 때(elif 안쪽) 비로소 명단을 작성합니다.
