@@ -233,6 +233,9 @@ if st.button("⏳ 시뮬레이션 시작"):
             if carried_shield > 0:
                 hour_log += f"> 💪 **[기세 유지]** 이전 시간의 압도적인 우위로 기세를 이어갑니다! (이월된 방어선 +{carried_shield})\n\n"
                 carried_shield = 0 # 적용했으니 다음 턴을 위해 다시 0으로 초기화합니다.
+            if len(selected_guards) == 0:
+                current_team_power = 0
+                hour_log += "> 😨 **[고립무원]** 곁을 지켜주던 모든 호위가 쓰러졌습니다. 당신은 맨몸으로 붉은안개와 마주합니다...\n\n"
             
             for guard in selected_guards:
                 base_power = guards_db[guard]["power"]
