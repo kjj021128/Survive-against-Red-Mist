@@ -7,13 +7,13 @@ BUDGET = 1300
 
 # 호위 목록 (이름: [가격, 기본 수치, 주사위 최댓값])
 guards_db = {
-    "LCD 에즈라": {"cost": 250, "power": 25, "dice": 10},
-    "LCD 팀장 모제스": {"cost": 275, "power": 0, "dice": 10},
-    "천퇴성 뇌횡": {"cost": 300, "power": 30, "dice": 15},
+    "에즈라": {"cost": 250, "power": 25, "dice": 10},
+    "모제스": {"cost": 275, "power": 0, "dice": 10},
+    "뇌횡": {"cost": 300, "power": 30, "dice": 15},
     "어느 싱클레어": {"cost": 400, "power": 60, "dice": 10}, 
     "제2권속 산초": {"cost": 450, "power": 55, "dice": 15}, 
     "R사 제 4무리 대장들": {"cost": 500, "power": 60, "dice": 20},
-    "E.G.O 발현 샤오": {"cost": 500, "power": 65, "dice": 20},
+    "샤오": {"cost": 500, "power": 65, "dice": 20},
     "엄지 아비 발렌치나": {"cost": 500, "power": 65, "dice": 20},
     "중지 아비 마티아스": {"cost": 500, "power": 66, "dice": 20},
     "노란작살 베스파": {"cost": 525, "power": 68, "dice": 20},
@@ -76,17 +76,17 @@ discount = 0
 
 # 1. ⬛ [검은침묵] 부부 시너지
 if "롤랑" in selected_guards and "검은침묵 안젤리카" in selected_guards:
-    synergy_messages.append("💡 **[시너지 발견: 검은침묵의 유산]** 부부가 전장에 함께 섭니다! (시작 시 K사 앰플과 T사 배지 무료 지급)")
+    synergy_messages.append("💡 **[시너지 발견: 부부 동반 의뢰]** 부부가 전장에 함께 섭니다! (시작 시 K사 앰플과 T사 배지 무료 지급)")
 
 # 2. 🔎 [뒤틀림 탐정] 시너지
-detective_team = [g for g in selected_guards if g in ["LCD 팀장 모제스", "LCD 에즈라", "노란작살 베스파"]]
+detective_team = [g for g in selected_guards if g in ["모제스", "에즈라", "노란작살 베스파"]]
 if len(detective_team) >= 2:
     discount = 200
-    synergy_messages.append(f"💡 **[시너지 발견: 에즈라의 흥정]** 살벌한 공방 장비 가격 후려치기가 시작됩니다! (고용 비용 200 광기 할인)")
+    synergy_messages.append(f"💡 **[시너지 발견: 에즈라의 흥정]** 에즈라의 탁월한 협상 능력으로 거래가 수월해졌습니다! (고용 비용 200 광기 할인)")
 
 # 3. 🔫 [엄지] 시너지
-if "엄지 아비 발렌치나" in selected_guards and "천퇴성 뇌횡" in selected_guards:
-    synergy_messages.append("💡 **[시너지 발견: 엄지의 탄환보급]** 일제 사격 준비가 끝났습니다! (턴당 화상 부여량 +3)")
+if "엄지 아비 발렌치나" in selected_guards and "뇌횡" in selected_guards:
+    synergy_messages.append("💡 **[시너지 발견: 작열하는 탄환]** 엄지의 이글거리는 탄환이 쏟아집니다! (턴당 화상 부여량 +3)")
 
 # 4. 🕸️ [거미집] 시너지
 spider_members = ["엄지 아비 발렌치나", "검지 아비 뤼엔", "중지 아비 마티아스"]
@@ -100,7 +100,7 @@ if len(color_fixers) >= 2:
     synergy_messages.append("💡 **[시너지 발견: 컬러 팔레트]** 특색 해결사들이 모였습니다! (아군 진형의 영구 방어선 +30)")
 
 # 6. 📜 [소지] 시너지
-if "옥기린 가치우" in selected_guards and "천퇴성 뇌횡" in selected_guards:
+if "옥기린 가치우" in selected_guards and "뇌횡" in selected_guards:
     synergy_messages.append("💡 **[시너지 발견: 엇갈린 맹약]** 인협과 호걸의 기묘한 조화가 이루어집니다! (아군 진형의 영구 방어선 +15)")
 
 # 7. 👁️‍🗨️ [차원 유랑] 시너지
@@ -108,18 +108,18 @@ if "처형자 바랄" in selected_guards and "보라눈물 이오리" in selecte
     synergy_messages.append("💡 **[시너지 발견: 차원 도약]** 이오리와 바랄이 차원을 가로지르는 경험에 대해 의견을 교환합니다! (바랄의 혈청 W를 추가로 한 번 더 사용 가능)")
 
 # 8. ⚔️ [무기 진심녀] 시너지
-if "LCD 에즈라" in selected_guards and "검은침묵 안젤리카" in selected_guards:
+if "에즈라" in selected_guards and "검은침묵 안젤리카" in selected_guards:
     synergy_messages.append("💡 **[시너지 발견: 무기 진심녀]** 두 여전사가 공방의 무기와 방어구에 대한 수다를 시작합니다! (30% 확률로 에즈라가 무기를 한 번 더 전개)")
 
 # 9. 🪖 [연기 전쟁] 시너지
-smoke_war = ["어느 싱클레어", "엄지 아비 발렌치나", "바퀴 황제"]
+smoke_war = ["어느 싱클레어", "엄지 아비 발렌치나", "바퀴 황제", "롤랑"]
 smoke_war_count = sum(1 for g in smoke_war if g in selected_guards)
 if smoke_war_count >= 2:
     synergy_messages.append(f"💡 **[시너지 발견: 연기전쟁의 참상]** {smoke_war_count}인의 참전용사가 모여, 그 날의 끔찍한 기억을 되살립니다! (6턴마다 붉은안개의 위력 -10)")
 
 # 10. 🎭 [원본과 모조품] 시너지
 if "롤랑" in selected_guards and "검지 아비 뤼엔" in selected_guards:
-    synergy_messages.append("💡 **[시너지 발견: 진품과 모조품]** 뤼엔과 롤랑이 서로를 학습하며 필살기 발동 확률 및 피해량이 증가하고, 뤼엔의 공격이 반드시 명중합니다!")
+    synergy_messages.append("💡 **[시너지 발견: 진품과 모조품]** 뤼엔과 롤랑이 서로를 유심히 관찰하며 학습합니다! (필살기 발동 확률 및 피해량이 증가, 뤼엔의 공격이 빗나가지 않음)")
 
 # 시너지 알림창 출력 (Streamlit의 초록색 성공 박스 활용)
 if synergy_messages:
@@ -177,7 +177,7 @@ if st.button("⏳ 시뮬레이션 시작"):
         # (결제 화면에서 200광기 할인으로 이미 완벽히 처리되었으므로 전투 수치 변동은 없음!)
 
         # 3. 🔫 [엄지] 시너지 (화상 보너스 활성화)
-        if "엄지 아비 발렌치나" in selected_guards and "천퇴성 뇌횡" in selected_guards:
+        if "엄지 아비 발렌치나" in selected_guards and "뇌횡" in selected_guards:
             thumb_burn_bonus = 3
 
         # 4. 🕸️ [거미집] 시너지 (초기 영구 디버프)
@@ -192,13 +192,13 @@ if st.button("⏳ 시뮬레이션 시작"):
             persistent_power_bonus += 30
 
         # 6. 📜 [소지] 시너지 (영구 방어선 증가)
-        if "옥기린 가치우" in selected_guards and "천퇴성 뇌횡" in selected_guards:
+        if "옥기린 가치우" in selected_guards and "뇌횡" in selected_guards:
             persistent_power_bonus += 15
 
         log_container = st.empty()
         survival_status = True
 
-        shin_users = ["LCD 에즈라", "천퇴성 뇌횡", "어느 싱클레어", "엄지 아비 발렌치나", "중지 아비 마티아스", "노란작살 베스파", "검지 아비 뤼엔", "붉은시선 베르길리우스", "옥기린 가치우"]
+        shin_users = ["에즈라", "뇌횡", "어느 싱클레어", "엄지 아비 발렌치나", "노란작살 베스파", "검지 아비 뤼엔", "붉은시선 베르길리우스", "옥기린 가치우"]
 
         has_t_gear = "T사 보조 태엽" in selected_items
         t_gear_triggers = 0  # 가속이 터진 횟수 누적
@@ -239,15 +239,15 @@ if st.button("⏳ 시뮬레이션 시작"):
                     
                     # 🎯 [필살기 발동 로직] 주사위가 최댓값이 떴을 때!
                     if roll == max_dice:
-                        if guard == "LCD 에즈라":
+                        if guard == "에즈라":
                             current_team_power += 15
                             hour_log += "> 💥 :red[**[필살기: 유리아 공방 - 총공 모드, 마크 17!]**] 에즈라가 온갖 무기를 한꺼번에 전개하여 화력을 쏟아붓습니다!\n\n"
                         
-                        elif guard == "LCD 팀장 모제스":
+                        elif guard == "모제스":
                             kali_perm_debuff += 10 
                             hour_log += "> 👁️ :red[**[필살기: 붉은 점]**] 모제스가 연기 너머로 E.G.O의 가장 취약한 틈새를 꿰뚫어 봅니다! (칼리 영구 위력 -10)\n\n"
                         
-                        elif guard == "천퇴성 뇌횡":
+                        elif guard == "뇌횡":
                             current_team_power += 20
                             hour_log += "> 🐯 :red[**[필살기: 초절맹호살격난참]**] 뇌횡이 맹호의 기세로 적의 숨통을 끊을 난격을 꽂아 넣습니다!\n\n"
                         
@@ -263,7 +263,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                             current_team_power += 35
                             hour_log += "> 🎯 :red[**[필살기: 처분]**] 니콜라이의 완벽한 표식 위로 대장들의 치명적인 협공이 꽂힙니다!\n\n"
                         
-                        elif guard == "E.G.O 발현 샤오":
+                        elif guard == "샤오":
                             current_team_power += 35
                             hour_log += "> 🐉 :red[**[필살기: 도철]**] 샤오가 불타오르는 언월도를 휘두르며 거대한 화염의 용을 뿜어냅니다!\n\n"
                         
@@ -352,7 +352,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 if hour == 1:
                     hour_log += "> 🐉 **[천강성의 오망]** 옥기린의 가르침으로, 아군 전체의 방어 점수가 1.2배 증폭됩니다!\n\n"
 
-            if "LCD 에즈라" in selected_guards:
+            if "에즈라" in selected_guards:
                 ezra_buff = random.randint(5, 25)
                 current_team_power += ezra_buff
                 hour_log += f"> 🛠️ **[시제품 테스트]** 에즈라가 가방에서 미완성 무기를 뽑아듭니다! (+{ezra_buff})\n\n"
@@ -401,7 +401,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 hour_log += f"> 🔴 **[붉은안개의 투지]** 적이 많을수록 칼리의 참격이 더욱 거세집니다. (매 턴 위력 +{crowd_bonus})\n\n"
 
             # [디버프 적용 계산 (화상, 베스파, 롤랑 등)]
-            burn_debuff = (2 if "천퇴성 뇌횡" in selected_guards else 0) + (3 if "E.G.O 발현 샤오" in selected_guards else 0) + (3 if "붉은시선 베르길리우스" in selected_guards else 0) + (2 + thumb_burn_bonus if "엄지 아비 발렌치나" in selected_guards else 0)
+            burn_debuff = (2 if "뇌횡" in selected_guards else 0) + (3 if "샤오" in selected_guards else 0) + (3 if "붉은시선 베르길리우스" in selected_guards else 0) + (2 + thumb_burn_bonus if "엄지 아비 발렌치나" in selected_guards else 0)
             current_burn_penalty = burn_debuff * ((hour + t_gear_triggers) // 2)
             temp_debuff = current_burn_penalty + kali_perm_debuff
             
@@ -423,7 +423,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += "> ⬛ **[침묵의 사냥]** 롤랑이 당신의 앞을 가로막고 붉은안개와 단독 혈투를 벌입니다! (플레이어 무적 / 칼리 위력 지속적으로 -25)\n\n"
                     if random.random() < 0.30:
                         selected_guards.remove("롤랑")
-                        hour_log += "> 🥀 **[침묵]** 롤랑이 피를 토하며 쓰러집니다... 복수귀의 처절한 춤사위가 마침내 끝을 맺었습니다.\n\n"
+                        hour_log += "> 🥀 **[침묵]** 롤랑이 피를 토하며 쓰러집니다...복수귀의 처절한 춤사위가 마침내 끝을 맺었습니다.\n\n"
                     else:
                         hour_log += "\n"
                         
@@ -447,7 +447,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             if effective_kali_attack < 0: effective_kali_attack = 0
 
             # 모제스의 연기 디버프 (최종 위력 10% 감소)
-            if "LCD 팀장 모제스" in selected_guards and hour % 2 == 0:
+            if "모제스" in selected_guards and hour % 2 == 0:
                 reduction = int(effective_kali_attack * 0.1)
                 effective_kali_attack -= reduction
                 hour_log += f"> 💨 **[곰방대의 연기]** 모제스가 연기를 뿜어 칼리의 공격 궤적을 흐트러뜨립니다. (감소된 위력: {reduction})\n\n"
