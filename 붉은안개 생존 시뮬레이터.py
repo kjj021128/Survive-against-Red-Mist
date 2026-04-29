@@ -119,7 +119,7 @@ if smoke_war_count >= 2:
 
 # 10. 🎭 [원본과 모조품] 시너지
 if "롤랑" in selected_guards and "검지 아비 뤼엔" in selected_guards:
-    synergy_messages.append("💡 **[시너지 발견: 진품과 모조품]** 뤼엔과 롤랑이 서로를 유심히 관찰하며 학습합니다! (필살기 발동 확률 및 피해량이 증가, 뤼엔의 공격이 빗나가지 않음)")
+    synergy_messages.append("💡 **[시너지 발견: 진품과 모조품]** 뤼엔과 롤랑이 기묘한 이중주를 전장에 그려냅니다! (필살기 발동 확률 및 피해량이 증가, 뤼엔의 공격이 빗나가지 않음)")
 
 # 시너지 알림창 출력 (Streamlit의 초록색 성공 박스 활용)
 if synergy_messages:
@@ -227,7 +227,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             # 호위 전력 및 주사위 난수 계산
             current_team_power = persistent_power_bonus + carried_shield # 영구 버프(바퀴 황제 등)부터 시작
             if carried_shield > 0:
-                hour_log += f"> 👊 :**[기세 유지]** 이전 시간의 압도적인 우위로 기세를 이어갑니다! (이월된 방어선 +{carried_shield})\n\n"
+                hour_log += f"> 👊 **[기세 유지]** 이전 시간의 압도적인 우위로 기세를 이어갑니다! (이월된 방어선 +{carried_shield})\n\n"
                 carried_shield = 0 # 적용했으니 다음 턴을 위해 다시 0으로 초기화합니다.
             
             for guard in selected_guards:
