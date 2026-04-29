@@ -189,7 +189,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             kali_perm_debuff += 40
 
         # 5. 🌈 [특색] 시너지 (영구 방어선 증가)
-        color_fixers = [g for g in selected_guards if g in ["푸른잔향 아르갈리아", "붉은시선 베르길리우스", "노란작살 베스파", "검은침묵 안젤리카", "롤랑"]]
+        color_fixers = [g for g in selected_guards if g in ["푸른잔향 아르갈리아", "붉은시선 베르길리우스", "노란작살 베스파", "검은침묵 안젤리카"]]
         if len(color_fixers) >= 2:
             persistent_power_bonus += 30
 
