@@ -215,8 +215,8 @@ if st.button("⏳ 시뮬레이션 시작"):
             missed_guards_this_turn = []
 
             # 🪖 [연기전쟁의 참상] 3인 이상 스케일링 기믹
-            if is_smoke_war and hour % 4 == 0:
-                smoke_penalty = smoke_war_count_sim * 4
+            if is_smoke_war and hour % 6 == 0:
+                smoke_penalty = smoke_war_count_sim * 5
                 kali_perm_debuff += smoke_penalty
                 hour_log += f"> 🪖 :blue[**[시너지 발동: 사람 냄새 나는 연기]**] {smoke_war_count_sim}인의 참전용사들이 뿜어낸 매캐한 연기가 칼리의 폐부를 찌릅니다! (칼리 영구 위력 -{smoke_penalty})\n\n"
             
