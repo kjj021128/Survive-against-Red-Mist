@@ -112,10 +112,11 @@ if "에즈라" in selected_guards and "검은침묵 안젤리카" in selected_gu
     synergy_messages.append("💡 **[시너지 발견: 무기 진심녀]** 두 여전사가 공방의 무기와 방어구에 대한 수다를 시작합니다! (30% 확률로 에즈라가 무기를 한 번 더 전개)")
 
 # 9. 🪖 [연기 전쟁] 시너지
-smoke_war = ["에즈라", "모제스", "어느 싱클레어", "엄지 아비 발렌치나", "바퀴 황제", "롤랑"]
+smoke_war = ["에즈라", "모제스", "어느 싱클레어", "니콜라이", "엄지 아비 발렌치나", "바퀴 황제", "롤랑"]
 smoke_war_count = sum(1 for g in smoke_war if g in selected_guards)
-if smoke_war_count >= 2:
-    synergy_messages.append(f"💡 **[시너지 발견: 연기전쟁의 참상]** {smoke_war_count}인의 참전용사가 모여, 그 날의 끔찍한 기억을 되살립니다! (6턴마다 붉은안개의 위력 -10)")
+if smoke_war_count >= 3:  # 발동 조건을 3인 이상으로 빡빡하게 올림!
+    smoke_penalty = smoke_war_count * 4
+    synergy_messages.append(f"💡 **[시너지 발견: 연기전쟁의 참상]** {smoke_war_count}인의 참전용사가 모여, 끔찍한 진흙탕 싸움을 유도합니다! (매 4시간마다 붉은안개의 위력 -{smoke_penalty})")
 
 # 10. 🎭 [원본과 모조품] 시너지
 if "롤랑" in selected_guards and "검지 아비 뤼엔" in selected_guards:
@@ -204,17 +205,20 @@ if st.button("⏳ 시뮬레이션 시작"):
         has_t_gear = "T사 보조 태엽" in selected_items
         t_gear_triggers = 0  # 가속이 터진 횟수 누적
 
-        smoke_war_members = ["에즈라", "모제스", "어느 싱클레어", "엄지 아비 발렌치나", "바퀴 황제", "롤랑"]
-        is_smoke_war = sum(1 for g in smoke_war_members if g in selected_guards) >= 2
+        smoke_war_members = ["에즈라", "모제스", "어느 싱클레어", "니콜라이", "엄지 아비 발렌치나", "바퀴 황제", "롤랑"]
+        smoke_war_count_sim = sum(1 for g in smoke_war_members if g in selected_guards)
+        is_smoke_war = smoke_war_count_sim >= 3 # 3명 이상일 때만 True
 
         # 시간 흐름 루프 시작
         for hour in range(1, target_hours + 1):
             hour_log = f"#### **🕒 [{hour}시간 경과]**\n"
             missed_guards_this_turn = []
 
-            if is_smoke_war and hour % 6 == 0:
-                kali_perm_debuff += 10
-                hour_log += "> 🪖 :blue[**[시너지 발동: 질식하는 연기]**] 연기전쟁 참전용사들이 피워낸 짙은 연기가 붉은안개의 폐부를 찌릅니다! (칼리 영구 위력 -10)\n\n"
+            # 🪖 [연기전쟁의 참상] 3인 이상 스케일링 기믹
+            if is_smoke_war and hour % 4 == 0:
+                smoke_penalty = smoke_war_count_sim * 4
+                kali_perm_debuff += smoke_penalty
+                hour_log += f"> 🪖 :blue[**[시너지 발동: 사람 냄새 나는 연기]**] {smoke_war_count_sim}인의 참전용사들이 뿜어낸 매캐한 연기가 칼리의 폐부를 찌릅니다! (칼리 영구 위력 -{smoke_penalty})\n\n"
             
             # 이오리 기믹 처리
             if "보라눈물 이오리" in selected_guards and hour % 4 == 0:
@@ -227,7 +231,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             # 호위 전력 및 주사위 난수 계산
             current_team_power = persistent_power_bonus + carried_shield # 영구 버프(바퀴 황제 등)부터 시작
             if carried_shield > 0:
-                hour_log += f"> 👊 **[기세 유지]** 이전 시간의 압도적인 우위로 기세를 이어갑니다! (이월된 방어선 +{carried_shield})\n\n"
+                hour_log += f"> 💪 **[기세 유지]** 이전 시간의 압도적인 우위로 기세를 이어갑니다! (이월된 방어선 +{carried_shield})\n\n"
                 carried_shield = 0 # 적용했으니 다음 턴을 위해 다시 0으로 초기화합니다.
             
             for guard in selected_guards:
