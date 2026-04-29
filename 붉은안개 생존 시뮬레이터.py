@@ -493,7 +493,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     if "핏빛 밤 엘레나" in selected_guards: 
                         persistent_power_bonus += 2
                         hour_log += "> 🧛‍♀️ **[퍼져나가는 혈액 - 가속]** 엘레나가 피를 추가로 흡수합니다! (영구 방어선 +2)\n\n"
-                hour_log += f"> 🛡️ **방어 성공!** (칼리의 위력: {effective_kali_attack} / 호위 방어선: {int(current_team_power)})\n\n"
+                hour_log += f"> 🛡️ **[방어 성공]** (칼리의 위력: {effective_kali_attack} / 호위 방어선: {int(current_team_power)})\n\n"
             else:
                 # 0순위 생존기: 롤랑 부부 전용 기믹 (마티아스와 겹칠 일은 예산상 없지만 최상단에 배치)
                 if "롤랑" in selected_guards and "검은침묵 안젤리카" in selected_guards:
