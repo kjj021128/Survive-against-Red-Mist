@@ -203,7 +203,7 @@ if st.button("⏳ 시뮬레이션 시작"):
         has_t_gear = "T사 보조 태엽" in selected_items
         t_gear_triggers = 0  # 가속이 터진 횟수 누적
 
-        smoke_war_members = ["어느 싱클레어", "엄지 아비 발렌치나", "바퀴 황제"]
+        smoke_war_members = ["어느 싱클레어", "엄지 아비 발렌치나", "바퀴 황제", "롤랑"]
         is_smoke_war = sum(1 for g in smoke_war_members if g in selected_guards) >= 2
 
         # 시간 흐름 루프 시작
