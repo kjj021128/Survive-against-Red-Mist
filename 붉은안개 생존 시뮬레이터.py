@@ -548,7 +548,10 @@ if st.button("⏳ 시뮬레이션 시작"):
             raw_gap = abs(effective_kali_attack - current_team_power)
             last_hour_gap = min(300, raw_gap) 
             if current_team_power > effective_kali_attack and raw_gap >= 50:
-                carried_shield = int(raw_gap * 0.4) # 초과분의 40%를 다음 턴으로 이월
+                if current_team_power >= 9000:
+                    carried_shield = 0
+                else:
+                    carried_shield = int(raw_gap * 0.4) # 초과분의 40%를 다음 턴으로 이월
             else:
                 carried_shield = 0
             
