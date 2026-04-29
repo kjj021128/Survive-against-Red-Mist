@@ -337,11 +337,11 @@ if st.button("⏳ 시뮬레이션 시작"):
                             half_power = base_power // 2
                             penalty = (base_power + 1) - half_power
                             current_team_power -= penalty
-                            hour_log += f"> 🐣 **[빗나간 일격]** 어느 싱클레어의 타점이 어긋났지만, 공수부대의 노련함으로 방어선의 절반(기여도: {half_power})은 사수해냅니다!\n\n"
+                            hour_log += f"> 🐣 **[빗나간 일격]** 어느 싱클레어의 타점이 어긋났지만, 공수부대의 노련함으로 방어선의 절반({half_power})은 사수해냅니다!\n\n"
                         
                         # 2. 검지 아비 뤼엔 (롤랑 시너지 시 발동)
                         elif guard == "검지 아비 뤼엔" and "롤랑" in selected_guards:
-                            hour_log += "> 🎭 :blue[**[시너지 발동: 공조의 극의]**] 롤랑의 빈틈없는 엄호가 뤼엔의 서툰 동작을 보완합니다! (대실패 면역)\n\n"
+                            hour_log += "> 🎭 :blue[**[시너지 발동: 공조의 극의]**] 롤랑의 빈틈없는 엄호가 뤼엔의 서툰 동작을 보완합니다! (빗나감 면역)\n\n"
                         else:
                             current_team_power -= (base_power + 1) # 방금 더했던 위력을 다시 빼서 0으로 무효화
                             hour_log += f"> 🌀 **[빗나감]** {guard}의 공격이 완전히 빗나가며 붉은안개에게 무방비하게 노출됩니다! ({guard} 위력 무효화)\n\n"
