@@ -555,7 +555,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 if current_team_power >= 9000:
                     carried_shield = 0
                 else:
-                    carried_shield = int(raw_gap * 0.4) # 초과분의 40%를 다음 턴으로 이월
+                    carried_shield = int(raw_gap * 0.3) # 초과분의 30%를 다음 턴으로 이월
             else:
                 carried_shield = 0
             
