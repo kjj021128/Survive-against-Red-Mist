@@ -390,14 +390,14 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 대검을 가볍게 쥐고 천천히 접근합니다.\n\n"
             else:
                 kali_max_roll = 15 if "니콜라이" in selected_guards else 40
-                kali_base = 100 + ((hour - 12) * 18) 
+                kali_base = 100 + ((hour - 12) * 20) 
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
                 if hour == 13:
                     hour_log += "> 🔴 :red[**[E.G.O 발현]**] 칼리가 붉은 갑주로 스스로를 감싸며 엄청난 살의를 내뿜습니다!\n\n"
                     if any(g in selected_guards for g in shin_users):
                         hour_log += "> 💫 :yellow[**[신(心) 발산]**] 압도적인 공포 앞에서도, 경지에 이른 전사들의 투지는 꺾이지 않습니다. (신 사용자 1명 당 방어선 영구 +15)\n\n"
                 if hour == 20:
-                    kali_roll = 225
+                    kali_roll = 300
                     hour_log += "> ⚠️ :red[**[대절단 - 가로]**] 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
             
             # 다수의 적을 상대할 때 칼리의 투지 상승
