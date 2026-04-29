@@ -468,7 +468,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             if effective_kali_attack < 0: effective_kali_attack = 0
 
 
-            # [최종 방어 판정]
+            # 최종 방어 판정
             if "푸른잔향 아르갈리아" in selected_guards and abs(effective_kali_attack - current_team_power) <= 7 and "푸른잔향 아르갈리아" not in missed_guards_this_turn:
                 persistent_power_bonus += 10
                 hour_log += "> 🎼 **[아르갈리아의 공명]** 칼리의 궤적과 아슬아슬하게 합을 맞추며 영구적인 흐름을 가져옵니다! (영구 방어선 +10)\n\n"
@@ -548,7 +548,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     survival_status = False
                     break
             
-            # [시간 경과 후처리 기믹]
+            # 시간 경과 후처리 기믹
             raw_gap = abs(effective_kali_attack - current_team_power)
             last_hour_gap = min(300, raw_gap) 
             if current_team_power > effective_kali_attack and raw_gap >= 50:
