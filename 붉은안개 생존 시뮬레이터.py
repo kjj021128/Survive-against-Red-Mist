@@ -508,9 +508,8 @@ if st.button("⏳ 시뮬레이션 시작"):
                     selected_guards.remove("검은침묵 안젤리카")
                     is_angelica_alive = False
                     is_roland_berserk = True
-                    hour_log += "> 🪦 **[숭고한 희생]** 붉은안개의 대검이 당신과 롤랑을 가르려는 찰나, 안젤리카가 뛰어들어 대신 참격을 받아냅니다!\n\n"
-                    hour_log += "> 🎵 **[안젤리카 사망]**\n\n"
-                    hour_log += "> 💔 **[롤랑의 절규]** 아내를 지키지 못한 롤랑에게서 검은 기운이 일렁입니다...\n\n"
+                    hour_log += "> 🪦 **[안젤리카의 희생]** 붉은안개의 대검이 당신과 롤랑을 가르려는 찰나, 안젤리카가 뛰어들어 대신 참격을 받아냅니다!\n\n"
+                    hour_log += "> 💔 **[롤랑의 절규]** 아내를 지키지 못한 롤랑의 눈빛에 섬뜩한 광기가 차오릅니다...\n\n"
                 # 1순위 생존기: 마티아스의 강제 희생
                 elif "중지 아비 마티아스" in selected_guards and len(selected_guards) > 1:
                     # 조건이 만족되었을 때(elif 안쪽) 비로소 명단을 작성합니다.
