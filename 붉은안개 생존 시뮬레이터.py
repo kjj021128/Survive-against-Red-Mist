@@ -152,6 +152,7 @@ if st.button("⏳ 시뮬레이션 시작"):
         team_power_base = sum([guards_db[g]["power"] for g in selected_guards])
         persistent_power_bonus = 0 # 바퀴 황제, 엘레나 등의 누적 스탯 
         kali_perm_debuff = 0
+        carried_shield = 0
 
         battle_logs = ""
         
@@ -215,7 +216,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 kali_perm_debuff += 10
                 hour_log += "> 🪖 :blue[**[시너지 발동: 질식하는 연기]**] 연기전쟁 참전용사들이 피워낸 짙은 연기가 붉은안개의 폐부를 찌릅니다! (칼리 영구 위력 -10)\n\n"
             
-            # [이오리 기믹] 차원 도약
+            # 이오리 기믹 처리
             if "보라눈물 이오리" in selected_guards and hour % 4 == 0:
                 hour_log += "> 🔮 **[차원을 걷는 자]** 보라눈물 이오리가 뱀처럼 차원을 열어 당신을 숨겼습니다. (전투 패스)\n\n"
                 battle_logs += hour_log
@@ -223,8 +224,11 @@ if st.button("⏳ 시뮬레이션 시작"):
                 time.sleep(0.3)
                 continue
 
-            # [호위 전력 및 주사위 난수 계산]
-            current_team_power = persistent_power_bonus # 영구 버프(바퀴 황제 등)부터 시작
+            # 호위 전력 및 주사위 난수 계산
+            current_team_power = persistent_power_bonus + carried_shield # 영구 버프(바퀴 황제 등)부터 시작
+            if carried_shield > 0:
+                hour_log += f"> 👊 :**[기세 유지]** 이전 시간의 압도적인 우위로 기세를 이어갑니다! (이월된 방어선 +{carried_shield})\n\n"
+                carried_shield = 0 # 적용했으니 다음 턴을 위해 다시 0으로 초기화합니다.
             
             for guard in selected_guards:
                 base_power = guards_db[guard]["power"]
@@ -238,7 +242,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         current_team_power += 15
                     current_team_power += (base_power + roll)
                     
-                    # 🎯 [필살기 발동 로직] 주사위가 최댓값이 떴을 때!
+                    # 🎯 필살기 발동 로직 - 주사위가 최댓값이 떴을 때!
                     if roll == max_dice:
                         if guard == "에즈라":
                             current_team_power += 15
@@ -331,7 +335,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         elif guard == "장로 돈키호테":
                             current_team_power += 85
                             hour_log += "> 🎠 :red[**[필살기: 돈키호테류 경혈 오의 - 구]**] 장로 돈키호테가 만든 피의 구가 폭발하며 전장을 뒤덮습니다!\n\n"
-                    # 💥 [대실패 발동 로직] 주사위가 1이 떴을 때! (f-string으로 우아하게 통합)
+                    # 💥 대실패 발동 로직 - 주사위가 1이 떴을 때
                     elif roll == 1:
                         # 1. 어느 싱클레어 (기본 패시브)
                         if guard == "어느 싱클레어":
@@ -350,7 +354,6 @@ if st.button("⏳ 시뮬레이션 시작"):
             
             if "옥기린 가치우" in selected_guards: 
                 current_team_power *= 1.2
-                # [수정점] 상시 유지 버프는 1시간째에 한 번만 출력되도록 제한
                 if hour == 1:
                     hour_log += "> 🐉 **[천강성의 오망]** 옥기린의 가르침으로, 아군 전체의 방어 점수가 1.2배 증폭됩니다!\n\n"
 
@@ -358,13 +361,12 @@ if st.button("⏳ 시뮬레이션 시작"):
                 ezra_buff = random.randint(5, 25)
                 current_team_power += ezra_buff
                 hour_log += f"> 🛠️ **[시제품 테스트]** 에즈라가 가방에서 미완성 무기를 뽑아듭니다! (+{ezra_buff})\n\n"
-                # ⚔️ [무기 진심녀] 시너지 발동 (30% 확률로 추가 무기 전개)
                 if "검은침묵 안젤리카" in selected_guards and random.random() < 0.30:
                     extra_buff = random.randint(5, 25)
                     current_team_power += extra_buff
                     hour_log += f"> ⚔️ :blue[**[시너지 발동: 무기 진심녀]**] 안젤리카의 예리한 조언에 자극받은 에즈라가 무기를 한 번 더 전개합니다! (+{extra_buff})\n\n"
 
-            # [발렌치나 기믹 처리]
+            # 발렌치나 기믹 처리
             if "엄지 아비 발렌치나" in selected_guards and hour % 3 == 0 and "엄지 아비 발렌치나" not in missed_guards_this_turn:
                 current_team_power += 30
                 hour_log += "> 🤺 **[팔레르모 검술]** 발렌치나가 예비 탄환을 쏟아부어 화력을 집중합니다! (이번 시간 방어선 +30)\n\n"
@@ -375,7 +377,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 # 안젤리카의 버프는 매시간 수치가 바뀌는 '동적' 스킬이므로 그대로 둡니다.
                 hour_log += f"> 🧤 **[차원장갑]** 검은침묵 안젤리카가 무작위 공방 무기를 전개합니다. (추가 방어 점수 +{angelica_buff})\n\n"
 
-            # [칼리 기본 공격력 결정]
+            # 칼리 기본 공격력 결정
             if hour <= 12:
                 kali_max_roll = 10 if "R사 제 4무리 대장들" in selected_guards else 20
                 kali_base = 50 + (hour * 5) 
@@ -394,7 +396,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     kali_roll = 225
                     hour_log += "> ⚠️ :red[**[대절단 - 가로]**] 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
             
-            # [다수의 적을 상대할 때 칼리의 투지 상승 (1명당 위력 +8)]
+            # 다수의 적을 상대할 때 칼리의 투지 상승
             crowd_bonus = len(selected_guards) * 11
             kali_roll += crowd_bonus
             
@@ -402,7 +404,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             if hour == 1 and len(selected_guards) >= 3:
                 hour_log += f"> 🔴 **[붉은안개의 투지]** 적이 많을수록 칼리의 참격이 더욱 거세집니다. (매 턴 위력 +{crowd_bonus})\n\n"
 
-            # [디버프 적용 계산 (화상, 베스파, 롤랑 등)]
+            # 디버프 적용 계산 (화상, 베스파, 롤랑 등)
             burn_debuff = (2 if "뇌횡" in selected_guards else 0) + (3 if "샤오" in selected_guards else 0) + (3 if "붉은시선 베르길리우스" in selected_guards else 0) + (2 + thumb_burn_bonus if "엄지 아비 발렌치나" in selected_guards else 0)
             current_burn_penalty = burn_debuff * ((hour + t_gear_triggers) // 2)
             temp_debuff = current_burn_penalty + kali_perm_debuff
@@ -416,7 +418,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 temp_debuff += (30 + tactical_bonus)
                 hour_log += f"> 🐝 **[궁니르 공명]** 베스파가 칼리의 공격 궤적에서 찾아낸 허점을 놓치지 않고 찌릅니다! (위력 -30 / 전술 보너스 -{tactical_bonus})\n\n"
             
-            # [롤랑 기믹 처리]
+            # 롤랑 기믹 처리
             if "롤랑" in selected_guards:
                 if is_roland_berserk:
                     current_team_power += 9999 
@@ -444,7 +446,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             if "R사 제 4무리 대장들" in selected_guards and "R사 제 4무리 대장들" not in missed_guards_this_turn:
                 hour_log += "> 🎯 **[처분 표식]** 니콜라이의 지휘로 칼리의 위력 최댓값이 억제되고 있습니다.\n\n"
 
-            # [칼리 최종 공격력 산출]
+            # 칼리 최종 공격력 산출
             effective_kali_attack = int((kali_roll - temp_debuff) * aggro_multiplier)
             if effective_kali_attack < 0: effective_kali_attack = 0
 
@@ -545,6 +547,10 @@ if st.button("⏳ 시뮬레이션 시작"):
             # [시간 경과 후처리 기믹]
             raw_gap = abs(effective_kali_attack - current_team_power)
             last_hour_gap = min(300, raw_gap) 
+            if current_team_power > effective_kali_attack and raw_gap >= 50:
+                carried_shield = int(raw_gap * 0.4) # 초과분의 40%를 다음 턴으로 이월
+            else:
+                carried_shield = 0
             
             battle_logs += hour_log
             log_container.markdown(battle_logs)
