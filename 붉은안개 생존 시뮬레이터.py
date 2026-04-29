@@ -213,6 +213,15 @@ if st.button("⏳ 시뮬레이션 시작"):
         for hour in range(1, target_hours + 1):
             hour_log = f"#### **🕒 [{hour}시간 경과]**\n"
             missed_guards_this_turn = []
+            
+            if hour == 1:
+                hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 대검을 가볍게 쥐고 천천히 접근합니다.\n\n"
+            elif hour == 13:
+                hour_log += "> 🔴 :red[**[E.G.O 발현]**] 칼리가 붉은 갑주로 스스로를 감싸며 엄청난 살의를 내뿜습니다!\n\n"
+                if any(g in selected_guards for g in shin_users):
+                    hour_log += "> 💫 :yellow[**[신(心) 발산]**] 압도적인 공포 앞에서도, 경지에 이른 전사들의 투지는 꺾이지 않습니다. (신 사용자 1명 당 방어선 영구 +15)\n\n"
+            elif hour == 20:
+                hour_log += "> ⚠️ :red[**[대절단 - 가로]**] 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
 
             # 🪖 [연기전쟁의 참상] 3인 이상 스케일링 기믹
             if is_smoke_war and hour % 6 == 0:
@@ -381,7 +390,6 @@ if st.button("⏳ 시뮬레이션 시작"):
             if is_angelica_alive and "검은침묵 안젤리카" not in missed_guards_this_turn: 
                 angelica_buff = random.randint(5, 45)
                 current_team_power += angelica_buff
-                # 안젤리카의 버프는 매시간 수치가 바뀌는 '동적' 스킬이므로 그대로 둡니다.
                 hour_log += f"> 🧤 **[차원장갑]** 검은침묵 안젤리카가 무작위 공방 무기를 전개합니다. (추가 방어 점수 +{angelica_buff})\n\n"
 
             # 칼리 기본 공격력 결정
@@ -389,25 +397,16 @@ if st.button("⏳ 시뮬레이션 시작"):
                 kali_max_roll = 10 if "니콜라이" in selected_guards else 20
                 kali_base = 50 + (hour * 5) 
                 kali_roll = random.randint(kali_base - 10, kali_base + kali_max_roll)
-                if hour == 1:
-                    hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 대검을 가볍게 쥐고 천천히 접근합니다.\n\n"
+
             else:
                 kali_max_roll = 15 if "니콜라이" in selected_guards else 40
                 kali_base = 100 + ((hour - 12) * 20) 
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
-                if hour == 13:
-                    hour_log += "> 🔴 :red[**[E.G.O 발현]**] 칼리가 붉은 갑주로 스스로를 감싸며 엄청난 살의를 내뿜습니다!\n\n"
-                    if any(g in selected_guards for g in shin_users):
-                        hour_log += "> 💫 :yellow[**[신(心) 발산]**] 압도적인 공포 앞에서도, 경지에 이른 전사들의 투지는 꺾이지 않습니다. (신 사용자 1명 당 방어선 영구 +15)\n\n"
-                if hour == 20:
-                    kali_roll = 300
-                    hour_log += "> ⚠️ :red[**[대절단 - 가로]**] 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
             
             # 다수의 적을 상대할 때 칼리의 투지 상승
             crowd_bonus = len(selected_guards) * 15
             kali_roll += crowd_bonus
             
-            # 플레이어에게 물량전의 페널티를 암시하는 텍스트 (1시간째에 1회 출력)
             if hour == 1 and len(selected_guards) >= 3:
                 hour_log += f"> 🔴 **[붉은안개의 투지]** 적이 많을수록 칼리의 참격이 더욱 거세집니다. (매 턴 위력 +{crowd_bonus})\n\n"
 
