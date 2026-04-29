@@ -112,7 +112,7 @@ if "에즈라" in selected_guards and "검은침묵 안젤리카" in selected_gu
     synergy_messages.append("💡 **[시너지 발견: 무기 진심녀]** 두 여전사가 공방의 무기와 방어구에 대한 수다를 시작합니다! (30% 확률로 에즈라가 무기를 한 번 더 전개)")
 
 # 9. 🪖 [연기 전쟁] 시너지
-smoke_war = ["어느 싱클레어", "엄지 아비 발렌치나", "바퀴 황제", "롤랑"]
+smoke_war = ["에즈라", "모제스", "어느 싱클레어", "엄지 아비 발렌치나", "바퀴 황제", "롤랑"]
 smoke_war_count = sum(1 for g in smoke_war if g in selected_guards)
 if smoke_war_count >= 2:
     synergy_messages.append(f"💡 **[시너지 발견: 연기전쟁의 참상]** {smoke_war_count}인의 참전용사가 모여, 그 날의 끔찍한 기억을 되살립니다! (6턴마다 붉은안개의 위력 -10)")
@@ -203,7 +203,7 @@ if st.button("⏳ 시뮬레이션 시작"):
         has_t_gear = "T사 보조 태엽" in selected_items
         t_gear_triggers = 0  # 가속이 터진 횟수 누적
 
-        smoke_war_members = ["어느 싱클레어", "엄지 아비 발렌치나", "바퀴 황제", "롤랑"]
+        smoke_war_members = ["에즈라", "모제스", "어느 싱클레어", "엄지 아비 발렌치나", "바퀴 황제", "롤랑"]
         is_smoke_war = sum(1 for g in smoke_war_members if g in selected_guards) >= 2
 
         # 시간 흐름 루프 시작
