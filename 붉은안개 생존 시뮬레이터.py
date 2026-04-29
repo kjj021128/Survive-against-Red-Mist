@@ -12,7 +12,7 @@ guards_db = {
     "뇌횡": {"cost": 300, "power": 30, "dice": 15},
     "어느 싱클레어": {"cost": 400, "power": 60, "dice": 10}, 
     "제2권속 산초": {"cost": 450, "power": 55, "dice": 15}, 
-    "R사 제 4무리 대장들": {"cost": 500, "power": 60, "dice": 20},
+    "니콜라이": {"cost": 500, "power": 60, "dice": 20},
     "샤오": {"cost": 500, "power": 65, "dice": 20},
     "엄지 아비 발렌치나": {"cost": 500, "power": 65, "dice": 20},
     "중지 아비 마티아스": {"cost": 500, "power": 66, "dice": 20},
@@ -264,9 +264,9 @@ if st.button("⏳ 시뮬레이션 시작"):
                             current_team_power += 30
                             hour_log += "> 🩸 :red[**[필살기: 아류 산초 경혈식 - 라 샹그레]**] 산초가 끓어오르는 피를 창끝에 모아 폭발시킵니다!\n\n"
                         
-                        elif guard == "R사 제 4무리 대장들":
+                        elif guard == "니콜라이":
                             current_team_power += 35
-                            hour_log += "> 🎯 :red[**[필살기: 처분]**] 니콜라이의 완벽한 표식 위로 대장들의 치명적인 협공이 꽂힙니다!\n\n"
+                            hour_log += "> 🎯 :red[**[필살기: 처분]**] 니콜라이가 붉은안개에게 처분 표식을 새겨넣고, 검으로 주홍빛 궤적을 그려냅니다!\n\n"
                         
                         elif guard == "샤오":
                             current_team_power += 35
@@ -379,13 +379,13 @@ if st.button("⏳ 시뮬레이션 시작"):
 
             # 칼리 기본 공격력 결정
             if hour <= 12:
-                kali_max_roll = 10 if "R사 제 4무리 대장들" in selected_guards else 20
+                kali_max_roll = 10 if "니콜라이" in selected_guards else 20
                 kali_base = 50 + (hour * 5) 
                 kali_roll = random.randint(kali_base - 10, kali_base + kali_max_roll)
                 if hour == 1:
                     hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 대검을 가볍게 쥐고 천천히 접근합니다.\n\n"
             else:
-                kali_max_roll = 15 if "R사 제 4무리 대장들" in selected_guards else 40
+                kali_max_roll = 15 if "니콜라이" in selected_guards else 40
                 kali_base = 100 + ((hour - 12) * 18) 
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
                 if hour == 13:
@@ -443,8 +443,8 @@ if st.button("⏳ 시뮬레이션 시작"):
                         else:
                             hour_log += f"> ⬛ **[뒤랑달]** 롤랑이 홀로 칼리의 흐트러진 자세를 파고들어 맹공을 퍼붓습니다! (위력 -50 / 전술 보너스 -{tactical_bonus})\n\n"
             
-            if "R사 제 4무리 대장들" in selected_guards and "R사 제 4무리 대장들" not in missed_guards_this_turn:
-                hour_log += "> 🎯 **[처분 표식]** 니콜라이의 지휘로 칼리의 위력 최댓값이 억제되고 있습니다.\n\n"
+            if "니콜라이" in selected_guards and "니콜라이" not in missed_guards_this_turn:
+                hour_log += "> 🎯 **[위력 억제]** 니콜라이의 지휘로 칼리의 위력 최댓값이 억제되고 있습니다.\n\n"
 
             # 칼리 최종 공격력 산출
             effective_kali_attack = int((kali_roll - temp_debuff) * aggro_multiplier)
