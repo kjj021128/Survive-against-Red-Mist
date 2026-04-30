@@ -218,7 +218,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             missed_guards_this_turn = []
             
             if hour == 1:
-                hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 대검을 가볍게 쥐고 천천히 접근합니다.\n\n"
+                hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 당신과 호위들을 향해 천천히 접근합니다.\n\n"
             elif hour == 13:
                 hour_log += "> 🔴 :red[**[E.G.O 발현]**] 칼리가 붉은 갑주로 스스로를 감싸며 엄청난 살의를 내뿜습니다!\n\n"
                 if any(g in selected_guards for g in shin_users):
