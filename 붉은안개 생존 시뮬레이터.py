@@ -329,7 +329,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         elif guard == "롤랑":
                             if "검지 아비 뤼엔" in selected_guards:
                                 current_team_power += 75
-                                hour_log += "> ⬛ :red[**[Furioso - Original]**] 롤랑이 모조품 앞에서 원본의 숨 쉴 틈 없는 난무를 보여줍니다!\n\n"
+                                hour_log += "> ⬛ :red[**[Furioso - Original]**] 롤랑이 모조품 앞에서 원본의 품격을 보여줍니다!\n\n"
                             else:
                                 current_team_power += 50
                                 hour_log += "> ⬛ :red[**[Furioso]**] 롤랑이 9개의 무기를 꺼내어 숨 쉴 틈 없는 난무를 펼칩니다!\n\n"
