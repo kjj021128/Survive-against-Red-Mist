@@ -567,17 +567,12 @@ if st.button("⏳ 시뮬레이션 시작"):
             time.sleep(0.3)
 
             scroll_script = """
-                <script>
-                    setTimeout(function() {
-                        var parentDoc = window.parent.document;
-                        var container = parentDoc.querySelector('[data-testid="stAppViewContainer"]') || parentDoc.querySelector('.main') || parentDoc.documentElement;
-                        if (container) { 
-                            container.scrollTop = container.scrollHeight; 
-                        }
-                    }, 100); // 100ms 대기 후 실행
-                </script>
-                """
-                components.html(scroll_script, height=0, width=0)
+            <script>
+                var body = window.parent.document.querySelector(".main");
+                if (body) { body.scrollTop = body.scrollHeight; }
+            </script>
+            """
+            components.html(scroll_script, height=0, width=0)
 
         # 결과 출력
         st.write("---")
