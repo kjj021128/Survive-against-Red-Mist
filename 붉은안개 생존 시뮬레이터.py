@@ -211,12 +211,12 @@ if st.button("⏳ 시뮬레이션 시작"):
         is_smoke_war = smoke_war_count_sim >= 3 # 3명 이상일 때만 True
 
         # 리카르도의 장부 기록용 변수
-        previous_missed_guards = [ ]
-        missed_guards_this_turn = []
+        previous_missed_guards = []
 
         # 시간 흐름 루프 시작
         for hour in range(1, target_hours + 1):
             hour_log = f"#### **🕒 {hour}시간 경과**\n"
+            missed_guards_this_turn = []
             if hour == 1:
                 hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 당신과 호위들을 향해 천천히 접근합니다.\n\n"
             elif hour == 13:
@@ -378,14 +378,13 @@ if st.button("⏳ 시뮬레이션 시작"):
                             hour_log += f"> 🌀 **[빗나감]** {guard}의 공격이 완전히 빗나갔습니다... ({guard} 공격 모두 취소)\n\n"
                             missed_guards_this_turn.append(guard)
 
-                        if guard == "리카르도":
-                            actual_victims = [g for g in previous_missed_guards if g != "리카르도"]
-                            if actual_victims:
-                                retaliation_bonus = 30 # 압도적인 보복 보너스
-                                current_team_power += retaliation_bonus
-                                
-                                victims_str = ", ".join(actual_victims)
-                                hour_log += f"> 🕶️ **[되갚기]** 리카르도가 이전 공방에서 {victims_str}이(가) 당한 수모를 앙갚음하기 위해 무자비한 맹공을 퍼붓습니다! ({retaliation_bonus})\n\n"
+                    if guard == "리카르도":
+                        actual_victims = [g for g in previous_missed_guards if g != "리카르도"]
+                        if actual_victims:
+                            retaliation_bonus = 30 # 압도적인 보복 보너스
+                            current_team_power += retaliation_bonus   
+                            victims_str = ", ".join(actual_victims)
+                            hour_log += f"> 🕶️ **[되갚기]** 리카르도가 이전 공방에서 {victims_str}이(가) 당한 수모를 앙갚음하기 위해 무자비한 맹공을 퍼붓습니다! ({retaliation_bonus})\n\n"
 
             
             
