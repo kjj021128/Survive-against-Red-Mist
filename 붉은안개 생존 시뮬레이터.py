@@ -448,7 +448,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 else:
                     # --- (B) 일반 상태: 전술적 복기 적용 ---
                     if hour % 6 == 0 and "롤랑" not in missed_guards_this_turn:
-                        base_ = int(last_hour_gap * 0.4)
+                        base_tactical_bonus = int(last_hour_gap * 0.4)
                         if "검은침묵 안젤리카" in selected_guards:
                             boosted_bonus = int(base_tactical_bonus * 1.2)
                             temp_debuff += (50 + boosted_bonus)
