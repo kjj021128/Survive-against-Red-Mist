@@ -371,7 +371,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                             hour_log += "> 🎭 :blue[**[시너지 발동: 공조의 극의]**] 롤랑의 빈틈없는 엄호가 뤼엔의 서툰 동작을 보완합니다! (빗나감 면역)\n\n"
                         else:
                             current_team_power -= (base_power + 1) # 방금 더했던 위력을 다시 빼서 0으로 무효화
-                            hour_log += f"> 🌀 **[빗나감]** {guard}의 공격이 완전히 빗나가며 붉은안개에게 무방비하게 노출됩니다! ({guard} 행동 모두 취소)\n\n"
+                            hour_log += f"> 🌀 **[빗나감]** {guard}의 공격이 완전히 빗나가며 붉은안개에게 무방비하게 노출됩니다! ({guard} 공격 모두 취소)\n\n"
                             missed_guards_this_turn.append(guard)
             
             if "옥기린 가치우" in selected_guards: 
