@@ -240,7 +240,6 @@ if st.button("⏳ 시뮬레이션 시작"):
                 hour_log += "> 🐍 **[차원을 걷는 자]** 보라눈물 이오리가 차원을 열어 당신을 숨겼습니다. (전투 패스)\n\n"
                 battle_logs += hour_log
                 log_container.markdown(battle_logs)
-                previous_missed_guards = missed_guards_this_turn.copy()
                 time.sleep(0.3)
                 continue
                 
@@ -591,6 +590,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             
             battle_logs += hour_log
             log_container.markdown(battle_logs)
+            previous_missed_guards = missed_guards_this_turn.copy()
             time.sleep(0.3)
 
 
