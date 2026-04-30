@@ -238,10 +238,17 @@ if st.button("⏳ 시뮬레이션 시작"):
                 time.sleep(0.3)
                 continue
 
+
                 scroll_script = """
                 <script>
-                    var body = window.parent.document.querySelector(".main");
-                    if (body) { body.scrollTop = body.scrollHeight; }
+                    setTimeout(function() {
+                        var parentDoc = window.parent.document;
+                        // 최신 Streamlit 식별자와 구버전 식별자를 모두 탐색하여 호환성 확보
+                        var container = parentDoc.querySelector('[data-testid="stAppViewContainer"]') || parentDoc.querySelector('.main') || parentDoc.documentElement;
+                        if (container) { 
+                            container.scrollTop = container.scrollHeight; 
+                        }
+                    }, 100); // 100ms 대기 후 실행
                 </script>
                 """
                 components.html(scroll_script, height=0, width=0)
@@ -581,9 +588,14 @@ if st.button("⏳ 시뮬레이션 시작"):
             st.error("💀 **미션 실패!** 호위들은 전멸했고, 당신의 기록은 여기서 끊어졌습니다.")
 
         st.write("---")
-        st.subheader("📋 전체 생존 기록 (클립보드 복사)")
+        st.subheader("📋 전체 생존 기록")
         
         final_report = f"### 🛡️ 고용한 호위 및 장비\n- 호위: {', '.join(selected_guards)}\n- 장비: {', '.join([i.split(' ')[0] for i in selected_items])}\n\n"
         final_report += battle_logs
         
-        st.code(final_report, language="markdown")
+        # 1. 화면에 마크다운 양식을 깔끔하게 렌더링하여 보여주는 구역 (관측용)
+        st.markdown(final_report)
+
+        # 2. 클릭 한 번으로 복사할 수 있도록 원문 코드를 숨겨두는 구역 (보관용)
+        with st.expander("📋 기록 원문 복사하기"):
+            st.code(final_report, language="markdown")
