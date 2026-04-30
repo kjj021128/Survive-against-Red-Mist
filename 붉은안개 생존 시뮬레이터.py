@@ -198,7 +198,7 @@ if st.button("⏳ 시뮬레이션 시작"):
         if "옥기린 가치우" in selected_guards and "뇌횡" in selected_guards:
             persistent_power_bonus += 15
 
-        log_container = st.empty()
+        log_container = st.container(height=600)
         survival_status = True
 
         shin_users = ["에즈라", "뇌횡", "어느 싱클레어", "엄지 아비 발렌치나", "노란작살 베스파", "검지 아비 뤼엔", "붉은시선 베르길리우스", "옥기린 가치우"]
@@ -546,9 +546,14 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += f"> 🧪 :orange[**[앰플 투여]**] 치명상을 입었으나, K사 앰플의 효과로 육체가 즉시 수복됩니다. (남은 앰플: {revives_left})\n\n"
                 else:
                     hour_log += f"> 💀 **[방어 수단 없음]** 붉은안개의 미미크리가 당신을 갈랐습니다.\n\n"
-                    battle_logs += hour_log
-                    log_container.markdown(battle_logs)
-                    survival_status = False
+                    battle_logs += hour_log 
+            
+                    # 2. 600px 높이로 제한된 log_container 안에 '이번 시간의 로그'만 새롭게 쌓아 올립니다.
+                    with log_container:
+                        st.markdown(hour_log)
+                    
+                    # 3. 관측의 긴장감을 위해 0.3초 대기한 후 다음 시간(hour) 루프로 넘어갑니다.
+                    time.sleep(0.3)
                     break
             
             # 시간 경과 후처리 기믹
