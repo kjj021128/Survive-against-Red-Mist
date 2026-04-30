@@ -211,6 +211,7 @@ if st.button("⏳ 시뮬레이션 시작"):
         is_smoke_war = smoke_war_count_sim >= 3 # 3명 이상일 때만 True
 
         # 리카르도의 장부 기록용 변수
+        previous_missed_guards = [ ]
         missed_guards_this_turn = []
 
         # 시간 흐름 루프 시작
