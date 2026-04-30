@@ -384,9 +384,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                             retaliation_bonus = 30 * len(actual_victims)
                             current_team_power += retaliation_bonus   
                             victims_str = ", ".join(actual_victims)
-                            hour_log += f"> 🕶️ **[되갚기]** 리카르도가 이전 공방에서 {victims_str}의 수모를 앙갚음하기 위해 무자비한 맹공을 퍼붓습니다! ({retaliation_bonus})\n\n"
-
-            
+                            hour_log += f"> 🕶️ **[되갚기]** 리카르도가 이전 공방에서 {victims_str}의 수모를 앙갚음하기 위해 무자비한 맹공을 퍼붓습니다! ({retaliation_bonus})\n\n"      
             
             if "가치우" in selected_guards: 
                 current_team_power *= 1.2
@@ -589,7 +587,6 @@ if st.button("⏳ 시뮬레이션 시작"):
             battle_logs += hour_log
             log_container.markdown(battle_logs)
             previous_missed_guards = missed_guards_this_turn.copy()
-            time.sleep(0.3)
 
 
         # 결과 출력
