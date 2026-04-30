@@ -566,10 +566,17 @@ if st.button("⏳ 시뮬레이션 시작"):
             log_container.markdown(battle_logs)
             time.sleep(0.3)
 
+            # ⬇️ 개량된 스크롤 강제 하강 스크립트 (동기화 및 최신 식별자 반영)
             scroll_script = """
             <script>
-                var body = window.parent.document.querySelector(".main");
-                if (body) { body.scrollTop = body.scrollHeight; }
+                setTimeout(function() {
+                    var parentDoc = window.parent.document;
+                    // 최신 Streamlit 식별자와 구버전 식별자를 모두 탐색하여 호환성 확보
+                    var container = parentDoc.querySelector('[data-testid="stAppViewContainer"]') || parentDoc.querySelector('.main') || parentDoc.documentElement;
+                    if (container) { 
+                        container.scrollTop = container.scrollHeight; 
+                    }
+                }, 100); // 100ms 대기 후 실행
             </script>
             """
             components.html(scroll_script, height=0, width=0)
