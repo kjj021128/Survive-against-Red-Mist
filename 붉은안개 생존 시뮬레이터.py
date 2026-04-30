@@ -1,7 +1,6 @@
 import streamlit as st
 import random
 import time
-import streamlit.components.v1 as components
 
 # --- [1] 도시의 전력 및 장비 데이터베이스 구축 ---
 BUDGET = 1300
@@ -198,7 +197,7 @@ if st.button("⏳ 시뮬레이션 시작"):
         if "옥기린 가치우" in selected_guards and "뇌횡" in selected_guards:
             persistent_power_bonus += 15
 
-        log_container = st.container(height=600)
+        log_container = st.empty()
         survival_status = True
 
         shin_users = ["에즈라", "뇌횡", "어느 싱클레어", "엄지 아비 발렌치나", "노란작살 베스파", "검지 아비 뤼엔", "붉은시선 베르길리우스", "옥기린 가치우"]
@@ -546,14 +545,9 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += f"> 🧪 :orange[**[앰플 투여]**] 치명상을 입었으나, K사 앰플의 효과로 육체가 즉시 수복됩니다. (남은 앰플: {revives_left})\n\n"
                 else:
                     hour_log += f"> 💀 **[방어 수단 없음]** 붉은안개의 미미크리가 당신을 갈랐습니다.\n\n"
-                    battle_logs += hour_log 
-            
-                    # 2. 600px 높이로 제한된 log_container 안에 '이번 시간의 로그'만 새롭게 쌓아 올립니다.
-                    with log_container:
-                        st.markdown(hour_log)
-                    
-                    # 3. 관측의 긴장감을 위해 0.3초 대기한 후 다음 시간(hour) 루프로 넘어갑니다.
-                    time.sleep(0.3)
+                    battle_logs += hour_log
+                    log_container.markdown(battle_logs)
+                    survival_status = False
                     break
             
             # 시간 경과 후처리 기믹
@@ -571,20 +565,6 @@ if st.button("⏳ 시뮬레이션 시작"):
             log_container.markdown(battle_logs)
             time.sleep(0.3)
 
-            # ⬇️ 개량된 스크롤 강제 하강 스크립트 (동기화 및 최신 식별자 반영)
-            scroll_script = """
-            <script>
-                setTimeout(function() {
-                    var parentDoc = window.parent.document;
-                    // 최신 Streamlit 식별자와 구버전 식별자를 모두 탐색하여 호환성 확보
-                    var container = parentDoc.querySelector('[data-testid="stAppViewContainer"]') || parentDoc.querySelector('.main') || parentDoc.documentElement;
-                    if (container) { 
-                        container.scrollTop = container.scrollHeight; 
-                    }
-                }, 100); // 100ms 대기 후 실행
-            </script>
-            """
-            components.html(scroll_script, height=0, width=0)
 
         # 결과 출력
         st.write("---")
