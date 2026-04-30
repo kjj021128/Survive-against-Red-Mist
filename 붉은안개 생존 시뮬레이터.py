@@ -1,6 +1,7 @@
 import streamlit as st
 import random
 import time
+import streamlit.components.v1 as components
 
 # --- [1] 도시의 전력 및 장비 데이터베이스 구축 ---
 BUDGET = 1300
@@ -236,6 +237,15 @@ if st.button("⏳ 시뮬레이션 시작"):
                 log_container.markdown(battle_logs)
                 time.sleep(0.3)
                 continue
+
+                scroll_script = """
+                <script>
+                    var body = window.parent.document.querySelector(".main");
+                    if (body) { body.scrollTop = body.scrollHeight; }
+                </script>
+                """
+                components.html(scroll_script, height=0, width=0)
+                
 
             # 호위 전력 및 주사위 난수 계산
             current_team_power = persistent_power_bonus + carried_shield # 영구 버프(바퀴 황제 등)부터 시작
@@ -569,3 +579,11 @@ if st.button("⏳ 시뮬레이션 시작"):
             st.success(f"🎉 **미션 성공!** {target_hours}시간 동안 붉은안개로부터 살아남았습니다. 칼리가 빠르게 당신의 시야 너머로 사라집니다.")
         else:
             st.error("💀 **미션 실패!** 호위들은 전멸했고, 당신의 기록은 여기서 끊어졌습니다.")
+
+        st.write("---")
+        st.subheader("📋 전체 생존 기록 (클립보드 복사)")
+        
+        final_report = f"### 🛡️ 고용한 호위 및 장비\n- 호위: {', '.join(selected_guards)}\n- 장비: {', '.join([i.split(' ')[0] for i in selected_items])}\n\n"
+        final_report += battle_logs
+        
+        st.code(final_report, language="markdown")
