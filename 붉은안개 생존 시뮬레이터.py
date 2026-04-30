@@ -306,7 +306,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         elif guard == "검지 아비 뤼엔":
                             if "롤랑" in selected_guards:
                                 current_team_power += 60
-                                hour_log += "> 📜 :red[**[Furioso - Replica]**] 뤼엔이 원본의 움직임에 완벽히 동기화하여 파괴적인 모방 난무를 펼칩니다!\n\n"
+                                hour_log += "> 📜 :red[**[Furioso - Resonance]**] 뤼엔이 원본의 움직임에 완벽히 동기화하여 파괴적인 모방 난무를 펼칩니다!\n\n"
                             else:
                                 current_team_power += 40
                                 hour_log += "> 📜 :red[**[Furioso - Replica]**] 뤼엔이 헤르메스의 의지로 검은침묵의 난무를 기괴하게 모방해냅니다!\n\n"
