@@ -12,7 +12,7 @@ guards_db = {
     "모제스": {"cost": 275, "power": 0, "dice": 10},
     "뇌횡": {"cost": 300, "power": 30, "dice": 15},
     "어느 싱클레어": {"cost": 400, "power": 60, "dice": 10}, 
-    "제2권속 산초": {"cost": 450, "power": 55, "dice": 15}, 
+    "산초": {"cost": 450, "power": 55, "dice": 15}, 
     "니콜라이": {"cost": 500, "power": 60, "dice": 20},
     "샤오": {"cost": 500, "power": 65, "dice": 20},
     "엄지 아비 발렌치나": {"cost": 500, "power": 65, "dice": 20},
@@ -160,7 +160,7 @@ if st.button("⏳ 시뮬레이션 시작"):
 
         battle_logs = ""
         
-        blood_gauge = (100 if "제2권속 산초" in selected_guards else 0) + (250 if "장로 돈키호테" in selected_guards else 0)
+        blood_gauge = (100 if "산초" in selected_guards else 0) + (250 if "장로 돈키호테" in selected_guards else 0)
         baral_w_serum = 3 if "처형자 바랄" in selected_guards else 0
         if "처형자 바랄" in selected_guards and "보라눈물 이오리" in selected_guards:
             baral_w_serum += 1
@@ -282,7 +282,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                             current_team_power += 25
                             hour_log += "> 🐣 :red[**[취수낭랑 - 성]**] 어느 싱클레어의 맑은 일격이 붉은안개의 참격을 유려하게 흘려냅니다!\n\n"
                         
-                        elif guard == "제2권속 산초":
+                        elif guard == "산초":
                             current_team_power += 30
                             hour_log += "> 🩸 :red[**[아류 산초 경혈식 - 라 샹그레]**] 산초가 끓어오르는 피를 창끝에 모아 폭발시킵니다!\n\n"
                         
