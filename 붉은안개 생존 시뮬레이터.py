@@ -1,6 +1,7 @@
 import streamlit as st
 import random
 import time
+import re
 
 # --- [1] 도시의 전력 및 장비 데이터베이스 구축 ---
 BUDGET = 1300
