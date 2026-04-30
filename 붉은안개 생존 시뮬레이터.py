@@ -380,14 +380,16 @@ if st.button("⏳ 시뮬레이션 시작"):
                             hour_log += f"> 🌀 **[빗나감]** {guard}의 공격이 완전히 빗나갔습니다... ({guard} 공격 모두 취소)\n\n"
                             missed_guards_this_turn.append(guard)
 
-            if "리카르도" in selected_guards:
-                actual_victims = [g for g in previous_missed_guards if g != "리카르도"]
-                if actual_victims:
-                    retaliation_bonus = 30 # 압도적인 보복 보너스
-                    current_team_power += retaliation_bonus
-                    
-                    victims_str = ", ".join(actual_victims)
-                    hour_log += f"> 🕶️ **[되갚기]** 리카르도가 이전 공방에서 {victims_str}이(가) 당한 수모를 앙갚음하기 위해 무자비한 맹공을 퍼붓습니다! ({retaliation_bonus})\n\n"
+                        if guard == "리카르도"
+                            actual_victims = [g for g in previous_missed_guards if g != "리카르도"]
+                            if actual_victims:
+                                retaliation_bonus = 30 # 압도적인 보복 보너스
+                                current_team_power += retaliation_bonus
+                                
+                                victims_str = ", ".join(actual_victims)
+                                hour_log += f"> 🕶️ **[되갚기]** 리카르도가 이전 공방에서 {victims_str}이(가) 당한 수모를 앙갚음하기 위해 무자비한 맹공을 퍼붓습니다! ({retaliation_bonus})\n\n"
+
+            
             
             if "가치우" in selected_guards: 
                 current_team_power *= 1.2
