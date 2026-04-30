@@ -383,7 +383,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 actual_victims = [g for g in previous_missed_guards if g != "리카르도"]
                 if actual_victims:
                     retaliation_bonus = 30 # 압도적인 보복 보너스
-                    current_team_power += (base_power + retaliation_bonus)
+                    current_team_power += retaliation_bonus
                     
                     victims_str = ", ".join(actual_victims)
                     hour_log += f"> 🕶️ **[되갚기]** 리카르도가 이전 공방에서 {victims_str}이(가) 당한 수모를 앙갚음하기 위해 무자비한 맹공을 퍼붓습니다! ({retaliation_bonus})\n\n"
