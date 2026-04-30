@@ -211,13 +211,11 @@ if st.button("⏳ 시뮬레이션 시작"):
         is_smoke_war = smoke_war_count_sim >= 3 # 3명 이상일 때만 True
 
         # 리카르도의 장부 기록용 변수
-        previous_missed_guards = []
+        missed_guards_this_turn = []
 
         # 시간 흐름 루프 시작
         for hour in range(1, target_hours + 1):
             hour_log = f"#### **🕒 {hour}시간 경과**\n"
-            missed_guards_this_turn = []
-            
             if hour == 1:
                 hour_log += "> 🗡️ **[전투 개시]** 붉은안개가 당신과 호위들을 향해 천천히 접근합니다.\n\n"
             elif hour == 13:
