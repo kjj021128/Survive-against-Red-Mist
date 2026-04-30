@@ -578,6 +578,9 @@ if st.button("⏳ 시뮬레이션 시작"):
         final_report = f"### 🛡️ 고용한 호위 및 장비\n- 호위: {', '.join(selected_guards)}\n- 장비: {', '.join([i.split(' ')[0] for i in selected_items])}\n\n"
         final_report += battle_logs
 
+        clean_report = re.sub(r':[a-zA-Z]+\[(.*?)\]', r'\1', final_report)
+        clean_report = clean_report.replace('**', '')
+
         # 2. 클릭 한 번으로 복사할 수 있도록 원문 코드를 숨겨두는 구역 (보관용)
         with st.expander("📋 기록 원문 복사하기"):
-            st.code(final_report, language="markdown")
+            st.code(clean_report, language="text")
