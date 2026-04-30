@@ -495,7 +495,7 @@ if st.button("⏳ 시뮬레이션 시작"):
 
 
             # 최종 방어 판정
-            if "푸른잔향 아르갈리아" in selected_guards and abs(effective_kali_attack - current_team_power) <= 10 and "푸른잔향 아르갈리아" not in missed_guards_this_turn:
+            if "푸른잔향 아르갈리아" in selected_guards and abs(effective_kali_attack - current_team_power) <= 20 and "푸른잔향 아르갈리아" not in missed_guards_this_turn:
                 persistent_power_bonus += 20
                 hour_log += "> 🎼 **[아르갈리아의 공명]** 칼리의 궤적과 아슬아슬하게 합을 맞추며 영구적인 흐름을 가져옵니다. (영구 방어선 +20)\n\n"
                 
