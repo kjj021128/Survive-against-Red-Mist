@@ -141,6 +141,8 @@ if st.button("⏳ 시뮬레이션 시작"):
     elif not selected_guards and not selected_items:
         st.error("아무런 대비 없이 붉은안개를 맞이할 수는 없습니다.")
     else:
+        initial_guards = selected_guards.copy()
+        initial_items = selected_items.copy()
         st.write("---")
         st.subheader("⚔️ 생존 기록 로그")
         
@@ -576,7 +578,7 @@ if st.button("⏳ 시뮬레이션 시작"):
 
         st.write("---")
         
-        final_report = f"#### 🛡️ 고용한 호위 및 장비\n> 호위: {', '.join(selected_guards)}\n> 장비: {', '.join(selected_items)}\n\n"
+        final_report = f"#### 🛡️ 고용한 호위 및 장비\n> 호위: {', '.join(initial_guards)}\n> 장비: {', '.join(initial_items)}\n\n"
         final_report += battle_logs
 
         clean_report = re.sub(r':[a-zA-Z]+\[(.*?)\]', r'\1', final_report)
