@@ -237,21 +237,6 @@ if st.button("⏳ 시뮬레이션 시작"):
                 log_container.markdown(battle_logs)
                 time.sleep(0.3)
                 continue
-
-
-                scroll_script = """
-                <script>
-                    setTimeout(function() {
-                        var parentDoc = window.parent.document;
-                        // 최신 Streamlit 식별자와 구버전 식별자를 모두 탐색하여 호환성 확보
-                        var container = parentDoc.querySelector('[data-testid="stAppViewContainer"]') || parentDoc.querySelector('.main') || parentDoc.documentElement;
-                        if (container) { 
-                            container.scrollTop = container.scrollHeight; 
-                        }
-                    }, 100); // 100ms 대기 후 실행
-                </script>
-                """
-                components.html(scroll_script, height=0, width=0)
                 
 
             # 호위 전력 및 주사위 난수 계산
@@ -579,6 +564,20 @@ if st.button("⏳ 시뮬레이션 시작"):
             
             battle_logs += hour_log
             log_container.markdown(battle_logs)
+            time.sleep(0.3)
+
+            scroll_script = """
+                <script>
+                    setTimeout(function() {
+                        var parentDoc = window.parent.document;
+                        var container = parentDoc.querySelector('[data-testid="stAppViewContainer"]') || parentDoc.querySelector('.main') || parentDoc.documentElement;
+                        if (container) { 
+                            container.scrollTop = container.scrollHeight; 
+                        }
+                    }, 100); // 100ms 대기 후 실행
+                </script>
+                """
+                components.html(scroll_script, height=0, width=0)
 
         # 결과 출력
         st.write("---")
@@ -588,7 +587,6 @@ if st.button("⏳ 시뮬레이션 시작"):
             st.error("💀 **미션 실패!** 호위들은 전멸했고, 당신의 기록은 여기서 끊어졌습니다.")
 
         st.write("---")
-        st.subheader("📋 전체 생존 기록")
         
         final_report = f"### 🛡️ 고용한 호위 및 장비\n- 호위: {', '.join(selected_guards)}\n- 장비: {', '.join([i.split(' ')[0] for i in selected_items])}\n\n"
         final_report += battle_logs
