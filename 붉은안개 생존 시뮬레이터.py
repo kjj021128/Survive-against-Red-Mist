@@ -456,7 +456,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         else:
                             temp_debuff += (50 + base_tactical_bonus)
                             
-                            hour_log += f"> ⬛ **[뒤랑달]** 롤랑이 홀로 칼리의 흐트러진 자세를 파고들어 맹공을 퍼붓습니다. (칼리의 위력 -50 / 전술 보너스 -{base_})\n\n"
+                            hour_log += f"> ⬛ **[뒤랑달]** 롤랑이 홀로 칼리의 흐트러진 자세를 파고들어 맹공을 퍼붓습니다. (칼리의 위력 -50 / 전술 보너스 -{base_tactical_bonus})\n\n"
             
             if "니콜라이" in selected_guards and "니콜라이" not in missed_guards_this_turn:
                 hour_log += "> 🎯 **[위력 억제]** 니콜라이의 지휘로 칼리의 위력 최댓값이 억제되고 있습니다.\n\n"
