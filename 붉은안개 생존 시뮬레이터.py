@@ -20,7 +20,7 @@ guards_db = {
     "노란작살 베스파": {"cost": 525, "power": 68, "dice": 20},
     "검지 아비 뤼엔": {"cost": 525, "power": 68, "dice": 20},
     "붉은시선 베르길리우스": {"cost": 550, "power": 75, "dice": 20},
-    "옥기린 가치우": {"cost": 550, "power": 70, "dice": 20},
+    "가치우": {"cost": 550, "power": 70, "dice": 20},
     "푸른잔향 아르갈리아": {"cost": 575, "power": 78, "dice": 25},
     "롤랑": {"cost": 600, "power": 85, "dice": 25},
     "검은침묵 안젤리카": {"cost": 600, "power": 82, "dice": 25},
@@ -101,7 +101,7 @@ if len(color_fixers) >= 2:
     synergy_messages.append("💡 **[시너지 발견: 컬러 팔레트]** 특색 해결사들이 모였습니다! (아군 진형의 영구 방어선 +30)")
 
 # 6. 📜 [소지] 시너지
-if "옥기린 가치우" in selected_guards and "뇌횡" in selected_guards:
+if "가치우" in selected_guards and "뇌횡" in selected_guards:
     synergy_messages.append("💡 **[시너지 발견: 엇갈린 맹약]** 인협과 호걸의 기묘한 조화가 이루어집니다! (아군 진형의 영구 방어선 +15)")
 
 # 7. 👁️‍🗨️ [차원 유랑] 시너지
@@ -197,13 +197,13 @@ if st.button("⏳ 시뮬레이션 시작"):
             persistent_power_bonus += 30
 
         # 6. 📜 [소지] 시너지 (영구 방어선 증가)
-        if "옥기린 가치우" in selected_guards and "뇌횡" in selected_guards:
+        if "가치우" in selected_guards and "뇌횡" in selected_guards:
             persistent_power_bonus += 15
 
         log_container = st.empty()
         survival_status = True
 
-        shin_users = ["에즈라", "뇌횡", "어느 싱클레어", "엄지 아비 발렌치나", "노란작살 베스파", "검지 아비 뤼엔", "붉은시선 베르길리우스", "옥기린 가치우"]
+        shin_users = ["에즈라", "뇌횡", "어느 싱클레어", "엄지 아비 발렌치나", "노란작살 베스파", "검지 아비 뤼엔", "붉은시선 베르길리우스", "가치우"]
 
         has_t_gear = "T사 보조 태엽" in selected_items
         t_gear_triggers = 0  # 가속이 터진 횟수 누적
@@ -236,7 +236,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             
             # 이오리 기믹 처리
             if "보라눈물 이오리" in selected_guards and hour % 4 == 0:
-                hour_log += "> 🔮 **[차원을 걷는 자]** 보라눈물 이오리가 뱀처럼 차원을 열어 당신을 숨겼습니다. (전투 패스)\n\n"
+                hour_log += "> 🐍 **[차원을 걷는 자]** 보라눈물 이오리가 차원을 열어 당신을 숨겼습니다. (전투 패스)\n\n"
                 battle_logs += hour_log
                 log_container.markdown(battle_logs)
                 time.sleep(0.3)
@@ -280,7 +280,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         
                         elif guard == "어느 싱클레어":
                             current_team_power += 25
-                            hour_log += "> 🐣 :red[**[취수낭랑 - 성]**] 어느 싱클레어의 맑은 일격이 붉은안개의 참격을 유려하게 흘려냅니다!\n\n"
+                            hour_log += "> 🐣 :red[**[취수낭랑 - 성]**] 어느 싱클레어의 할버드와 대검이 붉은안개의 참격을 깔끔하게 흘려냅니다!\n\n"
                         
                         elif guard == "산초":
                             current_team_power += 30
@@ -296,7 +296,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         
                         elif guard == "엄지 아비 발렌치나":
                             current_team_power += 35
-                            hour_log += "> 🤺 :red[**[세치오나투라 디 엘레판테]**] 발렌치나가 원망을 실은 칼날 두 자루를 무자비하게 휘두릅니다!\n\n"
+                            hour_log += "> 🤺 :red[**[처분]**] 발렌치나가 원망을 실은 칼날 두 자루를 무자비하게 휘두릅니다!\n\n"
                         
                         elif guard == "중지 아비 마티아스":
                             current_team_power += 35
@@ -318,9 +318,9 @@ if st.button("⏳ 시뮬레이션 시작"):
                             current_team_power += 45
                             hour_log += "> 🩸 :red[**[죽은 혈귀를 위한 장례]**] 베르길리우스의 글라디우스가 피의 궤적을 그리며 주변을 압도합니다!\n\n"
                         
-                        elif guard == "옥기린 가치우":
+                        elif guard == "가치우":
                             current_team_power += 45
-                            hour_log += "> 🐉 :red[**[천강성 - 격]**] 가치우의 봉에 다섯 개의 망이 감기고, 파괴적인 힘을 뿜어냅니다!\n\n"
+                            hour_log += "> 🍂 :red[**[천강성 - 격]**] 가치우의 봉에 다섯 개의 망이 감기고, 파괴적인 힘을 뿜어냅니다!\n\n"
                         
                         elif guard == "푸른잔향 아르갈리아":
                             current_team_power += 50
@@ -340,7 +340,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         
                         elif guard == "보라눈물 이오리":
                             current_team_power += 50
-                            hour_log += "> 🔮 :red[**[환영난무]**] 보라눈물이 여러 차원의 자세를 동시에 전개하여 회피불능의 참격을 날립니다!\n\n"
+                            hour_log += "> 🐍 :red[**[환영난무]**] 보라눈물이 여러 차원의 자세를 동시에 전개하여 회피불능의 참격을 날립니다!\n\n"
                         
                         elif guard == "처형자 바랄":
                             current_team_power += 55
@@ -374,10 +374,10 @@ if st.button("⏳ 시뮬레이션 시작"):
                             hour_log += f"> 🌀 **[빗나감]** {guard}의 공격이 완전히 빗나갔습니다... ({guard} 공격 모두 취소)\n\n"
                             missed_guards_this_turn.append(guard)
             
-            if "옥기린 가치우" in selected_guards: 
+            if "가치우" in selected_guards: 
                 current_team_power *= 1.2
                 if hour == 1:
-                    hour_log += "> 🐉 **[천강성의 오망]** 옥기린의 가르침으로, 아군 전체의 방어 점수가 1.2배 증폭됩니다!\n\n"
+                    hour_log += "> 🍂 **[천강성의 가르침]** 옥기린의 지도를 통해, 아군 전체의 방어 점수가 1.2배 증폭됩니다.\n\n"
 
             if "에즈라" in selected_guards and "에즈라" not in missed_guards_this_turn:
                 ezra_buff = random.randint(5, 25)
@@ -541,7 +541,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 elif baral_w_serum > 0:
                     baral_w_serum -= 1
                     hour_log += f"> 💉 **[처형자의 기지]** 혈청 W를 투여해 공간을 격리했습니다. (남은 회피: {baral_w_serum})\n\n"
-                elif "옥기린 가치우" in selected_guards and not gachiu_shield_used:
+                elif "가치우" in selected_guards and not gachiu_shield_used:
                     gachiu_shield_used = True
                     hour_log += f"> 🍂 **[가치우의 인협]** 가치우가 당신을 밀쳐내고 붉은안개의 맹공을 홀로 받아냈습니다!\n\n"
                 elif has_t_badge:
