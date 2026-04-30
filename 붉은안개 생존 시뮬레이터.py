@@ -66,7 +66,6 @@ with col1:
 
 with col2:
     st.subheader("🧰 특이점 장비 구매")
-    # 아이템 선택 (selected_items 변수 생성)
     selected_items = [name for name in items_db if st.checkbox(f"{name} ({items_db[name]['cost']}) - {items_db[name]['desc']}")]
 
 st.write("---")
@@ -75,55 +74,54 @@ st.write("---")
 synergy_messages = []
 discount = 0
 
-# 1. ⬛ [검은침묵] 부부 시너지
+# 1. 검은침묵 부부 시너지
 if "롤랑" in selected_guards and "검은침묵 안젤리카" in selected_guards:
     synergy_messages.append("💡 **[시너지 발견: 부부 동반 의뢰]** 부부가 전장에 함께 섭니다! (시작 시 K사 앰플과 T사 배지 무료 지급)")
 
-# 2. 🔎 [뒤틀림 탐정] 시너지
+# 2. 뒤틀림 탐정 시너지
 detective_team = [g for g in selected_guards if g in ["모제스", "에즈라", "노란작살 베스파"]]
 if len(detective_team) >= 2:
     discount = 200
     synergy_messages.append(f"💡 **[시너지 발견: 에즈라의 흥정]** 에즈라의 탁월한 협상 능력으로 거래가 수월해졌습니다! (고용 비용 200 광기 할인)")
 
-# 3. 🔫 [엄지] 시너지
+# 3. 엄지 시너지
 if "엄지 아비 발렌치나" in selected_guards and "뇌횡" in selected_guards:
     synergy_messages.append("💡 **[시너지 발견: 작열하는 탄환]** 엄지의 이글거리는 탄환이 쏟아집니다! (턴당 화상 부여량 +3)")
 
-# 4. 🕸️ [거미집] 시너지
+# 4. 거미집 시너지
 spider_members = ["엄지 아비 발렌치나", "검지 아비 뤼엔", "중지 아비 마티아스"]
 spider_count = sum(1 for g in spider_members if g in selected_guards)
 if spider_count >= 2:
     synergy_messages.append(f"💡 **[시너지 발견: 거미집의 사냥법]** {spider_count}인의 아비가 모여 거미줄을 칩니다! (붉은안개의 위력 -40)")
 
-# 5. 🌈 [특색] 시너지
+# 5. 특색 시너지
 color_fixers = [g for g in selected_guards if g in ["푸른잔향 아르갈리아", "붉은시선 베르길리우스", "노란작살 베스파", "검은침묵 안젤리카", "보라눈물 이오리"]]
 if len(color_fixers) >= 2:
     synergy_messages.append("💡 **[시너지 발견: 컬러 팔레트]** 특색 해결사들이 모였습니다! (아군 진형의 영구 방어선 +30)")
 
-# 6. 📜 [소지] 시너지
+# 6. 소지 시너지
 if "가치우" in selected_guards and "뇌횡" in selected_guards:
     synergy_messages.append("💡 **[시너지 발견: 엇갈린 맹약]** 인협과 호걸의 기묘한 조화가 이루어집니다! (아군 진형의 영구 방어선 +15)")
 
-# 7. 👁️‍🗨️ [차원 유랑] 시너지
+# 7. 차원 유랑 시너지
 if "처형자 바랄" in selected_guards and "보라눈물 이오리" in selected_guards:
     synergy_messages.append("💡 **[시너지 발견: 차원 도약]** 이오리와 바랄이 차원을 가로지르는 경험에 대해 의견을 교환합니다! (바랄의 혈청 W를 추가로 한 번 더 사용 가능)")
 
-# 8. ⚔️ [무기 진심녀] 시너지
+# 8. 무기 진심녀 시너지
 if "에즈라" in selected_guards and "검은침묵 안젤리카" in selected_guards:
     synergy_messages.append("💡 **[시너지 발견: 무기 진심녀]** 두 여전사가 공방의 무기와 방어구에 대한 수다를 시작합니다! (30% 확률로 에즈라가 무기를 한 번 더 전개)")
 
-# 9. 🪖 [연기 전쟁] 시너지
+# 9. 연기 전쟁 시너지
 smoke_war = ["에즈라", "모제스", "어느 싱클레어", "니콜라이", "엄지 아비 발렌치나", "바퀴 황제", "롤랑"]
 smoke_war_count = sum(1 for g in smoke_war if g in selected_guards)
 if smoke_war_count >= 3:  # 발동 조건을 3인 이상으로 빡빡하게 올림!
     smoke_penalty = smoke_war_count * 4
     synergy_messages.append(f"💡 **[시너지 발견: 연기전쟁의 참상]** {smoke_war_count}인의 참전용사가 모여, 끔찍한 진흙탕 싸움을 유도합니다! (매 4시간마다 붉은안개의 위력 -{smoke_penalty})")
 
-# 10. 🎭 [원본과 모조품] 시너지
+# 10. 원본과 모조품 시너지
 if "롤랑" in selected_guards and "검지 아비 뤼엔" in selected_guards:
     synergy_messages.append("💡 **[시너지 발견: 진품과 모조품]** 뤼엔과 롤랑이 기묘한 이중주를 전장에 그려냅니다! (필살기 발동 확률 및 피해량이 증가, 뤼엔의 공격이 빗나가지 않음)")
 
-# 시너지 알림창 출력 (Streamlit의 초록색 성공 박스 활용)
 if synergy_messages:
     for msg in synergy_messages:
         st.success(msg)
@@ -173,30 +171,29 @@ if st.button("⏳ 시뮬레이션 시작"):
         # --- [시너지 전투 수치 적용 구역] ---
         thumb_burn_bonus = 0 # 엄지 시너지 화상 보너스 초기화
         
-        # 1. ⬛ [검은침묵] 부부 시너지 (생존기 추가)
+        # 1. 검은침묵 부부 시너지
         if "롤랑" in selected_guards and "검은침묵 안젤리카" in selected_guards:
             revives_left += 1  # K사 앰플 1회 분량 추가 (또는 3회로 하려면 += 3)
             has_t_badge = True # T사 배지 강제 활성화
 
-        # 2. 🔎 [뒤틀림 탐정] 시너지
+        # 2. 뒤틀림 탐정 시너지
         # (결제 화면에서 200광기 할인으로 이미 완벽히 처리되었으므로 전투 수치 변동은 없음!)
 
-        # 3. 🔫 [엄지] 시너지 (화상 보너스 활성화)
+        # 3. 엄지 시너지
         if "엄지 아비 발렌치나" in selected_guards and "뇌횡" in selected_guards:
             thumb_burn_bonus = 3
 
-        # 4. 🕸️ [거미집] 시너지 (초기 영구 디버프)
+        # 4. 거미집 시너지 (초기 영구 디버프)
         spider_count = sum(1 for g in ["엄지 아비 발렌치나", "검지 아비 뤼엔", "중지 아비 마티아스"] if g in selected_guards)
-        
         if spider_count >= 2:
             kali_perm_debuff += 40
 
-        # 5. 🌈 [특색] 시너지 (영구 방어선 증가)
+        # 5. 특색 시너지 (영구 방어선 증가)
         color_fixers = [g for g in selected_guards if g in ["푸른잔향 아르갈리아", "붉은시선 베르길리우스", "노란작살 베스파", "검은침묵 안젤리카"]]
         if len(color_fixers) >= 2:
             persistent_power_bonus += 30
 
-        # 6. 📜 [소지] 시너지 (영구 방어선 증가)
+        # 6. 소지 시너지 (영구 방어선 증가)
         if "가치우" in selected_guards and "뇌횡" in selected_guards:
             persistent_power_bonus += 15
 
@@ -246,7 +243,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             # 호위 전력 및 주사위 난수 계산
             current_team_power = persistent_power_bonus + carried_shield # 영구 버프(바퀴 황제 등)부터 시작
             if carried_shield > 0:
-                hour_log += f"> 💪 **[기세 유지]** 이전 시간의 압도적인 우위로 기세를 이어갑니다! (이월된 방어선 +{carried_shield})\n\n"
+                hour_log += f"> 💪 **[기세 유지]** 이전 시간의 압도적인 우위로 기세를 이어갑니다. (이월된 방어선 +{carried_shield})\n\n"
                 carried_shield = 0 # 적용했으니 다음 턴을 위해 다시 0으로 초기화합니다.
             if len(selected_guards) == 0:
                 current_team_power = 0
@@ -451,14 +448,15 @@ if st.button("⏳ 시뮬레이션 시작"):
                 else:
                     # --- (B) 일반 상태: 전술적 복기 적용 ---
                     if hour % 6 == 0 and "롤랑" not in missed_guards_this_turn:
-                        # 기본 50 + 지난 격차의 40% 보너스
-                        tactical_bonus = int(last_hour_gap * 0.4)
-                        temp_debuff += (50 + tactical_bonus)
-                        
+                        base_ = int(last_hour_gap * 0.4)
                         if "검은침묵 안젤리카" in selected_guards:
-                            hour_log += f"> ⬛ **[검은침묵의 왈츠]** 롤랑 부부가 지난 공방의 빈틈을 완벽히 분석했습니다. (칼리의 위력 -50 / 전술 보너스 -{tactical_bonus})\n\n"
+                            boosted_bonus = int(base_tactical_bonus * 1.2)
+                            temp_debuff += (50 + boosted_bonus)
+                            hour_log += f"> ⬛ **[검은침묵의 왈츠]** 롤랑 부부가 지난 공방의 빈틈을 완벽히 분석했습니다. (칼리의 위력 -50 / 전술 보너스 -{boosted_bonus})\n\n"
                         else:
-                            hour_log += f"> ⬛ **[뒤랑달]** 롤랑이 홀로 칼리의 흐트러진 자세를 파고들어 맹공을 퍼붓습니다. (칼리의 위력 -50 / 전술 보너스 -{tactical_bonus})\n\n"
+                            temp_debuff += (50 + base_tactical_bonus)
+                            
+                            hour_log += f"> ⬛ **[뒤랑달]** 롤랑이 홀로 칼리의 흐트러진 자세를 파고들어 맹공을 퍼붓습니다. (칼리의 위력 -50 / 전술 보너스 -{base_})\n\n"
             
             if "니콜라이" in selected_guards and "니콜라이" not in missed_guards_this_turn:
                 hour_log += "> 🎯 **[위력 억제]** 니콜라이의 지휘로 칼리의 위력 최댓값이 억제되고 있습니다.\n\n"
