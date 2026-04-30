@@ -384,7 +384,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                             retaliation_bonus = 30 * len(actual_victims)
                             current_team_power += retaliation_bonus   
                             victims_str = ", ".join(actual_victims)
-                            hour_log += f"> 🕶️ **[되갚기]** 리카르도가 {victims_str}의 수모를 되갚아주기 위해 주먹을 날립니다! ({retaliation_bonus})\n\n"      
+                            hour_log += f"> 🕶️ **[되갚기]** 리카르도가 {victims_str}의 수모를 되갚아주기 위해 주먹을 날립니다. (+{retaliation_bonus})\n\n"      
             
             if "가치우" in selected_guards: 
                 current_team_power *= 1.2
