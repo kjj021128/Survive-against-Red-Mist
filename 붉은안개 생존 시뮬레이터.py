@@ -380,7 +380,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                             hour_log += f"> 🌀 **[빗나감]** {guard}의 공격이 완전히 빗나갔습니다... ({guard} 공격 모두 취소)\n\n"
                             missed_guards_this_turn.append(guard)
 
-                        if guard == "리카르도"
+                        if guard == "리카르도":
                             actual_victims = [g for g in previous_missed_guards if g != "리카르도"]
                             if actual_victims:
                                 retaliation_bonus = 30 # 압도적인 보복 보너스
