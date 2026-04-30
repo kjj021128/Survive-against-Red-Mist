@@ -161,10 +161,10 @@ if st.button("⏳ 시뮬레이션 시작"):
         battle_logs = ""
         
         blood_gauge = (100 if "제2권속 산초" in selected_guards else 0) + (250 if "장로 돈키호테" in selected_guards else 0)
-        baral_w_serum = 2 if "처형자 바랄" in selected_guards else 0
+        baral_w_serum = 3 if "처형자 바랄" in selected_guards else 0
         if "처형자 바랄" in selected_guards and "보라눈물 이오리" in selected_guards:
             baral_w_serum += 1
-            battle_logs += "> 🌌 :blue[**[시너지 발동: 차원 유랑]**] 이오리가 차원의 문을 열어 바랄의 혈청 W 실린더를 하나 더 꺼내옵니다. (혈청 W 최대 3회)\n\n"
+            battle_logs += "> 🌌 :blue[**[시너지 발동: 차원 유랑]**] 이오리가 차원의 문을 열어 바랄의 혈청 W 실린더를 하나 더 꺼내옵니다. (혈청 W 사용 가능 횟수 +1)\n\n"
         is_roland_berserk = False
         last_hour_gap = 0  # 직전 시간의 위력 격차 저장
         gachiu_shield_used = False
@@ -382,7 +382,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             if "에즈라" in selected_guards and "에즈라" not in missed_guards_this_turn:
                 ezra_buff = random.randint(5, 25)
                 current_team_power += ezra_buff
-                hour_log += f"> 🦮 **[시제품 테스트]** 에즈라가 가방에서 미완성 무기를 뽑아듭니다! (+{ezra_buff})\n\n"
+                hour_log += f"> 🦮 **[시제품 테스트]** 에즈라가 가방에서 미완성 장비를 뽑아듭니다. (+{ezra_buff})\n\n"
                 if "검은침묵 안젤리카" in selected_guards and random.random() < 0.30:
                     extra_buff = random.randint(5, 25)
                     current_team_power += extra_buff
@@ -391,7 +391,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             # 발렌치나 기믹 처리
             if "엄지 아비 발렌치나" in selected_guards and hour % 3 == 0 and "엄지 아비 발렌치나" not in missed_guards_this_turn:
                 current_team_power += 30
-                hour_log += "> 🤺 **[팔레르모 검술]** 발렌치나가 예비 탄환을 쏟아부어 화력을 집중합니다! (이번 시간 방어선 +30)\n\n"
+                hour_log += "> 🤺 **[팔레르모 검술]** 발렌치나가 예비 탄환을 쏟아부어 화력을 집중합니다. (이번 시간 방어선 +30)\n\n"
                 
             if is_angelica_alive and "검은침묵 안젤리카" not in missed_guards_this_turn: 
                 angelica_buff = random.randint(5, 45)
@@ -433,7 +433,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                 # 기본 30 + 지난 격차의 20% 보너스
                 tactical_bonus = int(last_hour_gap * 0.2)
                 temp_debuff += (30 + tactical_bonus)
-                hour_log += f"> 🐝 **[궁니르 공명]** 베스파가 칼리의 공격 궤적에서 찾아낸 허점을 놓치지 않고 찌릅니다! (칼리의 위력 -30 / 전술 보너스 -{tactical_bonus})\n\n"
+                hour_log += f"> 🐝 **[궁니르 공명]** 베스파가 칼리의 공격 궤적에서 찾아낸 허점을 놓치지 않고 찌릅니다. (칼리의 위력 -30 / 전술 보너스 -{tactical_bonus})\n\n"
             
             # 롤랑 기믹 처리
             if "롤랑" in selected_guards:
@@ -444,7 +444,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += "> ⬛ **[광란]** 롤랑이 당신의 앞을 가로막고 붉은안개와 단독 혈투를 벌입니다! (플레이어 무적 / 칼리 위력 지속적으로 -25)\n\n"
                     if random.random() < 0.30:
                         selected_guards.remove("롤랑")
-                        hour_log += "> 🥀 **[그 사람은 그렇게...]** 롤랑이 피를 토하며 주저앉습니다...그건 그거고, 이건 이거니까요.\n\n"
+                        hour_log += "> 🥀 **[그 사람은 그렇게...]** 롤랑이 피를 토하며 허망한 얼굴로 쓰러집니다...\n\n"
                     else:
                         hour_log += "\n"
                         
@@ -456,9 +456,9 @@ if st.button("⏳ 시뮬레이션 시작"):
                         temp_debuff += (50 + tactical_bonus)
                         
                         if "검은침묵 안젤리카" in selected_guards:
-                            hour_log += f"> ⬛ **[검은침묵의 왈츠]** 롤랑 부부가 지난 공방의 빈틈을 완벽히 분석했습니다! (칼리의 위력 -50 / 전술 보너스 -{tactical_bonus})\n\n"
+                            hour_log += f"> ⬛ **[검은침묵의 왈츠]** 롤랑 부부가 지난 공방의 빈틈을 완벽히 분석했습니다. (칼리의 위력 -50 / 전술 보너스 -{tactical_bonus})\n\n"
                         else:
-                            hour_log += f"> ⬛ **[뒤랑달]** 롤랑이 홀로 칼리의 흐트러진 자세를 파고들어 맹공을 퍼붓습니다! (칼리의 위력 -50 / 전술 보너스 -{tactical_bonus})\n\n"
+                            hour_log += f"> ⬛ **[뒤랑달]** 롤랑이 홀로 칼리의 흐트러진 자세를 파고들어 맹공을 퍼붓습니다. (칼리의 위력 -50 / 전술 보너스 -{tactical_bonus})\n\n"
             
             if "니콜라이" in selected_guards and "니콜라이" not in missed_guards_this_turn:
                 hour_log += "> 🎯 **[위력 억제]** 니콜라이의 지휘로 칼리의 위력 최댓값이 억제되고 있습니다.\n\n"
@@ -476,7 +476,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             # 뤼엔의 지령 회피 (15% 확률로 위력 0)
             if "검지 아비 뤼엔" in selected_guards and random.random() < 0.15 and "검지 아비 뤼엔" not in missed_guards_this_turn:
                 effective_kali_attack = 0
-                hour_log += "> 📜 **[지령 수행]** 뤼엔이 헤르메스의 의지로 칼리의 공격을 완전히 간파해냅니다! (칼리의 위력 무효화)\n\n"
+                hour_log += "> 📜 **[지령 수행]** 뤼엔이 헤르메스의 의지로 칼리의 공격을 완전히 간파해냅니다. (칼리의 위력 무효화)\n\n"
 
             if effective_kali_attack < 0: effective_kali_attack = 0
 
@@ -484,7 +484,7 @@ if st.button("⏳ 시뮬레이션 시작"):
             # 최종 방어 판정
             if "푸른잔향 아르갈리아" in selected_guards and abs(effective_kali_attack - current_team_power) <= 10 and "푸른잔향 아르갈리아" not in missed_guards_this_turn:
                 persistent_power_bonus += 20
-                hour_log += "> 🎼 **[아르갈리아의 공명]** 칼리의 궤적과 아슬아슬하게 합을 맞추며 영구적인 흐름을 가져옵니다! (영구 방어선 +20)\n\n"
+                hour_log += "> 🎼 **[아르갈리아의 공명]** 칼리의 궤적과 아슬아슬하게 합을 맞추며 영구적인 흐름을 가져옵니다. (영구 방어선 +20)\n\n"
                 
                 # 만약 방어선이 뚫릴 뻔했다면, 강제로 방어 점수를 끌어올려 세이브
                 if current_team_power < effective_kali_attack:
@@ -533,7 +533,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                     debuff_amount = int(sacrifice_power * 0.5)
                     kali_perm_debuff += debuff_amount
                     
-                    hour_log += f"> ⛓️ **[마티아스의 변덕]** 방어선이 무너지자, 마티아스가 충동적으로 곁에 있던 **{sacrifice}**를 붉은안개의 참격 앞으로 밀쳐냅니다!\n\n"
+                    hour_log += f"> ⛓️ **[마티아스의 변덕]** 방어선이 무너지자, 마티아스가 충동적으로 곁에 있던 **{sacrifice}**를 붉은안개의 참격 앞으로 밀쳐냅니다.\n\n"
                     hour_log += f"> 😵 **[희생양 즉사 / 붉은안개의 영구 위력 {debuff_amount} 감소 / 이번 턴 강제 생존]**\n\n"
                 elif blood_gauge >= 50:
                     blood_gauge -= 50
