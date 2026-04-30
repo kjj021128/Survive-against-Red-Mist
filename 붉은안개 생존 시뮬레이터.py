@@ -225,6 +225,8 @@ if st.button("⏳ 시뮬레이션 시작"):
                     hour_log += "> 💫 :yellow[**[신(心) 발산]**] 압도적인 공포 앞에서도, 경지에 이른 전사들의 투지는 꺾이지 않습니다. (신 사용자 1명 당 방어선 영구 +15)\n\n"
             elif hour == 20:
                 hour_log += "> ⚠️ :red[**[대절단 - 가로]**] 붉은안개가 모든 것을 양단하는 필살의 참격을 날립니다!\n\n"
+                if "처형자 바랄" in selected_guards:
+                    hour_log += "> ⬛ :red[**[무력화]**] 처형자 바랄이 가볍게 손을 내밀어, 칼리의 붉은 파동을 억눌러 소멸시킵니다!\n\n"
 
             # 🪖 [연기전쟁의 참상] 3인 이상 스케일링 기믹
             if is_smoke_war and hour % 6 == 0:
@@ -406,6 +408,11 @@ if st.button("⏳ 시뮬레이션 시작"):
                 kali_max_roll = 15 if "니콜라이" in selected_guards else 40
                 kali_base = 100 + ((hour - 12) * 20) 
                 kali_roll = random.randint(kali_base - 15, kali_base + kali_max_roll)
+                if hour == 20:
+                    if "처형자 바랄" in selected_guards:
+                        kali_roll = 0
+                    else:
+                        kali_roll = 300
             
             # 다수의 적을 상대할 때 칼리의 투지 상승
             crowd_bonus = len(selected_guards) * 15
