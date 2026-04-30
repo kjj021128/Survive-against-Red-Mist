@@ -8,7 +8,7 @@ BUDGET = 1300
 
 # 호위 목록 (이름: [가격, 기본 수치, 주사위 최댓값])
 guards_db = {
-    "리카르도": {"cost": 225, "power": 20, "dice": 10}
+    "리카르도": {"cost": 225, "power": 20, "dice": 10},
     "에즈라": {"cost": 250, "power": 25, "dice": 10},
     "모제스": {"cost": 275, "power": 0, "dice": 10},
     "뇌횡": {"cost": 300, "power": 30, "dice": 15},
