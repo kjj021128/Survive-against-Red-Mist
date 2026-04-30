@@ -212,7 +212,7 @@ if st.button("⏳ 시뮬레이션 시작"):
 
         # 시간 흐름 루프 시작
         for hour in range(1, target_hours + 1):
-            hour_log = f"#### **🕒 [{hour}시간 경과]**\n"
+            hour_log = f"#### **🕒 {hour}시간 경과**\n"
             missed_guards_this_turn = []
             
             if hour == 1:
