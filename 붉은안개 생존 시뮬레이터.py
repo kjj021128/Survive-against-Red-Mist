@@ -576,7 +576,7 @@ if st.button("⏳ 시뮬레이션 시작"):
 
         st.write("---")
         
-        final_report = f"#### 🛡️ 고용한 호위 및 장비\n- 호위: {', '.join(selected_guards)}\n- 장비: {', '.join(selected_items)}\n\n"
+        final_report = f"#### 🛡️ 고용한 호위 및 장비\n> 호위: {', '.join(selected_guards)}\n> 장비: {', '.join(selected_items)}\n\n"
         final_report += battle_logs
 
         clean_report = re.sub(r':[a-zA-Z]+\[(.*?)\]', r'\1', final_report)
