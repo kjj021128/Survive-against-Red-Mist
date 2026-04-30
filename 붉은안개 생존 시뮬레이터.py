@@ -8,6 +8,7 @@ BUDGET = 1300
 
 # 호위 목록 (이름: [가격, 기본 수치, 주사위 최댓값])
 guards_db = {
+    "리카르도": {"cost": 225, "power": 20, "dice": 10}
     "에즈라": {"cost": 250, "power": 25, "dice": 10},
     "모제스": {"cost": 275, "power": 0, "dice": 10},
     "뇌횡": {"cost": 300, "power": 30, "dice": 15},
@@ -209,6 +210,9 @@ if st.button("⏳ 시뮬레이션 시작"):
         smoke_war_count_sim = sum(1 for g in smoke_war_members if g in selected_guards)
         is_smoke_war = smoke_war_count_sim >= 3 # 3명 이상일 때만 True
 
+        # 리카르도의 장부 기록용 변수
+        previous_missed_guards = []
+
         # 시간 흐름 루프 시작
         for hour in range(1, target_hours + 1):
             hour_log = f"#### **🕒 {hour}시간 경과**\n"
@@ -263,7 +267,11 @@ if st.button("⏳ 시뮬레이션 시작"):
                     
                     # 🎯 필살기 발동 로직 - 주사위가 최댓값이 떴을 때!
                     if roll == max_dice:
-                        if guard == "에즈라":
+                        if guard == "리카르도":
+                            current_team_power += 15
+                            hour_log += "> 🕶️ :red[**[전원, 처형이다!]**] 리카르도가 원한 문신의 힘을 끌어내 지면을 강타합니다!\n\n"
+                            
+                        elif guard == "에즈라":
                             current_team_power += 15
                             hour_log += "> 🦮 :red[**[유리아 공방 - 총공 모드, 마크 17!]**] 에즈라가 온갖 무기를 한꺼번에 전개하여 화력을 쏟아붓습니다!\n\n"
                         
@@ -370,6 +378,15 @@ if st.button("⏳ 시뮬레이션 시작"):
                             current_team_power -= (base_power + 1) # 방금 더했던 위력을 다시 빼서 0으로 무효화
                             hour_log += f"> 🌀 **[빗나감]** {guard}의 공격이 완전히 빗나갔습니다... ({guard} 공격 모두 취소)\n\n"
                             missed_guards_this_turn.append(guard)
+
+            if "리카르도" in selected_guards:
+                actual_victims = [g for g in previous_missed_guards if g != "리카르도"]
+                if actual_victims:
+                    retaliation_bonus = 30 # 압도적인 보복 보너스
+                    current_team_power += (base_power + retaliation_bonus)
+                    
+                    victims_str = ", ".join(actual_victims)
+                    hour_log += f"> 🕶️ **[되갚기]** 리카르도가 이전 공방에서 {victims_str}이(가) 당한 수모를 앙갚음하기 위해 무자비한 맹공을 퍼붓습니다! ({retaliation_bonus})\n\n"
             
             if "가치우" in selected_guards: 
                 current_team_power *= 1.2
