@@ -288,6 +288,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         
                         elif guard == "산초":
                             current_team_power += 30
+                            blood_gauge += 50
                             hour_log += "> 🩸 :red[**[아류 산초 경혈식 - 라 샹그레]**] 산초가 끓어오르는 피를 창끝에 모아 폭발시킵니다!\n\n"
                         
                         elif guard == "니콜라이":
@@ -360,6 +361,7 @@ if st.button("⏳ 시뮬레이션 시작"):
                         
                         elif guard == "장로 돈키호테":
                             current_team_power += 85
+                            blood_gauge += 50
                             hour_log += "> 🎠 :red[**[돈키호테류 경혈 오의 - 구]**] 장로 돈키호테가 만든 피의 구가 폭발하며 전장을 뒤덮습니다!\n\n"
                     # 💥 대실패 발동 로직 - 주사위가 1이 떴을 때
                     elif roll == 1:
